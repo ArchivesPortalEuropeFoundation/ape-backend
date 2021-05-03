@@ -121,6 +121,16 @@ public class ArchivalInstitution implements java.io.Serializable {
     private Long unprocessedSolrDocs;
     @Column(nullable = true)
     private Integer openDataQueueId;
+    
+    @Column(name = "rights_information")
+    private Integer rightsInformationId;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "rights_information", foreignKey = @ForeignKey(name = "archival_institution_rinf_id_fkey"), insertable = false, updatable = false)
+    private RightsInformation rightsInformation;
+    
+    @Column(name = "share_with_wikimedia")
+    private Boolean shareWithWikimedia;
 
     public int getAiId() {
         return this.aiId;
@@ -375,5 +385,29 @@ public class ArchivalInstitution implements java.io.Serializable {
 
     public void setOpenDataQueueId(Integer openDataQueueId) {
         this.openDataQueueId = openDataQueueId;
+    }
+
+    public Integer getRightsInformationId() {
+        return rightsInformationId;
+    }
+
+    public void setRightsInformationId(Integer rightsInformationId) {
+        this.rightsInformationId = rightsInformationId;
+    }
+
+    public RightsInformation getRightsInformation() {
+        return rightsInformation;
+    }
+
+    public void setRightsInformation(RightsInformation rightsInformation) {
+        this.rightsInformation = rightsInformation;
+    }
+
+    public Boolean getShareWithWikimedia() {
+        return shareWithWikimedia;
+    }
+
+    public void setShareWithWikimedia(Boolean shareWithWikimedia) {
+        this.shareWithWikimedia = shareWithWikimedia;
     }
 }

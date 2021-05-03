@@ -80,6 +80,13 @@ public class CLevel implements Serializable {
     @Type(type = "org.hibernate.type.BinaryType")
     private byte[] cBinary;
 
+    @Column(name = "rights_information")
+    private Integer rightsInformationId;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "rights_information", foreignKey = @ForeignKey(name = "archival_institution_rinf_id_fkey"), insertable = false, updatable = false)
+    private RightsInformation rightsInformation;
+
     public String getUnittitle() {
         return unittitle;
     }
@@ -220,4 +227,19 @@ public class CLevel implements Serializable {
         this.ead3 = ead3;
     }
 
+    public Integer getRightsInformationId() {
+        return rightsInformationId;
+    }
+
+    public void setRightsInformationId(Integer rightsInformationId) {
+        this.rightsInformationId = rightsInformationId;
+    }
+
+    public RightsInformation getRightsInformation() {
+        return rightsInformation;
+    }
+
+    public void setRightsInformation(RightsInformation rightsInformation) {
+        this.rightsInformation = rightsInformation;
+    }
 }
