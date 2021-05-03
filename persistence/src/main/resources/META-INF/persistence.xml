@@ -1,52 +1,49 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<persistence version="2.0" xmlns="http://java.sun.com/xml/ns/persistence" 
-             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-             
-             xsi:schemaLocation="http://java.sun.com/xml/ns/persistence 
-                                http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd
-                                ">
-    <persistence-unit name="ape-database" transaction-type="RESOURCE_LOCAL">
-        <provider>org.hibernate.ejb.HibernatePersistence</provider>
-        <jta-data-source>java:/comp/env/jdbc/APEnetDatabaseDashboard</jta-data-source>
-        <class>eu.apenet.persistence.vo.UserRole</class>
-        <class>eu.apenet.persistence.vo.UploadMethod</class>
-        <class>eu.apenet.persistence.vo.EseState</class>
-        <class>eu.apenet.persistence.vo.Lang</class>
-        <class>eu.apenet.persistence.vo.User</class>
-        <class>eu.apenet.persistence.vo.Country</class>
-        <class>eu.apenet.persistence.vo.CouAlternativeName</class>
-        <class>eu.apenet.persistence.vo.AiAlternativeName</class>
-        <class>eu.apenet.persistence.vo.UpFile</class>
-        <class>eu.apenet.persistence.vo.ResumptionToken</class>
-        <class>eu.apenet.persistence.vo.SentMailRegister</class>
-        <class>eu.apenet.persistence.vo.ArchivalInstitutionOaiPmh</class>
-        <class>eu.apenet.persistence.vo.Warnings</class>
-        <class>eu.apenet.persistence.vo.QueueItem</class>
-        <class>eu.apenet.persistence.vo.EadContent</class>
-        <class>eu.apenet.persistence.vo.Ese</class>
-        <class>eu.apenet.persistence.vo.ArchivalInstitution</class>
-        <class>eu.apenet.persistence.vo.SourceGuide</class>
-        <class>eu.apenet.persistence.vo.FindingAid</class>
-        <class>eu.apenet.persistence.vo.HoldingsGuide</class>
-        <class>eu.apenet.persistence.vo.CLevel</class>
-        <class>eu.apenet.persistence.vo.DptUpdate</class>
-        <class>eu.apenet.persistence.vo.Coordinates</class>
-        <class>eu.apenet.persistence.vo.EadSavedSearch</class>
-        <class>eu.apenet.persistence.vo.EacCpf</class>
-        <class>eu.apenet.persistence.vo.Collection</class>
-        <class>eu.apenet.persistence.vo.CollectionContent</class>
-        <class>eu.apenet.persistence.vo.SavedBookmarks</class>
-        <class>eu.apenet.persistence.vo.Topic</class>
-        <class>eu.apenet.persistence.vo.TopicMapping</class>
-        <class>eu.apenet.persistence.vo.ApiKey</class>
-        <shared-cache-mode>NONE</shared-cache-mode>
-        <properties>
-            <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/>
-            <property name="hibernate.connection.driver_class" value="org.postgresql.Driver"/>
-            <property name="hibernate.cache.use_second_level_cache" value="false"/>
-            <property name="hibernate.cache.use_query_cache" value="false"/>
-            <property name="hibernate.hbm2ddl.auto" value="update"/>
-            <!--<property name="hibernate.show_sql" value="true" />-->
-        </properties>
-    </persistence-unit>
+<persistence version="2.0" xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/persistence                                  http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd                                 ">
+  <persistence-unit name="ape-database" transaction-type="RESOURCE_LOCAL">
+    <provider>org.hibernate.ejb.HibernatePersistence</provider>
+    <jta-data-source>java:/comp/env/jdbc/APEnetDatabaseDashboard</jta-data-source>
+    <class>eu.apenet.persistence.vo.UserRole</class>
+    <class>eu.apenet.persistence.vo.UploadMethod</class>
+    <class>eu.apenet.persistence.vo.EseState</class>
+    <class>eu.apenet.persistence.vo.Lang</class>
+    <class>eu.apenet.persistence.vo.User</class>
+    <class>eu.apenet.persistence.vo.RightsInformation</class>
+    <class>eu.apenet.persistence.vo.Country</class>
+    <class>eu.apenet.persistence.vo.CouAlternativeName</class>
+    <class>eu.apenet.persistence.vo.AiAlternativeName</class>
+    <class>eu.apenet.persistence.vo.UpFile</class>
+    <class>eu.apenet.persistence.vo.ResumptionToken</class>
+    <class>eu.apenet.persistence.vo.SentMailRegister</class>
+    <class>eu.apenet.persistence.vo.ArchivalInstitutionOaiPmh</class>
+    <class>eu.apenet.persistence.vo.Warnings</class>
+    <class>eu.apenet.persistence.vo.QueueItem</class>
+    <class>eu.apenet.persistence.vo.EadContent</class>
+    <class>eu.apenet.persistence.vo.Ese</class>
+    <class>eu.apenet.persistence.vo.ArchivalInstitution</class>
+    <class>eu.apenet.persistence.vo.SourceGuide</class>
+    <class>eu.apenet.persistence.vo.FindingAid</class>
+    <class>eu.apenet.persistence.vo.HoldingsGuide</class>
+    <class>eu.apenet.persistence.vo.CLevel</class>
+    <class>eu.apenet.persistence.vo.DptUpdate</class>
+    <class>eu.apenet.persistence.vo.Coordinates</class>
+    <class>eu.apenet.persistence.vo.EadSavedSearch</class>
+    <class>eu.apenet.persistence.vo.EacCpf</class>
+    <class>eu.apenet.persistence.vo.Collection</class>
+    <class>eu.apenet.persistence.vo.CollectionContent</class>
+    <class>eu.apenet.persistence.vo.SavedBookmarks</class>
+    <class>eu.apenet.persistence.vo.Topic</class>
+    <class>eu.apenet.persistence.vo.TopicMapping</class>
+    <class>eu.apenet.persistence.vo.ApiKey</class>
+    <class>eu.apenet.persistence.vo.RightsInformation</class>
+    <shared-cache-mode>NONE</shared-cache-mode>
+    <properties>
+      <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/>
+      <property name="hibernate.connection.driver_class" value="org.postgresql.Driver"/>
+      <property name="hibernate.cache.use_second_level_cache" value="false"/>
+      <property name="hibernate.cache.use_query_cache" value="false"/>
+      <property name="hibernate.hbm2ddl.auto" value="update"/>
+      <!--<property name="hibernate.show_sql" value="true" />-->
+    </properties>
+  </persistence-unit>
 </persistence>
