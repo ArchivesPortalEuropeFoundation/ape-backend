@@ -67,6 +67,13 @@ public class HoldingsGuide extends Ead {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "holdingsGuide")
     private Set<EadContent> eadContents = new HashSet<EadContent>(0);
 
+    @Column(name = "rights_information")
+    private Integer rightsInformationId;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "rights_information", foreignKey = @ForeignKey(name = "archival_institution_rinf_id_fkey"), insertable = false, updatable = false)
+    private RightsInformation rightsInformation;
+
     public Integer getId() {
         return id;
     }
@@ -233,5 +240,21 @@ public class HoldingsGuide extends Ead {
     @Override
     public void setPath(String path) {
         this.pathApenetead = path;
+    }
+
+    public Integer getRightsInformationId() {
+        return rightsInformationId;
+    }
+
+    public void setRightsInformationId(Integer rightsInformationId) {
+        this.rightsInformationId = rightsInformationId;
+    }
+
+    public RightsInformation getRightsInformation() {
+        return rightsInformation;
+    }
+
+    public void setRightsInformation(RightsInformation rightsInformation) {
+        this.rightsInformation = rightsInformation;
     }
 }
