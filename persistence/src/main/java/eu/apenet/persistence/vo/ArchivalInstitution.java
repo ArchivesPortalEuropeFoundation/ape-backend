@@ -23,6 +23,7 @@ import javax.persistence.TemporalType;
 import eu.archivesportaleurope.util.ApeUtil;
 import javax.persistence.CascadeType;
 import javax.persistence.ForeignKey;
+import javax.validation.constraints.Size;
 
 @Entity
 @Table(name = "archival_institution")
@@ -121,16 +122,20 @@ public class ArchivalInstitution implements java.io.Serializable {
     private Long unprocessedSolrDocs;
     @Column(nullable = true)
     private Integer openDataQueueId;
-    
+
     @Column(name = "rights_information")
     private Integer rightsInformationId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "rights_information", foreignKey = @ForeignKey(name = "archival_institution_rinf_id_fkey"), insertable = false, updatable = false)
     private RightsInformation rightsInformation;
-    
+
     @Column(name = "share_with_wikimedia")
     private Boolean shareWithWikimedia;
+
+    @Size(max = 255)
+    @Column(name = "rights_holder", length = 255)
+    private String rightsHolder;
 
     public int getAiId() {
         return this.aiId;
@@ -409,5 +414,13 @@ public class ArchivalInstitution implements java.io.Serializable {
 
     public void setShareWithWikimedia(Boolean shareWithWikimedia) {
         this.shareWithWikimedia = shareWithWikimedia;
+    }
+
+    public String getRightsHolder() {
+        return rightsHolder;
+    }
+
+    public void setRightsHolder(String rightsHolder) {
+        this.rightsHolder = rightsHolder;
     }
 }

@@ -17,6 +17,9 @@
             eacCpfActions, batchEacCpfActions, downloadEacCpf, downloadEAD3,
 			manageTopicMappings,displayCreateEditTopicMapping,createEditTopicMapping,deleteTopicMapping,
             GoDashboard, dashboardHome, GoDashboardByInstitutionManager,setFeedbackEmailaddress,displaySetFeedbackEmailaddress,
+            
+            <!-- Rights information -->
+            editWebFormRightsInformation,cancelRightsDeclaration,saveRightsDeclaration,fetchRightsDescriptionFromDb,
 
             <!-- EAG -->
             createsimpleeag, createsimpleeagwithmenu, uploadsimpleeag, uploadsimpleeagwithmenu, uploadowneag, eaghttpuploadwithmenu,
