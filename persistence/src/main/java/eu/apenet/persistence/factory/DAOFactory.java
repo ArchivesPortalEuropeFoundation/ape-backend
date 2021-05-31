@@ -146,4 +146,6 @@ public abstract class DAOFactory {
     public abstract ApiKeyDAO getApiKeyDAO();
 
     public abstract ReindexDocDAO getReindexDocDAO();
+    
+    public abstract RightsInformationDAO getRightsInformationDAO();
 }

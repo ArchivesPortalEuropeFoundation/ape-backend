@@ -72,38 +72,55 @@
         <put-attribute name="title" value="dashboard.title" />
         <put-attribute name="body" value="/jsp/templates/blank.jsp" />
         <put-list-attribute name="jsfilesInternal">
-
-
-
         </put-list-attribute>
     </definition>
+    
+    <definition name="institutionRightsDeclarationNewInstitution" extends="dashboardLayout">
+        <put-attribute name="title" value="dashboard.managedatasharing.title"/>
+        <put-attribute name="menu" value="/jsp/indexRightsSelection.jsp" />
+        <put-attribute name="body" value="/jsp/webformRightsSelection.jsp" />
+        <put-list-attribute name="jsfilesInternal">
+            <add-attribute type="string" value="/js/jquery/jquery-ui.min.js"/>
+            <add-attribute type="string" value="/js/rightsinformation.js"/>
+        </put-list-attribute>
+    </definition>
+    <definition name="institutionRightsDeclarationExistingInstitutionWithoutEAG" extends="dashboardLayout">
+        <put-attribute name="title" value="dashboard.managedatasharing.title"/>
+        <put-attribute name="menu" value="/jsp/eag2012/indexEAG2012Creation.jsp" />
+        <put-attribute name="body" value="/jsp/webformRightsSelection.jsp" />
+        <put-list-attribute name="jsfilesInternal">
+            <add-attribute type="string" value="/js/jquery/jquery-ui.min.js"/>
+            <add-attribute type="string" value="/js/rightsinformation.js"/>
+        </put-list-attribute>
+    </definition>
+    <definition name="institutionRightsDeclarationExistingInstitutionWithEAG" extends="dashboardLayout">
+        <put-attribute name="title" value="dashboard.managedatasharing.title"/>
+        <put-attribute name="menu" value="/jsp/indexDashboard.jsp" />
+        <put-attribute name="body" value="/jsp/webformRightsSelection.jsp" />
+        <put-list-attribute name="jsfilesInternal">
+            <add-attribute type="string" value="/js/jquery/jquery-ui.min.js"/>
+            <add-attribute type="string" value="/js/rightsinformation.js"/>
+        </put-list-attribute>
+    </definition>
+    
     <definition name="eagfirstcreation" extends="dashboardLayout">
         <put-attribute name="title" value="dashboard.eagcreation.title" />
-        <put-attribute name="menu" value="/jsp/indexEAGCreation.jsp" />
+        <put-attribute name="menu" value="/jsp/eag2012/indexEAG2012Creation.jsp" />
         <put-attribute name="body" value="/jsp/templates/blank.jsp" />
         <put-list-attribute name="jsfilesInternal">
-
-
-
         </put-list-attribute>
     </definition>
     <definition name="eagsuccesscreated" extends="dashboardLayout">
         <put-attribute name="title" value="dashboard.eagwebform.title" />
         <put-attribute name="body" value="/jsp/templates/blank.jsp" />
         <put-list-attribute name="jsfilesInternal">
-
-
-
         </put-list-attribute>
     </definition>
     <definition name="webformeag" extends="dashboardLayout">
         <put-attribute name="title" value="dashboard.eagwebform.title" />
-        <put-attribute name="menu" value="/jsp/indexEAGCreation.jsp" />
+        <put-attribute name="menu" value="/jsp/eag2012/indexEAG2012Creation.jsp" />
         <put-attribute name="body" value="/jsp/webformeag.jsp" />
         <put-list-attribute name="jsfilesInternal">
-
-
-
         </put-list-attribute>
     </definition>
 
@@ -193,7 +210,7 @@
     </definition>
     <definition name="httpuploadeag" extends="dashboardLayout">
         <put-attribute name="title" value="dashboard.eagupload.title" />
-        <put-attribute name="menu" value="/jsp/indexEAGCreation.jsp" />
+        <put-attribute name="menu" value="/jsp/eag2012/indexEAG2012Creation.jsp" />
         <put-attribute name="body" value="/jsp/httpuploadeag.jsp" />
         <put-list-attribute name="jsfilesInternal">
 
@@ -222,7 +239,7 @@
     </definition>
     <definition name="uploadeagerrors" extends="dashboardLayout">
         <put-attribute name="title" value="dashboard.eaguploaderror.title" />
-        <put-attribute name="menu" value="/jsp/indexEAGCreation.jsp" />
+        <put-attribute name="menu" value="/jsp/eag2012/indexEAG2012Creation.jsp" />
         <put-attribute name="body" value="/jsp/uploadeagerrors.jsp" />
         <put-list-attribute name="jsfilesInternal">
 
@@ -251,7 +268,7 @@
     </definition>
     <definition name="uploadeagold" extends="dashboardLayout">
         <put-attribute name="title" value="dashboard.eagupload.title" />
-        <put-attribute name="menu" value="/jsp/indexEAGCreation.jsp" />
+        <put-attribute name="menu" value="/jsp/eag2012/indexEAG2012Creation.jsp" />
         <put-attribute name="body" value="/jsp/uploadeagold.jsp" />
         <put-list-attribute name="jsfilesInternal">
 
@@ -281,7 +298,7 @@
     </definition>
     <definition name="uploadeagerrorspecialcharacter" extends="dashboardLayout">
         <put-attribute name="title" value="dashboard.eaguploaderror.title" />
-        <put-attribute name="menu" value="/jsp/indexEAGCreation.jsp" />
+        <put-attribute name="menu" value="/jsp/eag2012/indexEAG2012Creation.jsp" />
         <put-attribute name="body" value="/jsp/uploadeagerrorspecialcharacter.jsp" />
         <put-list-attribute name="jsfilesInternal">
 
@@ -970,7 +987,7 @@
         <put-attribute name="title" value="dashboard.unlinkfromhg.title" />
         <put-attribute name="body" value="/jsp/contentmanager/unlinkfromhg.jsp" />
         <put-list-attribute name="jsfilesInternal">
-          <add-attribute type="string" value="/js/unlinkfromhg.js"/>
+            <add-attribute type="string" value="/js/unlinkfromhg.js"/>
         </put-list-attribute>
     </definition>
     <definition name="hgTreeCreation" extends="DefaultLayout">

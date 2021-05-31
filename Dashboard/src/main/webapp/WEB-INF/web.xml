@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee"
-         xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
-         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
-         id="WebApp_ID" version="2.5">
+<web-app id="WebApp_ID" version="2.5" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
     <display-name>Struts2 ArchivePortalEurope-Dashboard</display-name>
     <filter>
         <filter-name>JpaFilter</filter-name>
@@ -32,6 +29,27 @@
         <filter-name>struts2</filter-name>
         <url-pattern>*.action</url-pattern>
     </filter-mapping>
+    <servlet>
+        <servlet-name>action</servlet-name>
+        <servlet-class>org.apache.struts.action.ActionServlet</servlet-class>
+        <init-param>
+            <param-name>config</param-name>
+            <param-value>/WEB-INF/struts-config.xml</param-value>
+        </init-param>
+        <init-param>
+            <param-name>debug</param-name>
+            <param-value>2</param-value>
+        </init-param>
+        <init-param>
+            <param-name>detail</param-name>
+            <param-value>2</param-value>
+        </init-param>
+        <load-on-startup>2</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>action</servlet-name>
+        <url-pattern>*.do</url-pattern>
+    </servlet-mapping>
     <session-config>
         <session-timeout>180</session-timeout>
     </session-config>
@@ -54,9 +72,6 @@
         <param-name>org.apache.tiles.impl.BasicTilesContainer.DEFINITIONS_CONFIG</param-name>
         <param-value>/WEB-INF/tiles.xml, /WEB-INF/tiles-ead2ese.xml</param-value>
     </context-param>
-    
-
-
     <security-constraint>
         <display-name>SSL Is Required</display-name>
         <web-resource-collection>
@@ -64,13 +79,11 @@
             <description/>
             <url-pattern>/*</url-pattern>
         </web-resource-collection>
-
         <user-data-constraint>
             <description>SSL is required</description>
             <transport-guarantee>CONFIDENTIAL</transport-guarantee>
         </user-data-constraint>
     </security-constraint>
-    
     <security-constraint>
         <web-resource-collection>
             <web-resource-name>JSPs</web-resource-name>
@@ -78,7 +91,6 @@
         </web-resource-collection>
         <auth-constraint/>
     </security-constraint>
-    
     <resource-env-ref>
         <resource-env-ref-name>jdbc/APEnetDatabaseDashboard</resource-env-ref-name>
         <resource-env-ref-type>javax.sql.DataSource</resource-env-ref-type>
@@ -99,5 +111,4 @@
         <error-code>404</error-code>
         <location>/jsp/errors/404.html</location>
     </error-page>
-
 </web-app>
