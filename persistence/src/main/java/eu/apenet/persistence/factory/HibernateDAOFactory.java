@@ -194,4 +194,9 @@ public class HibernateDAOFactory extends DAOFactory {
     public ReindexDocDAO getReindexDocDAO() {
         return (ReindexDocDAO) instantiateDAO(ReindexDocJpaDAO.class);
     }
+
+    @Override
+    public RightsInformationDAO getRightsInformationDAO() {
+        return (RightsInformationDAO) instantiateDAO(RightsInformationJpaDAO.class);
+    }
 }

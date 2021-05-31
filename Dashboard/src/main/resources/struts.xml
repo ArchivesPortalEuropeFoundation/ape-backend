@@ -59,8 +59,9 @@
             <result name="input2" type="redirectAction">
                 <param name="actionName">editWebFormEAG2012</param>
             </result>
+            <result name="inputRights" type="redirectAction">editWebFormRightsInformation</result>
         </action>
-
+        
         <action name="createeag2012withmenu" class="eu.apenet.dashboard.manual.eag.WebFormEAG2012Action">
             <result name="success" type="tiles">webFormEAG2012</result>
             <result name="input" type="redirectAction">
@@ -1280,5 +1281,29 @@
                 <param name="actionName">manageQueue</param>
             </result>
         </action>
+        
+        <action name="editWebFormRightsInformation" class="eu.apenet.dashboard.rightsinformation.RightsInformationAction">
+            <interceptor-ref name="changeLanguageStack"/>
+            <result name="input" type="tiles">institutionRightsDeclarationNewInstitution</result>
+            <result name="noEAG" type="tiles">institutionRightsDeclarationExistingInstitutionWithoutEAG</result>
+            <result name="success" type="tiles">institutionRightsDeclarationExistingInstitutionWithEAG</result>
+        </action>
+        
+        <action name="cancelRightsDeclaration" class="eu.apenet.dashboard.rightsinformation.RightsInformationAction" method="cancel">
+            <result name="success" type="redirectAction">
+                <param name="actionName">index</param>
+            </result>
+        </action>
+
+        <action name="saveRightsDeclaration" class="eu.apenet.dashboard.rightsinformation.RightsInformationAction" method="save">
+            <result name="success" type="redirectAction">
+                <param name="actionName">dashboardHome</param>
+            </result>
+        </action>
+        
+        <action name="fetchRightsDescriptionFromDb" class="eu.apenet.dashboard.rightsinformation.RightsInformationAjaxAction">
+            <result name="success"/>
+        </action>
+
     </package>
 </struts>

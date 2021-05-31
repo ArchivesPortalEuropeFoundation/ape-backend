@@ -34,7 +34,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "RightsInformation.findById", query = "SELECT r FROM RightsInformation r WHERE r.id = :id")
     , @NamedQuery(name = "RightsInformation.findByAbbreviation", query = "SELECT r FROM RightsInformation r WHERE r.abbreviation = :abbreviation")
     , @NamedQuery(name = "RightsInformation.findByLink", query = "SELECT r FROM RightsInformation r WHERE r.link = :link")
-    , @NamedQuery(name = "RightsInformation.findByDescription", query = "SELECT r FROM RightsInformation r WHERE r.description = :description")})
+    , @NamedQuery(name = "RightsInformation.findByDescription", query = "SELECT r FROM RightsInformation r WHERE r.description = :description")
+    , @NamedQuery(name = "RightsInformation.findByRightsName", query = "SELECT r FROM RightsInformation r WHERE r.rightsName = :rightsName")})
 public class RightsInformation implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -51,11 +52,13 @@ public class RightsInformation implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 255)
-    @Column(name = "link", nullable = false, length = 255)
+    @Column(name = "rights_link", nullable = false, length = 255)
     private String link;
     @Size(max = 2147483647)
     @Column(name = "description", length = 2147483647)
     private String description;
+    @Column(name = "rights_name")
+    private String rightsName;
     
     @OneToMany(mappedBy = "rightsInformation")
     private Set<ArchivalInstitution> archivalInstitutions = new HashSet<>(0);
@@ -115,6 +118,14 @@ public class RightsInformation implements Serializable {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getRightsName() {
+        return rightsName;
+    }
+
+    public void setRightsName(String rightsName) {
+        this.rightsName = rightsName;
     }
 
     public Set<ArchivalInstitution> getArchivalInstitutions() {
