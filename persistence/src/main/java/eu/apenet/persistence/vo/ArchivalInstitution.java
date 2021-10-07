@@ -130,8 +130,15 @@ public class ArchivalInstitution implements java.io.Serializable {
     @JoinColumn(name = "rights_information", foreignKey = @ForeignKey(name = "archival_institution_rinf_id_fkey"), insertable = false, updatable = false)
     private RightsInformation rightsInformation;
 
+    @Column(name = "is_entitlement_rights")
+    private Boolean isEntitlementRights;
+
     @Column(name = "share_with_wikimedia")
     private Boolean shareWithWikimedia;
+
+    @Size(max = 2147483647)
+    @Column(name = "rights_description", length = 2147483647)
+    private String rightsDescription;
 
     @Size(max = 255)
     @Column(name = "rights_holder", length = 255)
@@ -412,8 +419,24 @@ public class ArchivalInstitution implements java.io.Serializable {
         return shareWithWikimedia;
     }
 
+    public Boolean getEntitlementRights() {
+        return isEntitlementRights;
+    }
+
+    public void setEntitlementRights(Boolean entitlementRights) {
+        isEntitlementRights = entitlementRights;
+    }
+
     public void setShareWithWikimedia(Boolean shareWithWikimedia) {
         this.shareWithWikimedia = shareWithWikimedia;
+    }
+
+    public void setRightsDescription(String rightsDescription) {
+        this.rightsDescription = rightsDescription;
+    }
+
+    public String getRightsDescription() {
+        return rightsDescription;
     }
 
     public String getRightsHolder() {

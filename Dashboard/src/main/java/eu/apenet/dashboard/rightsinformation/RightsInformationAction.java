@@ -13,6 +13,8 @@ import eu.apenet.persistence.vo.ArchivalInstitution;
 import eu.apenet.persistence.vo.RightsInformation;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
 /**
@@ -36,8 +38,10 @@ public class RightsInformationAction extends AbstractInstitutionAction {
     private static final String COPYRIGHT_NOT_EVALUATED = "CNE";
 
     private List<SelectItem> rightsList = new ArrayList<>();
+    private List<SelectItem> entitlementRightsList = new ArrayList<>();
 
     private String rights;
+    private String entitlementRights;
     private String description;
     private String rightsHolder;
     private boolean newInstitution = false;
@@ -77,9 +81,12 @@ public class RightsInformationAction extends AbstractInstitutionAction {
             if (!(rightsInformation.getAbbreviation().equals(IN_COPYRIGHT_EU_ORPHAN_WORK)
                     || rightsInformation.getAbbreviation().equals(NO_COPYRIGHT_OTHER_KNOWN_LEGAL_RESTRICTIONS)
                     || rightsInformation.getAbbreviation().equals(COPYRIGHT_NOT_EVALUATED))) {
-                rightsList.add(new SelectItem(rightsInformation.getId(), rightsInformation.getRightsName()));
+                SelectItem selectItem = new SelectItem(rightsInformation.getId(), rightsInformation.getRightsName());
+                rightsList.add(selectItem);
+                entitlementRightsList.add(selectItem);
             }
         });
+        rightsList.add(new SelectItem(-2, "Other"));
     }
 
     private void retrieveRightsInfoForInstitution(ArchivalInstitution archivalInstitution) {
@@ -107,23 +114,47 @@ public class RightsInformationAction extends AbstractInstitutionAction {
             }
         }
         rights = rightsPreselection.getId().toString();
+        if (archivalInstitution.getEntitlementRights()){
+            rights = "-2"; //The other option
+            entitlementRights = rightsPreselection.getId().toString();
+        }
         currentRightsSelection = rights;
-        description = rightsPreselection.getDescription();
+        description = archivalInstitution.getRightsDescription();
     }
 
     public String cancel() throws Exception {
         log.info("Rights declaration cancelled");
-        return SUCCESS;
+
+        ArchivalInstitutionDAO archivalInstitutionDAO = DAOFactory.instance().getArchivalInstitutionDAO();
+        ArchivalInstitution archivalInstitution = archivalInstitutionDAO.getArchivalInstitution(getAiId());
+        if (archivalInstitution.getRightsInformation() == null) {
+            return SUCCESS;
+        }
+        else {
+            return "dashboard";
+        }
     }
 
     public String save() throws Exception {
         ArchivalInstitutionDAO archivalInstitutionDAO = DAOFactory.instance().getArchivalInstitutionDAO();
         ArchivalInstitution archivalInstitution = archivalInstitutionDAO.getArchivalInstitution(getAiId());
-        RightsInformation rightsInformation = DAOFactory.instance().getRightsInformationDAO().getRightsInformation(Integer.parseInt(rights));
+        RightsInformation rightsInformation = null;
+        if (Integer.parseInt(rights) > 0) { // A licence from the first dropdown menu is selected
+            rightsInformation = DAOFactory.instance().getRightsInformationDAO().getRightsInformation(Integer.parseInt(rights));
+            archivalInstitution.setEntitlementRights(false);
+        }
+        else { // An entitlement licence has been selected
+            rightsInformation = DAOFactory.instance().getRightsInformationDAO().getRightsInformation(Integer.parseInt(entitlementRights));
+            archivalInstitution.setEntitlementRights(true);
+        }
         archivalInstitution.setRightsInformation(rightsInformation);
         archivalInstitution.setRightsInformationId(rightsInformation.getId());
-        if (!archivalInstitution.getAiname().equals(rightsHolder)) {
+//        if (!archivalInstitution.getAiname().equals(rightsHolder)) {
+        if (StringUtils.isNotEmpty(rightsHolder)){
             archivalInstitution.setRightsHolder(rightsHolder);
+        }
+        if (StringUtils.isNotEmpty(description)){
+            archivalInstitution.setRightsDescription(description);
         }
         archivalInstitutionDAO.store(archivalInstitution);
         log.info("Rights declaration saved");
@@ -138,12 +169,28 @@ public class RightsInformationAction extends AbstractInstitutionAction {
         this.rightsList = rightsList;
     }
 
+    public void setEntitlementRightsList(List<SelectItem> entitlementRightsList) {
+        this.entitlementRightsList = entitlementRightsList;
+    }
+
+    public List<SelectItem> getEntitlementRightsList() {
+        return entitlementRightsList;
+    }
+
     public String getRights() {
         return rights;
     }
 
     public void setRights(String rights) {
         this.rights = rights;
+    }
+
+    public void setEntitlementRights(String entitlementRights) {
+        this.entitlementRights = entitlementRights;
+    }
+
+    public String getEntitlementRights() {
+        return entitlementRights;
     }
 
     public String getDescription() {

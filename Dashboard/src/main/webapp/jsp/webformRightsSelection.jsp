@@ -19,7 +19,7 @@
     <p>If no alternative licence is chosen here, the <a href="http://creativecommons.org/licenses/by-sa/4.0/" target="_blank">Creative Commons Attribution, ShareAlike licence</a> will be applied according to the Archives Portal Europe's Metadata Exchange Agreement.</p>
     <br><br>
     <s:form method="POST" theme="simple" action="saveRightsDeclaration" >
-        <table style="width:600px">
+        <table class="rightsinformation-tbl" style="width:70%">
             <colgroup>
                 <col style="width:33%">
                 <col style="width:67%">
@@ -27,7 +27,21 @@
             <tbody>
                 <tr>
                     <td><s:label for="rights" key="label.rightsinfo.defaultstatement"/></td>
-                    <td><s:select id="rights" name="rights" list="rightsList" listKey="value" listValue="content" onchange="updateRightsText()"/></td>
+                    <td>
+                        <s:select id="rights" name="rights" list="rightsList" listKey="value" listValue="content" onchange="updateRightsText()"/>
+                        <div id="entitlementRights" style="margin-top: 20px; display: <s:if test="entitlementRights!=null">block</s:if><s:else>none</s:else>">
+                            <div style="margin-bottom: 7px;">
+                                <s:label for="entitlementRights" key="label.rightsinfo.entitlementstatement"/>
+                            </div>
+                            <div>
+                                <s:select id="entitlementRights" name="entitlementRights" list="entitlementRightsList" listKey="value" listValue="content"/>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>&nbsp;</td>
                 </tr>
                 <tr>
                     <td></td>
@@ -35,7 +49,7 @@
                 </tr>
                 <tr>
                     <td><s:label key="label.rightsinfo.description"/></td>
-                    <td><s:label id="description" name="description" key="%{description}"/></td>
+                    <td><s:textarea id="description" name="description" value="%{description}"/></td>
                 </tr>
                 <tr>
                     <td></td>
