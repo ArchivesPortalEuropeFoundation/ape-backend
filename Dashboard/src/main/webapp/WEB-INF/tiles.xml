@@ -83,6 +83,9 @@
             <add-attribute type="string" value="/js/jquery/jquery-ui.min.js"/>
             <add-attribute type="string" value="/js/rightsinformation.js"/>
         </put-list-attribute>
+        <put-list-attribute name="cssfilesInternal">
+            <add-attribute type="string" value="/css/rightsinformation.css"/>
+        </put-list-attribute>
     </definition>
     <definition name="institutionRightsDeclarationExistingInstitutionWithoutEAG" extends="dashboardLayout">
         <put-attribute name="title" value="dashboard.managedatasharing.title"/>
@@ -92,6 +95,9 @@
             <add-attribute type="string" value="/js/jquery/jquery-ui.min.js"/>
             <add-attribute type="string" value="/js/rightsinformation.js"/>
         </put-list-attribute>
+        <put-list-attribute name="cssfilesInternal">
+            <add-attribute type="string" value="/css/rightsinformation.css"/>
+        </put-list-attribute>
     </definition>
     <definition name="institutionRightsDeclarationExistingInstitutionWithEAG" extends="dashboardLayout">
         <put-attribute name="title" value="dashboard.managedatasharing.title"/>
@@ -100,6 +106,9 @@
         <put-list-attribute name="jsfilesInternal">
             <add-attribute type="string" value="/js/jquery/jquery-ui.min.js"/>
             <add-attribute type="string" value="/js/rightsinformation.js"/>
+        </put-list-attribute>
+        <put-list-attribute name="cssfilesInternal">
+            <add-attribute type="string" value="/css/rightsinformation.css"/>
         </put-list-attribute>
     </definition>
     
