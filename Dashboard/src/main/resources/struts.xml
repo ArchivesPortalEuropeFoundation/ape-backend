@@ -1354,6 +1354,9 @@
             <result name="success" type="redirectAction">
                 <param name="actionName">index</param>
             </result>
+            <result name="dashboard" type="redirectAction">
+                <param name="actionName">dashboardHome</param>
+            </result>
         </action>
 
         <action name="saveRightsDeclaration" class="eu.apenet.dashboard.rightsinformation.RightsInformationAction" method="save">

@@ -29,8 +29,10 @@ ALTER TABLE archival_institution ADD COLUMN rights_information integer;
 ALTER TABLE archival_institution ADD CONSTRAINT archival_institution_rinf_id_fkey FOREIGN KEY (rights_information)
       REFERENCES rights_information (id) MATCH SIMPLE
       ON UPDATE NO ACTION ON DELETE NO ACTION;
+ALTER TABLE archival_institution ADD COLUMN is_entitlement_rights boolean;
 ALTER TABLE archival_institution ADD COLUMN share_with_wikimedia boolean;
 ALTER TABLE archival_institution ADD COLUMN rights_holder character varying(255);
+ALTER TABLE archival_institution ADD COLUMN rights_description text;
 
 ALTER TABLE c_level ADD COLUMN rights_information integer;
 ALTER TABLE c_level
