@@ -1,5 +1,6 @@
 package eu.apenet.dashboard.security;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -24,7 +25,7 @@ import eu.apenet.persistence.vo.Ead3;
 import eu.apenet.persistence.vo.User;
 import eu.apenet.persistence.vo.UserRole;
 
-public final class SecurityContext implements HttpSessionBindingListener {
+public final class SecurityContext implements HttpSessionBindingListener, Serializable {
 
     private static final Logger LOGGER = Logger.getLogger(SecurityContext.class);
     protected static final String VAR_SECURITY_CONTEXT = "var-security-context";
@@ -251,7 +252,7 @@ public final class SecurityContext implements HttpSessionBindingListener {
         return selectedInstitution;
     }
     
-    public static class SelectedArchivalInstitution {
+    public static class SelectedArchivalInstitution implements Serializable {
 
         private Integer id;
         private String name;
