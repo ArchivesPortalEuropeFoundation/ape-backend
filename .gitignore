@@ -27,3 +27,6 @@ hs_err_pid*
 /Dashboard/nbproject/
 /OAIHarvester/conf/
 /ApeApi/nbproject/
+
+#IDE specific
+*.iml
