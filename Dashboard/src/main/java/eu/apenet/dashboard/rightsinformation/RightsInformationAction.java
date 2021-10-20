@@ -92,7 +92,7 @@ public class RightsInformationAction extends AbstractInstitutionAction {
     private void retrieveRightsInfoForInstitution(ArchivalInstitution archivalInstitution) {
         RightsInformation rightsPreselection;
         ccOrPdmLicence = false;
-        if (archivalInstitution.getRightsInformation() == null) {
+        if (archivalInstitution.getRightsInformation() == null || archivalInstitution.getRightsInformation().getAbbreviation().equals(COPYRIGHT_NOT_EVALUATED)) {
             rightsPreselection = DAOFactory.instance().getRightsInformationDAO().getRightsInformation(CREATIVECOMMONS_CC_BY_SA);
             rightsHolder = archivalInstitution.getAiname();
         } else {
