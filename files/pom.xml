@@ -75,7 +75,7 @@
             <exclusions>
                 <exclusion>
                     <groupId>net.sf.saxon</groupId>
-                    <artifactId>saxon-HE</artifactId>
+                    <artifactId>Saxon-HE</artifactId>
                 </exclusion>
             </exclusions>
         </dependency>
