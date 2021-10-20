@@ -114,7 +114,7 @@ public class RightsInformationAction extends AbstractInstitutionAction {
             }
         }
         rights = rightsPreselection.getId().toString();
-        if (archivalInstitution.getEntitlementRights()){
+        if (archivalInstitution.getEntitlementRights()!=null && archivalInstitution.getEntitlementRights()){
             rights = "-2"; //The other option
             entitlementRights = rightsPreselection.getId().toString();
         }
