@@ -26,7 +26,7 @@
                     <td><s:label for="rights" key="label.rightsinfo.defaultstatement"/></td>
                     <td>
                         <s:select id="rights" name="rights" list="rightsList" listKey="value" listValue="content" onchange="updateRightsText()"/>
-                        <div id="entitlementRights" style="margin-top: 20px; display: <s:if test="entitlementRights!=null">block</s:if><s:else>none</s:else>">
+                        <div id="entitlementRights" style="margin-top: 20px; display: <s:if test="rights==-2">block</s:if><s:else>none</s:else>">
                             <div style="margin-bottom: 7px;">
                                 <s:label for="entitlementRights" key="label.rightsinfo.entitlementstatement"/>
                             </div>
