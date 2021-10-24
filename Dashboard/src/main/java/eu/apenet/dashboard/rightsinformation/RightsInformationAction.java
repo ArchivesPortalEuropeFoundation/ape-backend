@@ -92,15 +92,18 @@ public class RightsInformationAction extends AbstractInstitutionAction {
     private void retrieveRightsInfoForInstitution(ArchivalInstitution archivalInstitution) {
         RightsInformation rightsPreselection;
         ccOrPdmLicence = false;
-        if (archivalInstitution.getRightsInformation() == null || archivalInstitution.getRightsInformation().getAbbreviation().equals(COPYRIGHT_NOT_EVALUATED)) {
+        if (archivalInstitution.getRightsInformation() == null) {
             rightsPreselection = DAOFactory.instance().getRightsInformationDAO().getRightsInformation(CREATIVECOMMONS_CC_BY_SA);
             rightsHolder = archivalInstitution.getAiname();
         } else {
             rightsPreselection = archivalInstitution.getRightsInformation();
+            if (rightsPreselection.getAbbreviation().equals(COPYRIGHT_NOT_EVALUATED)){
+                rightsPreselection = DAOFactory.instance().getRightsInformationDAO().getRightsInformation(CREATIVECOMMONS_CC_BY_SA);
+            }
             if (archivalInstitution.getRightsHolder() != null) {
                 rightsHolder = archivalInstitution.getRightsHolder();
             } else {
-                rightsHolder = archivalInstitution.getAiname();
+                rightsHolder = newInstitution ? archivalInstitution.getAiname() : "";
             }
             if (rightsPreselection.getAbbreviation().equals(PUBLIC_DOMAIN_MARK)
                     || rightsPreselection.getAbbreviation().equals(CREATIVECOMMONS_CC0)
@@ -117,6 +120,9 @@ public class RightsInformationAction extends AbstractInstitutionAction {
         if (archivalInstitution.getEntitlementRights()!=null && archivalInstitution.getEntitlementRights()){
             rights = "-2"; //The other option
             entitlementRights = rightsPreselection.getId().toString();
+        }
+        else {
+            entitlementRights = DAOFactory.instance().getRightsInformationDAO().getRightsInformation(CREATIVECOMMONS_CC_BY_SA).getId().toString();
         }
         currentRightsSelection = rights;
         description = archivalInstitution.getRightsDescription();
@@ -153,8 +159,14 @@ public class RightsInformationAction extends AbstractInstitutionAction {
         if (StringUtils.isNotEmpty(rightsHolder)){
             archivalInstitution.setRightsHolder(rightsHolder);
         }
+        else {
+            archivalInstitution.setRightsHolder(null);
+        }
         if (StringUtils.isNotEmpty(description)){
             archivalInstitution.setRightsDescription(description);
+        }
+        else {
+            archivalInstitution.setRightsDescription(null);
         }
         archivalInstitutionDAO.store(archivalInstitution);
         log.info("Rights declaration saved");
@@ -198,7 +210,7 @@ public class RightsInformationAction extends AbstractInstitutionAction {
     }
 
     public void setDescription(String description) {
-        this.description = description;
+        this.description = description.trim();
     }
 
     public String getRightsHolder() {
@@ -206,7 +218,7 @@ public class RightsInformationAction extends AbstractInstitutionAction {
     }
 
     public void setRightsHolder(String rightsHolder) {
-        this.rightsHolder = rightsHolder;
+        this.rightsHolder = rightsHolder.trim();
     }
 
     public boolean isNewInstitution() {
