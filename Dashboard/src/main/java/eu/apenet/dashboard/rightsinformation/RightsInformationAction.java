@@ -48,6 +48,7 @@ public class RightsInformationAction extends AbstractInstitutionAction {
     private boolean searchableItems;
     private boolean ccOrPdmLicence;
     private String currentRightsSelection;
+    private boolean changeRightsInformationCheck = false;
 
     @Override
     public String execute() throws Exception {
@@ -58,7 +59,7 @@ public class RightsInformationAction extends AbstractInstitutionAction {
             archivalInstitution = DAOFactory.instance().getArchivalInstitutionDAO().getArchivalInstitution(getAiId());
             if (archivalInstitution.getEagPath() == null) {
                 if (archivalInstitution.getRightsInformation() == null) {
-                    state = INPUT;
+                    state = "inputnew";//INPUT;
                     newInstitution = true;
                     log.info("New institution");
                 } else {
@@ -141,6 +142,14 @@ public class RightsInformationAction extends AbstractInstitutionAction {
         }
     }
 
+    public void validate(){
+        if (rights != null) {
+            if (!changeRightsInformationCheck) {
+                addFieldError("changeRightsInformationCheck", getText("label.rightsinfo.changeRightsInformationCheck.error"));
+            }
+        }
+    }
+
     public String save() throws Exception {
         ArchivalInstitutionDAO archivalInstitutionDAO = DAOFactory.instance().getArchivalInstitutionDAO();
         ArchivalInstitution archivalInstitution = archivalInstitutionDAO.getArchivalInstitution(getAiId());
@@ -215,6 +224,14 @@ public class RightsInformationAction extends AbstractInstitutionAction {
 
     public String getRightsHolder() {
         return rightsHolder;
+    }
+
+    public void setChangeRightsInformationCheck(boolean changeRightsInformationCheck) {
+        this.changeRightsInformationCheck = changeRightsInformationCheck;
+    }
+
+    public boolean isChangeRightsInformationCheck() {
+        return changeRightsInformationCheck;
     }
 
     public void setRightsHolder(String rightsHolder) {
