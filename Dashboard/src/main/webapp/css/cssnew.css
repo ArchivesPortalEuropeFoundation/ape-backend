@@ -550,10 +550,16 @@ input[type="submit"],input[type="reset"],input[type="button"] {
     border-width: 1px;
     background-color:#EBEBEB;
 	cursor: pointer;
+	padding: 5px;
 }
 input[type="submit"]:hover,input[type="reset"]:hover,input[type="button"]:hover{
 	    color: #0066CC;
 	    background-color: #DEDEDE;
+}
+
+input[type="submit"]:disabled,input[type="reset"]:disabled,input[type="button"]:disabled{
+	color: rgba(16, 16, 16, 0.3);
+	background-color: #DEDEDE;
 }
 
 input[type="text"],input[type="file"],input[type="password"],textarea
