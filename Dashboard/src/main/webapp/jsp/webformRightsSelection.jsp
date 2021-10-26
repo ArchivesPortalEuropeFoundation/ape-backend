@@ -3,8 +3,8 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 <s:if test="searchableItems">
-    <div style="text-align:left; font-size:12pt;">
-        <p><span style="font-weight:bold; background-color:red; color:white;">ATTENTION:</span> The change that you are about to make can only be done while no content is published. Please change to the Content manager and unpublish all your data first. You will then be able to make the change to your licence statement and will have to publish your data again, once the change has been applied.</p><br/>
+    <div style="text-align:left; border: 1px solid red; padding: 10px; margin-bottom: 10px;">
+        <p><span style="font-weight:bold; background-color:red; color:white;">ATTENTION:</span> The change that you are about to make can only be done while no content is published. Please change to the Content manager and unpublish all your data first. You will then be able to make the change to your licence statement and will have to publish your data again, once the change has been applied.</p>
     </div>
 </s:if>
 <s:hidden id="currentRightsSelection" name="currentRightsSelection"/>
@@ -16,10 +16,10 @@
     <s:text name="dashboard.managedatasharing.introduction"/>
     <br><br>
     <s:form method="POST" theme="simple" action="saveRightsDeclaration" >
-        <table class="rightsinformation-tbl" style="width:70%">
+        <table class="rightsinformation-tbl" style="width:100%">
             <colgroup>
-                <col style="width:33%">
-                <col style="width:67%">
+                <col style="width:30%">
+                <col style="width:70%">
             </colgroup>
             <tbody>
                 <tr>
@@ -31,7 +31,7 @@
                                 <s:label for="entitlementRights" key="label.rightsinfo.entitlementstatement"/>
                             </div>
                             <div>
-                                <s:select id="entitlementRights" name="entitlementRights" list="entitlementRightsList" listKey="value" listValue="content"/>
+                                <s:select id="entitlementRights" name="entitlementRights" list="entitlementRightsList" listKey="value" listValue="content" onchange="updateEntitlementRightsText()"/>
                             </div>
                         </div>
                     </td>
@@ -64,10 +64,22 @@
         </table>
         <br/>
         <table id="saveButtonPanel">
-            <tr style="text-align:right;">
+            <tr>
                 <td>
-                    <s:if test="!searchableItems"><s:submit id="submitRightsDeclaration" key="label.rightsinfo.save"/></s:if>
-                    <s:submit id="cancelRightsDeclaration" action="cancelRightsDeclaration" key="label.cancel" />
+                    <s:checkbox name="changeRightsInformationCheck" id="changeRightsInformationCheck" />
+                    <s:text name="label.rightsinfo.changeRightsInformationCheck"/>
+                    <s:fielderror name="changeRightsInformationCheck"/>
+                </td>
+            </tr>
+            <tr style="text-align:left;">
+                <td>
+                    <s:if test="!searchableItems">
+                        <s:submit id="submitRightsDeclaration" key="label.rightsinfo.save"/>
+                    </s:if>
+                    <s:if test="searchableItems">
+                        <s:submit disabled="true" id="submitRightsDeclaration" key="label.rightsinfo.save"/>
+                    </s:if>
+                    <s:submit cssStyle="margin-top: 10px" id="cancelRightsDeclaration" action="cancelRightsDeclaration" key="label.cancel" />
                 </td>
             </tr>
         </table>

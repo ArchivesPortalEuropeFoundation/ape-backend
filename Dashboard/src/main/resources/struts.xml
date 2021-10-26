@@ -1284,7 +1284,8 @@
         
         <action name="editWebFormRightsInformation" class="eu.apenet.dashboard.rightsinformation.RightsInformationAction">
             <interceptor-ref name="changeLanguageStack"/>
-            <result name="input" type="tiles">institutionRightsDeclarationNewInstitution</result>
+            <result name="input" type="tiles">institutionRightsDeclarationExistingInstitutionWithEAG</result>
+            <result name="inputnew" type="tiles">institutionRightsDeclarationNewInstitution</result>
             <result name="noEAG" type="tiles">institutionRightsDeclarationExistingInstitutionWithoutEAG</result>
             <result name="success" type="tiles">institutionRightsDeclarationExistingInstitutionWithEAG</result>
         </action>
@@ -1302,6 +1303,7 @@
             <result name="success" type="redirectAction">
                 <param name="actionName">dashboardHome</param>
             </result>
+            <result name="input" type="tiles">institutionRightsDeclarationExistingInstitutionWithEAG</result>
         </action>
         
         <action name="fetchRightsDescriptionFromDb" class="eu.apenet.dashboard.rightsinformation.RightsInformationAjaxAction">

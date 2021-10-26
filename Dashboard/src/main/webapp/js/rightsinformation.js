@@ -1,12 +1,20 @@
+$( document ).ready(function() {
+    updateRightsText();
+});
+
 function updateRightsText() {
     var rightsId = $('#rights').val();
     if (rightsId == -2){
         //Show the second dropdown menu
         $('#entitlementRights').show();
+
+        $('#changeRightsInformationCheckPlaceholder').html($('#entitlementRights :selected').text());
     }
     else {
         //Hide the second dropdown menu
         $('#entitlementRights').hide();
+
+        $('#changeRightsInformationCheckPlaceholder').html($('#rights :selected').text());
 
         //Fetch licence description, not used for the time being
         // $.ajax({
@@ -25,4 +33,8 @@ function updateRightsText() {
         //     }
         // });
     }
+}
+
+function updateEntitlementRightsText() {
+    $('#changeRightsInformationCheckPlaceholder').html($('#entitlementRights :selected').text());
 }
