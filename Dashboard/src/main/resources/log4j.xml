@@ -15,6 +15,13 @@
             <param name="ConversionPattern" value="%d{ABSOLUT}{UTC} %-5p %C{1}:%L - %m%n" />
         </layout>
     </appender>
+<!--    <appender name="filesql" class="eu.archivesportaleurope.commons.logging.DailyRollingFileAppender">-->
+<!--        <param name="File" value="${catalina.base}/logs/dashboard-sql.log" />-->
+<!--        <param name="Threshold" value="TRACE" />-->
+<!--        <layout class="org.apache.log4j.PatternLayout">-->
+<!--            <param name="ConversionPattern" value="%d{ABSOLUTE} %-5p %C{1}:%L - %m%n" />-->
+<!--        </layout>-->
+<!--    </appender>-->
     <appender name="all" class="eu.archivesportaleurope.commons.logging.DailyRollingFileAppender">
         <param name="File" value="${catalina.base}/logs/dashboard-error.log" />
         <param name="immediateFlush" value="true"/>
@@ -68,7 +75,15 @@
     <logger name="eu">
         <level value="info" />
         <appender-ref ref="file" /> 
-    </logger>		
+    </logger>
+<!--    <logger name="org.hibernate.SQL" additivity="false" >-->
+<!--        <level value="DEBUG" />-->
+<!--        <appender-ref ref="filesql" />-->
+<!--    </logger>-->
+<!--    <logger name="org.hibernate.type" additivity="false" >-->
+<!--        <level value="TRACE" />-->
+<!--        <appender-ref ref="filesql" />-->
+<!--    </logger>-->
     <root>
         <priority value="ERROR" />
         <appender-ref ref="all" />
