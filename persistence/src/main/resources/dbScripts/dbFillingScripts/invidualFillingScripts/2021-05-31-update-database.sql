@@ -37,13 +37,13 @@ ALTER TABLE archival_institution ADD COLUMN rights_description text;
 ALTER TABLE c_level ADD COLUMN rights_information integer;
 ALTER TABLE c_level
   ADD CONSTRAINT c_level_rinf_id_fkey FOREIGN KEY (rights_information)
-      REFERENCES c_level (id) MATCH SIMPLE
+      REFERENCES rights_information (id) MATCH SIMPLE
       ON UPDATE NO ACTION ON DELETE NO ACTION;
 
 ALTER TABLE eac_cpf ADD COLUMN rights_information integer;
 ALTER TABLE eac_cpf
   ADD CONSTRAINT eac_cpf_rinf_id_fkey FOREIGN KEY (rights_information)
-      REFERENCES eac_cpf (id) MATCH SIMPLE
+      REFERENCES rights_information (id) MATCH SIMPLE
       ON UPDATE NO ACTION ON DELETE NO ACTION;
 
 ALTER TABLE finding_aid ADD COLUMN rights_information integer;
@@ -55,11 +55,11 @@ ALTER TABLE finding_aid
 ALTER TABLE holdings_guide ADD COLUMN rights_information integer;
 ALTER TABLE holdings_guide
   ADD CONSTRAINT holdings_guide_rinf_id_fkey FOREIGN KEY (rights_information)
-      REFERENCES holdings_guide (id) MATCH SIMPLE
+      REFERENCES rights_information (id) MATCH SIMPLE
       ON UPDATE NO ACTION ON DELETE NO ACTION;
 
 ALTER TABLE source_guide ADD COLUMN rights_information integer;
 ALTER TABLE source_guide
   ADD CONSTRAINT source_guide_rinf_id_fkey FOREIGN KEY (rights_information)
-      REFERENCES source_guide (id) MATCH SIMPLE
+      REFERENCES rights_information (id) MATCH SIMPLE
       ON UPDATE NO ACTION ON DELETE NO ACTION;
