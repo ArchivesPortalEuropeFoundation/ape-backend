@@ -64,13 +64,15 @@
         </table>
         <br/>
         <table id="saveButtonPanel">
-            <tr>
-                <td>
-                    <s:checkbox name="changeRightsInformationCheck" id="changeRightsInformationCheck" />
-                    <s:text name="label.rightsinfo.changeRightsInformationCheck"/>
-                    <s:fielderror name="changeRightsInformationCheck"/>
-                </td>
-            </tr>
+            <s:if test="!newInstitution">
+                <tr>
+                    <td>
+                        <s:checkbox name="changeRightsInformationCheck" id="changeRightsInformationCheck" />
+                        <s:text name="label.rightsinfo.changeRightsInformationCheck"/>
+                        <s:fielderror name="changeRightsInformationCheck"/>
+                    </td>
+                </tr>
+            </s:if>
             <tr style="text-align:left;">
                 <td>
                     <s:if test="!searchableItems">
