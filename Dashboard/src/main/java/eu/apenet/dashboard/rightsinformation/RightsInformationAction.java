@@ -144,7 +144,23 @@ public class RightsInformationAction extends AbstractInstitutionAction {
 
     public void validate(){
         if (rights != null) {
-            if (!changeRightsInformationCheck) {
+            ArchivalInstitution archivalInstitution;
+            boolean newInst = false;
+            boolean hasEag = true;
+            try {
+                archivalInstitution = DAOFactory.instance().getArchivalInstitutionDAO().getArchivalInstitution(getAiId());
+                if (archivalInstitution.getEagPath() == null) {
+                    if (archivalInstitution.getRightsInformation() == null) {
+                        newInst = true;
+                    }
+                    hasEag = false;
+                }
+            } catch (Exception e) {
+                log.error("Something has happened!");
+            }
+
+            if (!changeRightsInformationCheck && !newInst) {
+                getServletRequest().setAttribute("hasEag", hasEag);
                 addFieldError("changeRightsInformationCheck", getText("label.rightsinfo.changeRightsInformationCheck.error"));
             }
         }
