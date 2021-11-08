@@ -963,6 +963,34 @@
             </tr>
         </s:else>
 
+        <tr id="orangeLineFutherAccessInformation2">
+            <td class="orangeLine" colspan="4"></td>
+        </tr>
+        <tr>
+            <td>
+                <label>
+                    <s:property value="getText('eag2012.commons.shareEagWithWikimedia')"/><span class="required">*</span>:<br/>(<a href="javascript:void(null);" onclick="shareEagWithWikimediaReadMore();"><s:property value="getText('eag2012.commons.shareEagWithWikimedia.readmore')"/></a>)
+                </label>
+            </td>
+            <td colspan="3">
+                <input type="radio" ${loader.shareEagWithWikimedia && loader.shareEagWithWikimediaLicence!=null ?"checked":""} name="shareEagWithWikimedia" value="always" onclick="shareEagWithWikimediaCheckedClick()">Yes</input>
+                <input style="margin-left: 10px" type="radio" ${!loader.shareEagWithWikimedia && loader.shareEagWithWikimediaLicence!=null?"checked":""} name="shareEagWithWikimedia" value="never" onclick="shareEagWithWikimediaCheckedClick()">No</input>
+                <br/><span id="shareEagWithWikimediaError"></span>
+<%--                <br/>--%>
+                <table id="shareEagWithWikimediaLicenceTable" style="display: ${loader.shareEagWithWikimediaLicence==null ?"none":"block"}">
+                    <s:select id="shareEagWithWikimediaLicence" name="shareEagWithWikimediaLicences" list="rightsList" listKey="value" listValue="content" value="loader.shareEagWithWikimediaLicence.getId()"/>
+                </table>
+
+                <%--                Text for the pop-up dialog--%>
+                <div id="shareEagWithWikimediaDialog" title="<s:property value="getText('eag2012.commons.shareEagWithWikimedia')"/>" style="display: none">
+                    <p><s:property value="getText('eag2012.commons.shareEagWithWikimedia.dialog.part1')"/> <a target="_blank" href="https://creativecommons.org/publicdomain/zero/1.0/" style="color: #C65400;">Creative Commons CC0 Public Domain Dedication.</a></p>
+                    <br/><p><s:property value="getText('eag2012.commons.shareEagWithWikimedia.dialog.part2')"/></p>
+                </div>
+
+                <div id="shareWikimediaHiddenError" style="display: none"><s:property value="getText('eag2012.errors.errorsharewikimedia')"/></div>
+            </td>
+        </tr>
+
         <tr>
             <td colspan="3">
             </td>

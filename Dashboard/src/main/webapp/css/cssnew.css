@@ -1256,3 +1256,7 @@ td.actions input {
 	cursor: pointer;
 	cursor: hand;
 }
+
+#shareEagWithWikimediaLicenceTable td.tdLabel {
+	width: 0.01%;
+}

@@ -97,7 +97,7 @@ function navigateToCurrentRepoTab(href) {
     }
 }
 
-function clickSaveAction(form, text1, text2, error1, error2, error3, error4, error5, error6, error7, error8, error9, message, institutionName, saveOrExit, errorspecialcharacter) {
+function clickSaveAction(form, text1, text2, error1, error2, error3, error4, error5, error6, error7, error8, error9, message, institutionName, saveOrExit, errorspecialcharacter, errorShareWikimedia) {
     //first check in which tab are the user, validate current tab and next the others
     var selectedHref = "";
     var tabsToCheck = new Array();
@@ -541,6 +541,23 @@ var clickYourInstitutionAction = function (text1, messageRightWeb) {
     if (yiMERepositories.length > 0) {
         validationArray.push("yiTableOthers", yiMERepositories);
     }
+
+    var shareEagWithWikimediaChecked = false;
+    $("#yiTableOthers input[type='radio']").each(function (index, element) {
+        if ($(element).is(':checked')) {
+            shareEagWithWikimediaChecked = true;
+
+            if (jsonData.charAt(jsonData.length - 1) != ':'
+                && jsonData.charAt(jsonData.length - 1) != '{') {
+                jsonData += ",";
+            }
+            jsonData += "'shareEagWithWikimedia' : " + (index==0?true:false);
+        }
+    });
+    if (!shareEagWithWikimediaChecked) {
+        validationArray.push("yiTableOthers", new Array("shareEagWithWikimediaError"));
+    }
+
     jsonData += "}";
 
     for (var i = 0; i < yiMandatoryElements.length; i++) {
@@ -559,7 +576,12 @@ var clickYourInstitutionAction = function (text1, messageRightWeb) {
         for (var j = 0; j < array.length; j++) {
             var subelement = document.createElement('p');
 
-            subelement.appendChild(document.createTextNode(text1));
+            var error = text1;
+
+            if (array[j].toString() == 'shareEagWithWikimediaError')
+                error = $("#shareWikimediaHiddenError").html();
+
+            subelement.appendChild(document.createTextNode(error));
             subelement.id = array[j].toString() + '_required';
             subelement.className = "fieldRequired";
 
@@ -5382,3 +5404,60 @@ function clickExitWithoutSaveAction() {
     Dlg.style.visibility = "hidden";
     location.href = "removeInvalidEAG2012.action";
 }
+
+function shareEagWithWikimediaReadMore(){
+    var message = "test";
+    if($(".ui-dialog").length>0){
+        $(".ui-dialog").remove();
+    }
+    $("body").unbind("click");
+    var dialog = $("#shareEagWithWikimediaDialog").dialog({
+        closeOnEscape : true,
+        width: 500,
+        resizable: false,
+        buttons: {
+            "OK" : function() {
+                $("body").unbind("click");
+                $(this).dialog("close");
+            }
+        }
+    });
+    setTimeout("putClickOutsideCloseDialog();","100");
+}
+
+function shareEagWithWikimediaCheckedClick(){
+    $("#shareEagWithWikimediaLicence option[value=2]").attr('disabled','disabled');
+
+    var shareEagWithWikimediaChecked = false;
+    $("#yiTableOthers input[type='radio']").each(function (index, element) {
+        if ($(element).is(':checked')) {
+            $("#shareEagWithWikimediaLicenceTable").show();
+            $("#licenceRightsForEagTr_1").show();
+            $("#licenceRightsForEagTr_2").show();
+            $("#licenceRightsForEagTr_3").show();
+            $("#licenceRightsForEagTr_4").show();
+            $("#licenceRightsForEagTr_5").show();
+            if (index==0){
+                $("#shareEagWithWikimediaLicence").val("2");
+                $("#shareEagWithWikimediaLicence").attr('disabled','disabled');
+            }
+            else {
+                var currentVal = $("#shareEagWithWikimediaLicence").val();
+                if (currentVal == "2") {
+                    $("#shareEagWithWikimediaLicence").val("1");
+                }
+                $("#shareEagWithWikimediaLicence").removeAttr('disabled');
+            }
+            $("#licenceRightsForEagRightsStmt").html($( "#shareEagWithWikimediaLicence option:selected" ).text());
+            $("#shareEagWithWikimediaError_required").hide();
+        }
+    });
+}
+
+$( document ).ready(function() {
+    shareEagWithWikimediaCheckedClick();
+
+    $( "#shareEagWithWikimediaLicence" ).change(function() {
+        $("#licenceRightsForEagRightsStmt").html($( "#shareEagWithWikimediaLicence option:selected" ).text());
+    });
+});
