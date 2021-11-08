@@ -14,6 +14,7 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
+import eu.apenet.persistence.vo.RightsInformation;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.w3c.dom.Document;
@@ -461,6 +462,8 @@ public class Eag2012 {
     private List<String> placeEntryValue;
     private List<Map<String, List<String>>> postalStreetValue;
     private List<Map<String, List<String>>> postalStreetLang;
+    private boolean shareEagWithWikimedia;
+    private RightsInformation shareEagWithWikimediaLicence;
 
     public Eag2012() {
         // TODO put all parameters here
@@ -2138,6 +2141,22 @@ public class Eag2012 {
 
     public void setWebpageLang(List<Map<String, Map<String, List<String>>>> webpageLang) {
         this.webpageLang = webpageLang;
+    }
+
+    public boolean isShareEagWithWikimedia() {
+        return shareEagWithWikimedia;
+    }
+
+    public RightsInformation getShareEagWithWikimediaLicence() {
+        return shareEagWithWikimediaLicence;
+    }
+
+    public void setShareEagWithWikimedia(boolean shareEagWithWikimedia) {
+        this.shareEagWithWikimedia = shareEagWithWikimedia;
+    }
+
+    public void setShareEagWithWikimediaLicence(RightsInformation shareEagWithWikimediaLicence) {
+        this.shareEagWithWikimediaLicence = shareEagWithWikimediaLicence;
     }
 
     /**

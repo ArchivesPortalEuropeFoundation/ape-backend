@@ -34,6 +34,45 @@
 			</td>
 		</tr>
 
+		<tr id="licenceRightsForEagTr_1" style="display: none">
+			<td id="licenceRightsForEagLabel" colspan="4">
+				<s:property value="getText('eag2012.control.licencerightsforeag.label')" />
+			</td>
+		</tr>
+
+		<tr id="licenceRightsForEagTr_2" style="display: none">
+			<td>
+				<s:property value="getText('eag2012.control.licencerightsforeag.rightsstmt.label')" />
+			</td>
+			<td colspan="3">
+				<span id="licenceRightsForEagRightsStmt"></span>
+			</td>
+		</tr>
+		<tr id="licenceRightsForEagTr_3" style="display: none">
+			<td>
+				<s:property value="getText('eag2012.control.licencerightsforeag.rightsholder.label')" />
+			</td>
+			<td colspan="3">
+				${loader.autform}
+			</td>
+		</tr>
+		<tr id="licenceRightsForEagTr_4" style="display: none">
+			<td>
+				<s:property value="getText('eag2012.control.licencerightsforeag.aggregator.label')" />
+			</td>
+			<td>
+				Archives Portal Europe
+			</td>
+		</tr>
+		<tr id="licenceRightsForEagTr_5" style="display: none">
+			<td>
+				<s:property value="getText('eag2012.control.licencerightsforeag.details.label')" />
+			</td>
+			<td colspan="3">
+				<s:property value="getText('eag2012.control.licencerightsforeag.detailsdescr.label')" />
+			</td>
+		</tr>
+
 		<tr>
 			<td id="usedLanguagesLabel" colspan="4">
 				<s:property value="getText('eag2012.control.usedLanguages')" />

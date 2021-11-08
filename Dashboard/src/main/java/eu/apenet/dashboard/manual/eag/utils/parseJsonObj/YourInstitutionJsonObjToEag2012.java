@@ -5,6 +5,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import eu.apenet.dashboard.manual.eag.WebFormEAG2012Action;
+import eu.apenet.persistence.factory.DAOFactory;
+import eu.apenet.persistence.vo.RightsInformation;
 import org.apache.log4j.Logger;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -433,6 +436,17 @@ public class YourInstitutionJsonObjToEag2012 extends AbstractJsonObjtoEag2012 im
             if (yourInstitution.has("selectYIContinent")) {
                 String continent = replaceIfExistsSpecialReturnString(yourInstitution.getString("selectYIContinent"));
                 eag2012.setGeogareaValue(continent);
+            }
+            if (yourInstitution.has("shareEagWithWikimedia")){
+                boolean shareEagWithWikimedia = yourInstitution.getBoolean("shareEagWithWikimedia");
+                eag2012.setShareEagWithWikimedia(shareEagWithWikimedia);
+                if (shareEagWithWikimedia){
+                    eag2012.setShareEagWithWikimediaLicence(DAOFactory.instance().getRightsInformationDAO().getRightsInformation(WebFormEAG2012Action.CC_0));
+                }
+                else {
+                    RightsInformation rightsInformation = DAOFactory.instance().getRightsInformationDAO().getRightsInformation(yourInstitution.getInt("shareEagWithWikimediaLicence"));
+                    eag2012.setShareEagWithWikimediaLicence(rightsInformation);
+                }
             }
         }
         return eag2012;

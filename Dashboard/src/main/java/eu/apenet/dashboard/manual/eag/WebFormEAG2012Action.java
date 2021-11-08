@@ -18,6 +18,8 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 
+import eu.apenet.commons.view.jsp.SelectItem;
+import eu.apenet.persistence.vo.*;
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 import org.json.JSONException;
@@ -49,11 +51,6 @@ import eu.apenet.persistence.dao.CoordinatesDAO;
 import eu.apenet.persistence.dao.CountryDAO;
 import eu.apenet.persistence.dao.LangDAO;
 import eu.apenet.persistence.factory.DAOFactory;
-import eu.apenet.persistence.vo.ArchivalInstitution;
-import eu.apenet.persistence.vo.Coordinates;
-import eu.apenet.persistence.vo.CouAlternativeName;
-import eu.apenet.persistence.vo.Country;
-import eu.apenet.persistence.vo.Lang;
 import eu.archivesportaleurope.persistence.jpa.JpaUtil;
 
 /**
@@ -112,6 +109,13 @@ public class WebFormEAG2012Action extends AbstractInstitutionAction {
     private String repositoryTypeValue;		// Will be an ordered list.
 
     private String eagPath;
+
+    private static final String IN_COPYRIGHT_EU_ORPHAN_WORK = "InC-EU-OW";
+    private static final String NO_COPYRIGHT_OTHER_KNOWN_LEGAL_RESTRICTIONS = "NoC-OKLR";
+    private static final String COPYRIGHT_NOT_EVALUATED = "CNE";
+    public static final String CC_0 = "CC0";
+
+    private List<SelectItem> rightsList = new ArrayList<>();
 
     /**
      * @return {@link String} eagPath to get
@@ -293,6 +297,14 @@ public class WebFormEAG2012Action extends AbstractInstitutionAction {
      */
     public void setRepositoryRoleMap(Map<String, String> repositoryRoleMap) {
         this.repositoryRoleMap = repositoryRoleMap;
+    }
+
+    public void setRightsList(List<SelectItem> rightsList) {
+        this.rightsList = rightsList;
+    }
+
+    public List<SelectItem> getRightsList() {
+        return rightsList;
     }
 
     /**
@@ -899,6 +911,20 @@ public class WebFormEAG2012Action extends AbstractInstitutionAction {
         return state;
     }
 
+    @Override
+    public void prepare() throws Exception {
+        super.prepare();
+        List<RightsInformation> rightsInformations = DAOFactory.instance().getRightsInformationDAO().getRightsInformations();
+        rightsInformations.forEach((rightsInformation) -> {
+            if (!(rightsInformation.getAbbreviation().equals(IN_COPYRIGHT_EU_ORPHAN_WORK)
+                    || rightsInformation.getAbbreviation().equals(NO_COPYRIGHT_OTHER_KNOWN_LEGAL_RESTRICTIONS)
+                    || rightsInformation.getAbbreviation().equals(COPYRIGHT_NOT_EVALUATED))) {
+                SelectItem selectItem = new SelectItem(rightsInformation.getId(), rightsInformation.getRightsName());
+                rightsList.add(selectItem);
+            }
+        });
+    }
+
     /**
      * Method for:<br>
      * - Load XML. - Create {@link Eag2012} EAG2012 JAXB object and fill
@@ -1037,6 +1063,11 @@ public class WebFormEAG2012Action extends AbstractInstitutionAction {
             } catch (Exception e) {
                 log.error(APEnetUtilities.generateThrowableLog(e));
             }
+
+            archivalInstitution.setShareWithWikimedia(eag2012.getShareEagWithWikimediaLicence());
+            archivalInstitution.setShareWithWikimediaId(eag2012.getShareEagWithWikimediaLicence().getId());
+            ArchivalInstitutionDAO archivalInstitutionDAO = DAOFactory.instance().getArchivalInstitutionDAO();
+            archivalInstitutionDAO.store(archivalInstitution);
         }
         String result = this.editWebFormEAG2012();
 

@@ -176,6 +176,7 @@
 #eag2012Div td, th{
 	width: 25%;
 	padding-top: 15px;
+	vertical-align: top;
 }
 #eag2012Div td label {
 	width: 25%;
@@ -232,14 +233,14 @@
 #buildingLabel,#holdingLabel,#usedLanguagesLabel,#usedRulesLabel,#resourceLabel,
 #institutionLabel,#searchroomLabel,#libraryLabel,#internetAccessLabel,#technicalServicesLabel,
 #restaurationLabLabel,#reproductionServiceLabel,#recreationalServiceLabel,
-#yourInstitutionLabel,#yiPostalAddressLabel, #yourInstitutionAddRepositoryLabelTd {
+#yourInstitutionLabel,#yiPostalAddressLabel, #yourInstitutionAddRepositoryLabelTd, #licenceRightsForEagLabel {
 	font-weight: bold;
 }
 
 #visitorAdressLabel,#yourInstitutionLabel,#postalAddressLabel,#repositoryLabel,
 #administrativeLabel,#buildingLabel,#holdingLabel,#usedLanguagesLabel,#usedRulesLabel,
 #resourceLabel,#institutionLabel,#searchroomLabel,#technicalServicesLabel,
-#recreationalServiceLabel, #yourInstitutionAddRepositoryLabelTd {
+#recreationalServiceLabel, #yourInstitutionAddRepositoryLabelTd, #licenceRightsForEagLabel {
 	border-bottom: 2px solid #00a0df;
 }
 textarea {

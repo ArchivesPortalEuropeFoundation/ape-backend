@@ -10,6 +10,8 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 
+import eu.apenet.dashboard.manual.eag.WebFormEAG2012Action;
+import eu.apenet.persistence.vo.RightsInformation;
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 
@@ -340,6 +342,9 @@ public class EAG2012Loader {
     private List<String> relationsEagRelationEntryDescription;
     private List<String> relationsEagRelationEntryDescriptionLang;
 
+    private boolean shareEagWithWikimedia;
+    private RightsInformation shareEagWithWikimediaLicence;
+
     /**
      * constructor
      *
@@ -363,6 +368,14 @@ public class EAG2012Loader {
         Eag eag = null;
         fillIntitialAutformEscaped();
         ArchivalInstitution archivalInstitution = DAOFactory.instance().getArchivalInstitutionDAO().getArchivalInstitution(getId());
+        this.shareEagWithWikimediaLicence = archivalInstitution.getShareWithWikimedia();
+        if (this.shareEagWithWikimediaLicence != null) {
+            if (this.shareEagWithWikimediaLicence.getAbbreviation().equals(WebFormEAG2012Action.CC_0)) {
+                this.shareEagWithWikimedia = true;
+            } else {
+                this.shareEagWithWikimedia = false;
+            }
+        }
         String path = archivalInstitution.getEagPath();
         String alCountry = new ArchivalLandscapeUtils().getmyCountry();
         String basePath = APEnetUtilities.FILESEPARATOR + alCountry + APEnetUtilities.FILESEPARATOR
@@ -1791,6 +1804,22 @@ public class EAG2012Loader {
      */
     public void setAccessibilityQuestion(String accessibilityQuestion) {
         this.accessibilityQuestion = accessibilityQuestion;
+    }
+
+    public boolean isShareEagWithWikimedia() {
+        return shareEagWithWikimedia;
+    }
+
+    public RightsInformation getShareEagWithWikimediaLicence() {
+        return shareEagWithWikimediaLicence;
+    }
+
+    public void setShareEagWithWikimedia(boolean shareEagWithWikimedia) {
+        this.shareEagWithWikimedia = shareEagWithWikimedia;
+    }
+
+    public void setShareEagWithWikimediaLicence(RightsInformation shareEagWithWikimediaLicence) {
+        this.shareEagWithWikimediaLicence = shareEagWithWikimediaLicence;
     }
 
     /**

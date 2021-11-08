@@ -30,7 +30,10 @@ ALTER TABLE archival_institution ADD CONSTRAINT archival_institution_rinf_id_fke
       REFERENCES rights_information (id) MATCH SIMPLE
       ON UPDATE NO ACTION ON DELETE NO ACTION;
 ALTER TABLE archival_institution ADD COLUMN is_entitlement_rights boolean;
-ALTER TABLE archival_institution ADD COLUMN share_with_wikimedia boolean;
+ALTER TABLE archival_institution ADD COLUMN share_with_wikimedia integer;
+ALTER TABLE archival_institution ADD CONSTRAINT archival_institution_wikimedia_id_fkey FOREIGN KEY (share_with_wikimedia)
+      REFERENCES rights_information (id) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION;
 ALTER TABLE archival_institution ADD COLUMN rights_holder character varying(255);
 ALTER TABLE archival_institution ADD COLUMN rights_description text;
 
