@@ -5444,7 +5444,7 @@ function shareEagWithWikimediaCheckedClick(){
             else {
                 var currentVal = $("#shareEagWithWikimediaLicence").val();
                 if (currentVal == "2") {
-                    $("#shareEagWithWikimediaLicence").val("1");
+                    $("#shareEagWithWikimediaLicence").val("4");
                 }
                 $("#shareEagWithWikimediaLicence").removeAttr('disabled');
             }
