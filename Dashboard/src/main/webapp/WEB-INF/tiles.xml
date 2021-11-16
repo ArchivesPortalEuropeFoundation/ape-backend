@@ -74,7 +74,7 @@
         <put-list-attribute name="jsfilesInternal">
         </put-list-attribute>
     </definition>
-    
+
     <definition name="institutionRightsDeclarationNewInstitution" extends="dashboardLayout">
         <put-attribute name="title" value="dashboard.managedatasharing.title"/>
         <put-attribute name="menu" value="/jsp/indexRightsSelection.jsp" />
@@ -111,7 +111,7 @@
             <add-attribute type="string" value="/css/rightsinformation.css"/>
         </put-list-attribute>
     </definition>
-    
+
     <definition name="eagfirstcreation" extends="dashboardLayout">
         <put-attribute name="title" value="dashboard.eagcreation.title" />
         <put-attribute name="menu" value="/jsp/eag2012/indexEAG2012Creation.jsp" />
@@ -196,7 +196,7 @@
             <add-attribute type="string" value="/js/webformainame.js"/>
         </put-list-attribute>
     </definition>
-        
+
     <definition name="webformenableopendata" extends="dashboardLayout">
         <put-attribute name="title" value="dashboard.menu.topic.enableapi" />
         <put-attribute name="body" value="/jsp/webformenableopendata.jsp" />
@@ -222,9 +222,14 @@
         <put-attribute name="menu" value="/jsp/eag2012/indexEAG2012Creation.jsp" />
         <put-attribute name="body" value="/jsp/httpuploadeag.jsp" />
         <put-list-attribute name="jsfilesInternal">
-
-
-
+            <add-attribute type="string" value="/js/jquery/jquery-ui.min.js"/>
+            <add-attribute type="string" value="/js/colorbox/jquery.colorbox-min.js"/>
+            <add-attribute type="string" value="/js/eag2012/eagUpload2012.js"/>
+        </put-list-attribute>
+        <put-list-attribute name="cssfilesInternal">
+            <add-attribute type="string" value="/css/eag2012/eag2012.css"/>
+            <add-attribute type="string" value="/css/colorbox.css"/>
+            <add-attribute type="string" value="/css/jquery/jquery-ui-1.8.14.custom.css"/>
         </put-list-attribute>
     </definition>
     <definition name="httpuploadeagwithtempeag" extends="dashboardLayout">
@@ -241,9 +246,14 @@
         <put-attribute name="title" value="dashboard.eagupload.title" />
         <put-attribute name="body" value="/jsp/httpuploadeagwithmenu.jsp" />
         <put-list-attribute name="jsfilesInternal">
-
-
-
+            <add-attribute type="string" value="/js/jquery/jquery-ui.min.js"/>
+            <add-attribute type="string" value="/js/colorbox/jquery.colorbox-min.js"/>
+            <add-attribute type="string" value="/js/eag2012/eagUpload2012.js"/>
+        </put-list-attribute>
+        <put-list-attribute name="cssfilesInternal">
+            <add-attribute type="string" value="/css/eag2012/eag2012.css"/>
+            <add-attribute type="string" value="/css/colorbox.css"/>
+            <add-attribute type="string" value="/css/jquery/jquery-ui-1.8.14.custom.css"/>
         </put-list-attribute>
     </definition>
     <definition name="uploadeagerrors" extends="dashboardLayout">
@@ -1036,7 +1046,7 @@
             <add-attribute type="string" value="/css/colorbox.css"/>
             <add-attribute type="string" value="/css/hgSgTreeCreation.css"/>
         </put-list-attribute>
-    </definition>    
+    </definition>
     <definition name="automaticharvestingcreation" extends="dashboardLayout" >
         <put-attribute name="title" value="dashboard.menu.automaticharvestingcreation" />
         <put-attribute name="menu" value="/jsp/indexDashboard.jsp" />
@@ -1201,7 +1211,7 @@
             <add-attribute type="string" value="/css/jquery/theme.tablesorter.css"/>
         </put-list-attribute>
     </definition>
-    
+
     <definition name="adminTopic" extends="AdminLayout" >
         <put-attribute name="title" value="admin.topic.management" />
         <put-attribute name="body" value="/jsp/topic/admin-topics.jsp" />
@@ -1215,7 +1225,7 @@
             <add-attribute type="string" value="/css/admin-topics.css"/>
         </put-list-attribute>
     </definition>
-    
+
     <definition name="adminTopicCreateEdit" extends="AdminLayout" >
         <put-attribute name="title" value="admin.topic.management" />
         <put-attribute name="body" value="/jsp/topic/admin-create-topic.jsp" />
@@ -1223,7 +1233,7 @@
             <add-attribute type="string" value="/css/admin-topic-create.css"/>
         </put-list-attribute>
     </definition>
-    
+
     <definition name="manageTopicMappings" extends="dashboardLayout" >
         <put-attribute name="title" value="dashboard.menu.topic.mappings" />
         <put-attribute name="body" value="/jsp/topic/manage-mappings.jsp" />
