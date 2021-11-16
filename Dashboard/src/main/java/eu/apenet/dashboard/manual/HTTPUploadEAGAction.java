@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+import eu.apenet.commons.view.jsp.SelectItem;
+import eu.apenet.persistence.vo.RightsInformation;
 import org.apache.commons.io.FileUtils;
 
 import eu.apenet.commons.utils.APEnetUtilities;
@@ -39,6 +41,19 @@ public class HTTPUploadEAGAction extends AbstractInstitutionAction {
 
     private List<String> warnings_eag;
 
+	private static final String IN_COPYRIGHT_EU_ORPHAN_WORK = "InC-EU-OW";
+	private static final String NO_COPYRIGHT_OTHER_KNOWN_LEGAL_RESTRICTIONS = "NoC-OKLR";
+	private static final String COPYRIGHT_NOT_EVALUATED = "CNE";
+	public static final String CC_0 = "CC0";
+	public static final String PDM = "PDM";
+
+	private List<SelectItem> rightsList = new ArrayList<>();
+	private String shareEagWithWikimediaLicence;
+	private boolean shouldShowLicencePopup = false;
+	private RightsInformation shareEagWithWikimediaRightsInformation;
+	private String shouldShareEagWithCC0;
+	private String doNotShowPopupAgain;
+
 	//Getters and Setters
     public void setHttpFileFileName(String httpFileFileName) {
 		this.httpFileFileName = httpFileFileName;
@@ -50,6 +65,46 @@ public class HTTPUploadEAGAction extends AbstractInstitutionAction {
 
 	public void setHttpFile(File httpFile) {
 		this.httpFile = httpFile;
+	}
+
+	public void setShareEagWithWikimediaLicence(String shareEagWithWikimediaLicence) {
+		this.shareEagWithWikimediaLicence = shareEagWithWikimediaLicence;
+	}
+
+	public String getShareEagWithWikimediaLicence() {
+		return shareEagWithWikimediaLicence;
+	}
+
+	public void setShouldShowLicencePopup(boolean shouldShowLicencePopup) {
+		this.shouldShowLicencePopup = shouldShowLicencePopup;
+	}
+
+	public boolean isShouldShowLicencePopup() {
+		return shouldShowLicencePopup;
+	}
+
+	public void setShareEagWithWikimediaRightsInformation(RightsInformation shareEagWithWikimediaRightsInformation) {
+		this.shareEagWithWikimediaRightsInformation = shareEagWithWikimediaRightsInformation;
+	}
+
+	public RightsInformation getShareEagWithWikimediaRightsInformation() {
+		return shareEagWithWikimediaRightsInformation;
+	}
+
+	public void setShouldShareEagWithCC0(String shouldShareEagWithCC0) {
+		this.shouldShareEagWithCC0 = shouldShareEagWithCC0;
+	}
+
+	public String getShouldShareEagWithCC0() {
+		return shouldShareEagWithCC0;
+	}
+
+	public void setDoNotShowPopupAgain(String doNotShowPopupAgain) {
+		this.doNotShowPopupAgain = doNotShowPopupAgain;
+	}
+
+	public String getDoNotShowPopupAgain() {
+		return doNotShowPopupAgain;
 	}
 
 	public File getHttpFile() {
@@ -72,6 +127,13 @@ public class HTTPUploadEAGAction extends AbstractInstitutionAction {
 		return filesUploaded;
 	}
 
+	public void setRightsList(List<SelectItem> rightsList) {
+		this.rightsList = rightsList;
+	}
+
+	public List<SelectItem> getRightsList() {
+		return rightsList;
+	}
 
 
     public List<String> getWarnings_eag(){
@@ -84,6 +146,28 @@ public class HTTPUploadEAGAction extends AbstractInstitutionAction {
 		addBreadcrumb(getText("breadcrumb.section.eagupload"));
 	}
 
+	@Override
+	public void prepare() throws Exception {
+		super.prepare();
+		List<RightsInformation> rightsInformations = DAOFactory.instance().getRightsInformationDAO().getRightsInformations();
+		rightsInformations.forEach((rightsInformation) -> {
+			if (!(rightsInformation.getAbbreviation().equals(IN_COPYRIGHT_EU_ORPHAN_WORK)
+					|| rightsInformation.getAbbreviation().equals(NO_COPYRIGHT_OTHER_KNOWN_LEGAL_RESTRICTIONS)
+					|| rightsInformation.getAbbreviation().equals(COPYRIGHT_NOT_EVALUATED))) {
+				SelectItem selectItem = new SelectItem(rightsInformation.getId(), rightsInformation.getRightsName());
+				rightsList.add(selectItem);
+			}
+		});
+
+		ArchivalInstitution archivalInstitution = DAOFactory.instance().getArchivalInstitutionDAO().getArchivalInstitution(getAiId());
+		this.shareEagWithWikimediaRightsInformation = archivalInstitution.getShareWithWikimedia();
+		if (archivalInstitution.getShareWithWikimedia() != null) {
+			this.shouldShowLicencePopup = !archivalInstitution.getShareWithWikimedia().getAbbreviation().equals(CC_0) && !archivalInstitution.getShareWithWikimedia().getAbbreviation().equals(PDM) && (archivalInstitution.getDoNotShowPopup()==null || !archivalInstitution.getDoNotShowPopup());
+		}
+		else {
+			this.shouldShowLicencePopup = true;
+		}
+	}
 	//Methods
     /**
      * Simple access to the upload page (no logic associated)
@@ -128,8 +212,25 @@ public class HTTPUploadEAGAction extends AbstractInstitutionAction {
         		//The user has selected a file to upload
         		format = this.getHttpFileFileName().substring(this.getHttpFileFileName().lastIndexOf(".") + 1).toLowerCase();
 
-                archivalInstitutionId = aiId;
-                uploader_http = new ManualHTTPUploader(uploadMethod);
+				archivalInstitutionId = aiId;
+				RightsInformation rightsInformation = null;
+
+				Boolean doNotShowPopupAgain2 = null;
+				if (shareEagWithWikimediaLicence != null){
+					rightsInformation = DAOFactory.instance().getRightsInformationDAO().getRightsInformation(Integer.parseInt(shareEagWithWikimediaLicence));
+				}
+				else if (shouldShareEagWithCC0 != null){
+					rightsInformation = DAOFactory.instance().getRightsInformationDAO().getRightsInformation(CC_0);
+					doNotShowPopupAgain2 = doNotShowPopupAgain!=null;
+				}
+				else {
+					rightsInformation = shareEagWithWikimediaRightsInformation;
+					doNotShowPopupAgain2 = doNotShowPopupAgain!=null;
+				}
+
+				uploader_http = new ManualHTTPUploader(uploadMethod);
+				uploader_http.setShareWithWikimediaRightsInformation(rightsInformation);
+				uploader_http.setDoNotShowPopupAgain(doNotShowPopupAgain2);
         	    result = uploader_http.uploadFile(uploadType, this.getHttpFileFileName(), this.getHttpFile(), format, archivalInstitutionId, uploadMethod);
 
         	    if (result.equals("success") || result.equals("success_with_url_warning")) {

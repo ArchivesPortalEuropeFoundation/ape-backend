@@ -14,6 +14,7 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
+import eu.apenet.persistence.vo.*;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOCase;
 import org.apache.commons.io.filefilter.SuffixFileFilter;
@@ -38,15 +39,6 @@ import eu.apenet.dashboard.services.ead3.Ead3Service;
 import eu.apenet.dashboard.utils.ZipManager;
 import eu.apenet.dpt.utils.util.XsltChecker;
 import eu.apenet.persistence.factory.DAOFactory;
-import eu.apenet.persistence.vo.AiAlternativeName;
-import eu.apenet.persistence.vo.ArchivalInstitution;
-import eu.apenet.persistence.vo.FileType;
-import eu.apenet.persistence.vo.FindingAid;
-import eu.apenet.persistence.vo.HoldingsGuide;
-import eu.apenet.persistence.vo.Ingestionprofile;
-import eu.apenet.persistence.vo.QueueItem;
-import eu.apenet.persistence.vo.UpFile;
-import eu.apenet.persistence.vo.UploadMethod;
 import eu.archivesportaleurope.persistence.jpa.JpaUtil;
 
 /**
@@ -82,12 +74,31 @@ public abstract class ManualUploader {
     private List<FindingAid> fasDeleted = new ArrayList<FindingAid>();
     private List<HoldingsGuide> hgsDeleted = new ArrayList<HoldingsGuide>();
 
+    private RightsInformation shareWithWikimediaRightsInformation;
+    private Boolean doNotShowPopupAgain;
+
     public List<FindingAid> getFasDeleted() {
         return fasDeleted;
     }
 
     public void setFasDeleted(List<FindingAid> fasDeleted) {
         this.fasDeleted = fasDeleted;
+    }
+
+    public void setShareWithWikimediaRightsInformation(RightsInformation shareWithWikimediaRightsInformation) {
+        this.shareWithWikimediaRightsInformation = shareWithWikimediaRightsInformation;
+    }
+
+    public RightsInformation getShareWithWikimediaRightsInformation() {
+        return shareWithWikimediaRightsInformation;
+    }
+
+    public void setDoNotShowPopupAgain(Boolean doNotShowPopupAgain) {
+        this.doNotShowPopupAgain = doNotShowPopupAgain;
+    }
+
+    public Boolean isDoNotShowPopupAgain() {
+        return doNotShowPopupAgain;
     }
 
     public List<HoldingsGuide> getHgsDeleted() {
@@ -457,7 +468,7 @@ public abstract class ManualUploader {
                         }
                         //The EAG has been validated so it has to be stored in /mnt/repo/country/aiid/EAG/
                         //and it is necessary to update archival_institution table
-                        result = eag.saveEAGviaHTTP(fullFileName);
+                        result = eag.saveEAGviaHTTP(fullFileName, shareWithWikimediaRightsInformation, doNotShowPopupAgain);
 
                         if (result.equals("error_eagnotstored")) {
                             this.filesNotUploaded.add(fileName);

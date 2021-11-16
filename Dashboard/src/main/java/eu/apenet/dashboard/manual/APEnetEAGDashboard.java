@@ -13,6 +13,7 @@ import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.events.XMLEvent;
 
+import eu.apenet.persistence.vo.RightsInformation;
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 import org.xml.sax.SAXException;
@@ -226,6 +227,10 @@ public class APEnetEAGDashboard{
 	// This method stores a new EAG file or overwrites an existing one which has
 	// been uploaded via HTTP
 	public String saveEAGviaHTTP(String sourcePath) {
+		return saveEAGviaHTTP(sourcePath, null, null);
+	}
+
+	public String saveEAGviaHTTP(String sourcePath, RightsInformation shareWithWikimediaRightsInformation, Boolean doNotShowPopupAgain) {
 		String value = "";
 		Integer overwrittingEAGProcess = 0;
 		ArchivalInstitutionDAO archivalInstitutionDao = DAOFactory.instance().getArchivalInstitutionDAO();
@@ -265,6 +270,11 @@ public class APEnetEAGDashboard{
 				archivalInstitution.setAutform(this.getName());
 				archivalInstitution.setRepositorycode(this.getId());
 				archivalInstitutionDao.insertSimple(archivalInstitution);
+				if (shareWithWikimediaRightsInformation != null){
+					archivalInstitution.setShareWithWikimedia(shareWithWikimediaRightsInformation);
+					archivalInstitution.setShareWithWikimediaId(shareWithWikimediaRightsInformation.getId());
+				}
+				archivalInstitution.setDoNotShowPopup(doNotShowPopupAgain);
 
 				overwrittingEAGProcess = 1;
 
