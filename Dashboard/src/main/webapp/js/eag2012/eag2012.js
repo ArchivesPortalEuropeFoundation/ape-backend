@@ -97,7 +97,7 @@ function navigateToCurrentRepoTab(href) {
     }
 }
 
-function clickSaveAction(form, text1, text2, error1, error2, error3, error4, error5, error6, error7, error8, error9, message, institutionName, saveOrExit, errorspecialcharacter, errorShareWikimedia) {
+function clickSaveAction(form, text1, text2, error1, error2, error3, error4, error5, error6, error7, error8, error9, message, institutionName, saveOrExit, errorspecialcharacter) {
     //first check in which tab are the user, validate current tab and next the others
     var selectedHref = "";
     var tabsToCheck = new Array();
