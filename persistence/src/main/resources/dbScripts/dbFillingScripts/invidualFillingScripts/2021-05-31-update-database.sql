@@ -37,6 +37,7 @@ ALTER TABLE archival_institution ADD CONSTRAINT archival_institution_wikimedia_i
       ON UPDATE NO ACTION ON DELETE NO ACTION;
 ALTER TABLE archival_institution ADD COLUMN rights_holder character varying(255);
 ALTER TABLE archival_institution ADD COLUMN rights_description text;
+ALTER TABLE archival_institution ADD COLUMN do_not_show_popup boolean;
 
 ALTER TABLE c_level ADD COLUMN rights_information integer;
 ALTER TABLE c_level

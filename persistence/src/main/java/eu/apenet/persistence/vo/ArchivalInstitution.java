@@ -148,6 +148,9 @@ public class ArchivalInstitution implements java.io.Serializable {
     @Column(name = "rights_holder", length = 255)
     private String rightsHolder;
 
+    @Column(name = "do_not_show_popup")
+    private Boolean doNotShowPopup;
+
     public int getAiId() {
         return this.aiId;
     }
@@ -457,5 +460,13 @@ public class ArchivalInstitution implements java.io.Serializable {
 
     public void setRightsHolder(String rightsHolder) {
         this.rightsHolder = rightsHolder;
+    }
+
+    public void setDoNotShowPopup(Boolean doNotShowPopup) {
+        this.doNotShowPopup = doNotShowPopup;
+    }
+
+    public Boolean getDoNotShowPopup() {
+        return doNotShowPopup;
     }
 }
