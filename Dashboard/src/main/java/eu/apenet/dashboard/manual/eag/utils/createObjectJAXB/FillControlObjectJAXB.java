@@ -6,32 +6,11 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import eu.apenet.dpt.utils.eag2012.*;
+import eu.apenet.persistence.vo.RightsInformation;
 import org.apache.log4j.Logger;
 
 import eu.apenet.dashboard.manual.eag.Eag2012;
-import eu.apenet.dpt.utils.eag2012.Abbreviation;
-import eu.apenet.dpt.utils.eag2012.AgencyCode;
-import eu.apenet.dpt.utils.eag2012.AgencyName;
-import eu.apenet.dpt.utils.eag2012.Agent;
-import eu.apenet.dpt.utils.eag2012.AgentType;
-import eu.apenet.dpt.utils.eag2012.Citation;
-import eu.apenet.dpt.utils.eag2012.ConventionDeclaration;
-import eu.apenet.dpt.utils.eag2012.Eag;
-import eu.apenet.dpt.utils.eag2012.EventDateTime;
-import eu.apenet.dpt.utils.eag2012.EventType;
-import eu.apenet.dpt.utils.eag2012.Language;
-import eu.apenet.dpt.utils.eag2012.LanguageDeclaration;
-import eu.apenet.dpt.utils.eag2012.LanguageDeclarations;
-import eu.apenet.dpt.utils.eag2012.LocalControl;
-import eu.apenet.dpt.utils.eag2012.MaintenanceAgency;
-import eu.apenet.dpt.utils.eag2012.MaintenanceEvent;
-import eu.apenet.dpt.utils.eag2012.MaintenanceHistory;
-import eu.apenet.dpt.utils.eag2012.MaintenanceStatus;
-import eu.apenet.dpt.utils.eag2012.OtherAgencyCode;
-import eu.apenet.dpt.utils.eag2012.OtherRecordId;
-import eu.apenet.dpt.utils.eag2012.RecordId;
-import eu.apenet.dpt.utils.eag2012.Script;
-import eu.apenet.dpt.utils.eag2012.Term;
 
 /**
  * Class for fill control object JAXB
@@ -98,6 +77,32 @@ public class FillControlObjectJAXB implements ObjectJAXB{
 		// eag/control/localTypeDeclaration
 		// eag/control/publicationStatus
 		// eag/control/sources
+
+		//Rights declaration
+		RightsInformation rightsInformation = eag2012.getShareEagWithWikimediaLicence();
+		RightsDeclaration rightsDeclaration = new RightsDeclaration();
+		rightsDeclaration.setLang("eng");
+		//Abbreviation
+		Abbreviation abbreviation = new Abbreviation();
+		abbreviation.setContent(rightsInformation.getAbbreviation());
+		rightsDeclaration.setAbbreviation(abbreviation);
+		//Citation
+		Citation citation = new Citation();
+		citation.setHref(rightsInformation.getLink());
+		citation.setContent(rightsInformation.getRightsName());
+		rightsDeclaration.setCitation(citation);
+		//DescriptiveNote
+		DescriptiveNote descriptiveNote = new DescriptiveNote();
+		P p1 = new P();
+		p1.setContent(rightsInformation.getDescription());
+		descriptiveNote.getP().add(p1);
+		P p2 = new P();
+		p2.setContent("The rights holder is the ");
+		descriptiveNote.getP().add(p2);
+		rightsDeclaration.setDescriptiveNote(descriptiveNote);
+
+		this.eag.getControl().getRightsDeclaration().add(rightsDeclaration);
+
 		this.log.debug("End method: \"Main of class FillControlObjectJAXB\"");
 	}
 
