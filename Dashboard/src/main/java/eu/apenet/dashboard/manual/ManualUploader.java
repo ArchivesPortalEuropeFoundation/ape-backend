@@ -9,6 +9,7 @@ import java.util.Properties;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
@@ -20,10 +21,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOCase;
 import org.apache.commons.io.filefilter.SuffixFileFilter;
 import org.apache.log4j.Logger;
-import org.w3c.dom.Document;
-import org.w3c.dom.NamedNodeMap;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
+import org.w3c.dom.*;
 import org.xml.sax.SAXException;
 
 import com.opensymphony.xwork2.ActionSupport;
@@ -463,9 +461,81 @@ public abstract class ManualUploader {
                                 }
                             }
                         }
+
+                        //String recordIdValue = eag.lookingForwardElementContent("/eag/control/recordId");
+                        if (tempDoc == null) {
+                            dbfac = DocumentBuilderFactory.newInstance();
+                            dbfac.setNamespaceAware(true);
+                            docBuilder = dbfac.newDocumentBuilder();
+                            tempDoc = docBuilder.parse(fullFileName);
+                        }
+                        NodeList controlNodeList = ((Element)(tempDoc.getElementsByTagName("eag").item(0))).getElementsByTagName("control");
+                        Node controlNode = controlNodeList.item(0);
+                        if (controlNode != null){
+                            ArchivalInstitution institution = DAOFactory.instance().getArchivalInstitutionDAO().findById(archivalInstitutionId);
+
+                            NodeList rightsDeclarationNodeList =  ((Element)controlNode).getElementsByTagName("rightsDeclaration");
+                            Element oldRightsDeclarationElement = null;
+                            if (rightsDeclarationNodeList.getLength() > 0){
+                                oldRightsDeclarationElement = (Element) (rightsDeclarationNodeList.item(0));
+                            }
+                            String defaultNS = "http://www.archivesportaleurope.net/Portal/profiles/eag_2012/";
+                            Element newRightsDeclarationElement = tempDoc.createElementNS(defaultNS,"rightsDeclaration");
+                            Element abbreviationElement = tempDoc.createElementNS(defaultNS,"abbreviation");
+                            abbreviationElement.appendChild(tempDoc.createTextNode(shareWithWikimediaRightsInformation.getAbbreviation()));
+                            Element citationElement = tempDoc.createElementNS(defaultNS,"citation");
+                            citationElement.appendChild(tempDoc.createTextNode(shareWithWikimediaRightsInformation.getRightsName()));
+                            citationElement.setAttribute("href", shareWithWikimediaRightsInformation.getLink());
+                            Element descriptiveNoteElement = tempDoc.createElementNS(defaultNS,"descriptiveNote");
+                            Element p1Element = tempDoc.createElementNS(defaultNS,"p");
+                            p1Element.appendChild(tempDoc.createTextNode(shareWithWikimediaRightsInformation.getDescription()));
+                            Element p2Element = tempDoc.createElementNS(defaultNS,"p");
+                            p2Element.appendChild(tempDoc.createTextNode("The rights holder is the " + institution.getAiname()));
+                            descriptiveNoteElement.appendChild(p1Element);
+                            descriptiveNoteElement.appendChild(p2Element);
+
+                            newRightsDeclarationElement.appendChild(abbreviationElement);
+                            newRightsDeclarationElement.appendChild(citationElement);
+                            newRightsDeclarationElement.appendChild(descriptiveNoteElement);
+
+                            if (oldRightsDeclarationElement != null) {
+                                controlNode.replaceChild(newRightsDeclarationElement, oldRightsDeclarationElement);
+                            }
+                            else {
+                                NodeList nodeList =  ((Element)controlNode).getElementsByTagName("localControl");
+                                if (nodeList != null && nodeList.getLength()>0){
+                                    controlNode.insertBefore(newRightsDeclarationElement, nodeList.item(0));
+                                }
+                                else {
+                                    nodeList =  ((Element)controlNode).getElementsByTagName("localTypeDeclaration");
+                                    if (nodeList != null && nodeList.getLength()>0){
+                                        controlNode.insertBefore(newRightsDeclarationElement, nodeList.item(0));
+                                    }
+                                    else {
+                                        nodeList =  ((Element)controlNode).getElementsByTagName("publicationStatus");
+                                        if (nodeList != null && nodeList.getLength()>0){
+                                            controlNode.insertBefore(newRightsDeclarationElement, nodeList.item(0));
+                                        }
+                                        else {
+                                            nodeList =  ((Element)controlNode).getElementsByTagName("sources");
+                                            if (nodeList != null && nodeList.getLength()>0){
+                                                controlNode.insertBefore(newRightsDeclarationElement, nodeList.item(0));
+                                            }
+                                            else {
+                                                controlNode.appendChild(newRightsDeclarationElement);
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+
+                            changed = true;
+                        }
+
                         if (changed) {
                             TransformerFactory tf = TransformerFactory.newInstance(); // Save changes
                             Transformer transformer = tf.newTransformer();
+                            transformer.setOutputProperty(OutputKeys.INDENT, "yes");
                             transformer.transform(new DOMSource(tempDoc), new StreamResult(new File(fullFileName)));
                         }
                         //The EAG has been validated so it has to be stored in /mnt/repo/country/aiid/EAG/
