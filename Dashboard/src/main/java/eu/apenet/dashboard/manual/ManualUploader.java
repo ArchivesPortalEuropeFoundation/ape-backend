@@ -479,6 +479,7 @@ public abstract class ManualUploader {
                             }
                             String defaultNS = "http://www.archivesportaleurope.net/Portal/profiles/eag_2012/";
                             Element newRightsDeclarationElement = tempDoc.createElementNS(defaultNS,"rightsDeclaration");
+                            newRightsDeclarationElement.setAttributeNS("http://www.w3.org/XML/1998/namespace","xml:lang", "eng");
                             Element abbreviationElement = tempDoc.createElementNS(defaultNS,"abbreviation");
                             abbreviationElement.appendChild(tempDoc.createTextNode(shareWithWikimediaRightsInformation.getAbbreviation()));
                             Element citationElement = tempDoc.createElementNS(defaultNS,"citation");
@@ -633,7 +634,7 @@ public abstract class ManualUploader {
     /**
      * Check special characters in the institution's name and alternative's name
      *
-     * @param archivalInstitutions
+     * @param
      * @return true if there are specials characters and false in other case
      */
     private boolean checkSpecialCharacter(List<String> autformValueList) {
