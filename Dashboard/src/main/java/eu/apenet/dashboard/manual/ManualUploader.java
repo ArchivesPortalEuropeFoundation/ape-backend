@@ -475,10 +475,14 @@ public abstract class ManualUploader {
                             ArchivalInstitution institution = DAOFactory.instance().getArchivalInstitutionDAO().findById(archivalInstitutionId);
 
                             NodeList rightsDeclarationNodeList =  ((Element)controlNode).getElementsByTagName("rightsDeclaration");
-                            Element oldRightsDeclarationElement = null;
+//                            Element oldRightsDeclarationElement = null;
                             if (rightsDeclarationNodeList.getLength() > 0){
-                                oldRightsDeclarationElement = (Element) (rightsDeclarationNodeList.item(0));
+                                for (int i = 0; i<rightsDeclarationNodeList.getLength(); i++){
+                                    controlNode.removeChild(rightsDeclarationNodeList.item(i));
+                                }
+//                                oldRightsDeclarationElement = (Element) (rightsDeclarationNodeList.item(0));
                             }
+
                             String defaultNS = "http://www.archivesportaleurope.net/Portal/profiles/eag_2012/";
                             Element newRightsDeclarationElement = tempDoc.createElementNS(defaultNS,"rightsDeclaration");
                             newRightsDeclarationElement.setAttributeNS("http://www.w3.org/XML/1998/namespace","xml:lang", "eng");
@@ -491,7 +495,7 @@ public abstract class ManualUploader {
                             Element p1Element = tempDoc.createElementNS(defaultNS,"p");
                             p1Element.appendChild(tempDoc.createTextNode(shareWithWikimediaRightsInformation.getDescription()));
                             Element p2Element = tempDoc.createElementNS(defaultNS,"p");
-                            p2Element.appendChild(tempDoc.createTextNode("The rights holder is the " + institution.getAiname()));
+                            p2Element.appendChild(tempDoc.createTextNode(shareWithWikimediaRightsInformation.getExtraText()+" " + institution.getAiname()));
                             descriptiveNoteElement.appendChild(p1Element);
                             descriptiveNoteElement.appendChild(p2Element);
 
@@ -499,10 +503,10 @@ public abstract class ManualUploader {
                             newRightsDeclarationElement.appendChild(citationElement);
                             newRightsDeclarationElement.appendChild(descriptiveNoteElement);
 
-                            if (oldRightsDeclarationElement != null) {
-                                controlNode.replaceChild(newRightsDeclarationElement, oldRightsDeclarationElement);
-                            }
-                            else {
+//                            if (oldRightsDeclarationElement != null) {
+//                                controlNode.replaceChild(newRightsDeclarationElement, oldRightsDeclarationElement);
+//                            }
+//                            else {
                                 NodeList nodeList =  ((Element)controlNode).getElementsByTagName("localControl");
                                 if (nodeList != null && nodeList.getLength()>0){
                                     controlNode.insertBefore(newRightsDeclarationElement, nodeList.item(0));
@@ -528,7 +532,7 @@ public abstract class ManualUploader {
                                         }
                                     }
                                 }
-                            }
+//                            }
 
                             changed = true;
                         }
