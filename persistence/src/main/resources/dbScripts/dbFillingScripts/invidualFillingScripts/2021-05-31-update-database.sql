@@ -17,6 +17,7 @@ CREATE TABLE rights_information
   rights_link character varying(255) NOT NULL,
   description text,
   rights_name character varying(100),
+  extra_text text,
   CONSTRAINT rights_information_pkey PRIMARY KEY (id)
 );
 ALTER TABLE rights_information

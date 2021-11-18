@@ -59,7 +59,10 @@ public class RightsInformation implements Serializable {
     private String description;
     @Column(name = "rights_name")
     private String rightsName;
-    
+    @Size(max = 2147483647)
+    @Column(name = "extra_text", length = 2147483647)
+    private String extraText;
+
     @OneToMany(mappedBy = "rightsInformation")
     private Set<ArchivalInstitution> archivalInstitutions = new HashSet<>(0);
 
@@ -166,6 +169,14 @@ public class RightsInformation implements Serializable {
 
     public void setSourceGuides(Set<SourceGuide> sourceGuides) {
         this.sourceGuides = sourceGuides;
+    }
+
+    public void setExtraText(String extraText) {
+        this.extraText = extraText;
+    }
+
+    public String getExtraText() {
+        return extraText;
     }
 
     @Override
