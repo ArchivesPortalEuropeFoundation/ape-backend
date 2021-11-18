@@ -97,7 +97,7 @@ public class FillControlObjectJAXB implements ObjectJAXB{
 		p1.setContent(rightsInformation.getDescription());
 		descriptiveNote.getP().add(p1);
 		P p2 = new P();
-		p2.setContent("The rights holder is the ");
+		p2.setContent(rightsInformation.getExtraText() + " " + eag2012.getAutformValue().get(0));
 		descriptiveNote.getP().add(p2);
 		rightsDeclaration.setDescriptiveNote(descriptiveNote);
 
