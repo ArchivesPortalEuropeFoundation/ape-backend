@@ -2,10 +2,8 @@ package eu.apenet.dashboard.manual;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Properties;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -496,10 +494,21 @@ public abstract class ManualUploader {
                             p2Element.appendChild(tempDoc.createTextNode(shareWithWikimediaRightsInformation.getExtraText()+" " + institution.getAiname()));
                             descriptiveNoteElement.appendChild(p1Element);
                             descriptiveNoteElement.appendChild(p2Element);
-
                             newRightsDeclarationElement.appendChild(abbreviationElement);
                             newRightsDeclarationElement.appendChild(citationElement);
                             newRightsDeclarationElement.appendChild(descriptiveNoteElement);
+
+
+                            Element newRightsDeclarationElement2 = tempDoc.createElementNS(defaultNS,"rightsDeclaration");
+                            Element citationElement2 = tempDoc.createElementNS(defaultNS,"citation");
+                            citationElement2.appendChild(tempDoc.createTextNode("Archives Portal Europe Metadata Usage Guidelines"));
+                            citationElement2.setAttribute("href", "http://guidelines.portal");
+                            Element descriptiveNoteElement2 = tempDoc.createElementNS(defaultNS,"descriptiveNote");
+                            Element p1Element2 = tempDoc.createElementNS(defaultNS,"p");
+                            p1Element2.appendChild(tempDoc.createTextNode("The licence specified here only applies to the metadata included in this file, not to any of the digital objects that might be linked from within the metadata. The metadata have been aggregated by Archives Portal Europe and have, in this context, been converted from local formats into the central one as agreed between Archives Portal Europe and the rights holder. The Archives Portal Europe Metadata Usage Guidelines provide further notes with regard to the use and re-use of the metadata."));
+                            descriptiveNoteElement2.appendChild(p1Element2);
+                            newRightsDeclarationElement2.appendChild(citationElement2);
+                            newRightsDeclarationElement2.appendChild(descriptiveNoteElement2);
 
 //                            if (oldRightsDeclarationElement != null) {
 //                                controlNode.replaceChild(newRightsDeclarationElement, oldRightsDeclarationElement);
@@ -508,29 +517,57 @@ public abstract class ManualUploader {
                                 NodeList nodeList =  ((Element)controlNode).getElementsByTagName("localControl");
                                 if (nodeList != null && nodeList.getLength()>0){
                                     controlNode.insertBefore(newRightsDeclarationElement, nodeList.item(0));
+                                    controlNode.insertBefore(newRightsDeclarationElement2, nodeList.item(0));
                                 }
                                 else {
                                     nodeList =  ((Element)controlNode).getElementsByTagName("localTypeDeclaration");
                                     if (nodeList != null && nodeList.getLength()>0){
                                         controlNode.insertBefore(newRightsDeclarationElement, nodeList.item(0));
+                                        controlNode.insertBefore(newRightsDeclarationElement2, nodeList.item(0));
                                     }
                                     else {
                                         nodeList =  ((Element)controlNode).getElementsByTagName("publicationStatus");
                                         if (nodeList != null && nodeList.getLength()>0){
                                             controlNode.insertBefore(newRightsDeclarationElement, nodeList.item(0));
+                                            controlNode.insertBefore(newRightsDeclarationElement2, nodeList.item(0));
                                         }
                                         else {
                                             nodeList =  ((Element)controlNode).getElementsByTagName("sources");
                                             if (nodeList != null && nodeList.getLength()>0){
                                                 controlNode.insertBefore(newRightsDeclarationElement, nodeList.item(0));
+                                                controlNode.insertBefore(newRightsDeclarationElement2, nodeList.item(0));
                                             }
                                             else {
                                                 controlNode.appendChild(newRightsDeclarationElement);
+                                                controlNode.appendChild(newRightsDeclarationElement2);
                                             }
                                         }
                                     }
                                 }
 //                            }
+
+//                            Maintenance Event
+                            SimpleDateFormat df = new SimpleDateFormat();
+                            Element maintenanceEventElement = tempDoc.createElementNS(defaultNS,"maintenanceEvent");
+                            Element agentElement = tempDoc.createElementNS(defaultNS,"agent");
+                            agentElement.appendChild(tempDoc.createTextNode("Converted_apeEAD_version_2012"));
+                            Element agentTypeElement = tempDoc.createElementNS(defaultNS,"agentType");
+                            agentTypeElement.appendChild(tempDoc.createTextNode("machine"));
+                            Element agentDateTimeElement = tempDoc.createElementNS(defaultNS,"eventDateTime");
+                            df.applyPattern(Eag2012.DATE_FORMAT);
+                            agentDateTimeElement.setAttribute("standardDateTime", df.format(new GregorianCalendar().getTime()));
+                            df.applyPattern(Eag2012.DATE_FORMAT_HUMAN);
+                            agentDateTimeElement.appendChild(tempDoc.createTextNode(df.format(new GregorianCalendar().getTime())));
+                            Element eventTypeElement = tempDoc.createElementNS(defaultNS,"eventType");
+                            eventTypeElement.appendChild(tempDoc.createTextNode("derived"));
+
+                            maintenanceEventElement.appendChild(agentElement);
+                            maintenanceEventElement.appendChild(agentTypeElement);
+                            maintenanceEventElement.appendChild(agentDateTimeElement);
+                            maintenanceEventElement.appendChild(eventTypeElement);
+
+                            NodeList maintenanceHistoryNodeList =  ((Element)controlNode).getElementsByTagName("maintenanceHistory");
+                            maintenanceHistoryNodeList.item(0).appendChild(maintenanceEventElement);
 
                             changed = true;
                         }
