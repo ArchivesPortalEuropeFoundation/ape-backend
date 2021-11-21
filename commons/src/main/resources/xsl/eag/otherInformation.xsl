@@ -209,6 +209,36 @@
                     </tr>
                 </xsl:if>
 
+                <!-- repositoryType only shown if there are values-->
+                <xsl:if test="./eag:eag/eag:control/eag:rightsDeclaration">
+                    <tr>
+                        <td class="header">
+                            <xsl:value-of select="ape:resource('eag2012.portal.rightsDeclaration')"/>
+                            <xsl:text>:</xsl:text>
+                        </td>
+                        <td>
+                            <xsl:for-each select="./eag:eag/eag:control/eag:rightsDeclaration">
+                                <div>
+                                    <p>
+                                        <xsl:variable name="hyperlink"><xsl:value-of select="./eag:citation/@href" /></xsl:variable>
+                                        <xsl:if test="./eag:abbreviation">
+                                            [<xsl:value-of select="./eag:abbreviation/text()"/>]
+                                        </xsl:if>
+                                        <a target="_blank" href="{$hyperlink}"><xsl:value-of select="./eag:citation/text()"/></a>
+                                    </p>
+                                    <xsl:for-each select="./eag:descriptiveNote//eag:p">
+                                        <p>
+                                            <xsl:value-of select="./text()"/>
+                                        </p>
+                                    </xsl:for-each>
+                                </div>
+                                <xsl:if test="not(position() = last())">
+                                    <hr/>
+                                </xsl:if>
+                            </xsl:for-each>
+                        </td>
+                    </tr>
+                </xsl:if>
                 <!-- lastupdate only shown if there are values-->
                 <xsl:variable name="numberOfMaintenanceEvent" select="count(./eag:eag/eag:control/eag:maintenanceHistory/eag:maintenanceEvent)"/>
                 <xsl:if test="./eag:eag/eag:control/eag:maintenanceHistory/eag:maintenanceEvent[$numberOfMaintenanceEvent]/eag:eventDateTime/text()">
