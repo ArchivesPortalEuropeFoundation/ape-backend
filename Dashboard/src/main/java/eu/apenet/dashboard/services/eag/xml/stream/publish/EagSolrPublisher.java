@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
+import eu.apenet.persistence.vo.RightsInformation;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.solr.client.solrj.SolrServerException;
@@ -50,6 +51,10 @@ public class EagSolrPublisher extends AbstractSolrPublisher {
         add(doc, Ead3SolrFields.COUNTRY, archivalInstitution.getCountry().getEncodedCname() + COLON + SolrValues.TYPE_GROUP + COLON + archivalInstitution.getCountry().getId());
         doc.addField(Ead3SolrFields.COUNTRY_ID, archivalInstitution.getCountry().getId());
 
+        doc.addField(SolrFields.EAG_LICENCE_NAME, archivalInstitution.getShareWithWikimedia().getRightsName());
+        doc.addField(SolrFields.EAG_LICENCE_ABBREVIATION, archivalInstitution.getShareWithWikimedia().getAbbreviation());
+        doc.addField(SolrFields.EAG_LICENCE_SHAREABLE, getLicenceShareableType(archivalInstitution.getShareWithWikimedia()));
+
         ArchivalInstitutionDAO archivalInstitutionDao = DAOFactory.instance().getArchivalInstitutionDAO();
         doc.addField(Ead3SolrFields.OPEN_DATA, archivalInstitutionDao.findById(archivalInstitution.getAiId()).isOpenDataEnabled());
         doc.addField(SolrFields.HAS_SEARCHABLE_CONTENT, archivalInstitution.isContainSearchableItems());
@@ -64,6 +69,35 @@ public class EagSolrPublisher extends AbstractSolrPublisher {
     @Override
     protected String getKey() {
         return recordId;
+    }
+
+    private static String getLicenceShareableType(RightsInformation rightsInformation){
+        String result = "";
+
+        switch (rightsInformation.getAbbreviation()){
+            case "CC BY":
+            case "CC BY-SA":
+            case "CC0":
+            case "PDM":
+                result = "Yes";
+                break;
+            case "CC BY-NC":
+            case "CC BY-NC-ND":
+            case "CC BY-NC-SA":
+            case "NoC-NC":
+            case "NoC-OKLR":
+            case "InC-EDU":
+                result = "Yes, with conditions";
+                break;
+            case "InC":
+            case "InC-EU-OW":
+            case "CNE":
+            default:
+                result = "Maybe, seek permission";
+                break;
+        }
+
+        return result;
     }
 
     private static Set<String> convertRepositoryTypes(Set<String> repositoryTypes) {
