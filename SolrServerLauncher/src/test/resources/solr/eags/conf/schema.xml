@@ -86,6 +86,9 @@
         <field name="other" type="text" indexed="true" stored="true" required="false" termVectors="true" termPositions="true" termOffsets="true" />
         <field name="country" type="string" indexed="true" stored="true" required="false"/>
         <field name="repositoryTypeFacet" type="facetText" multiValued="true" indexed="true" stored="true" required="false" termVectors="true" termPositions="true" termOffsets="true" />
+        <field name="licenceName" type="text" indexed="true" stored="true" required="false" termVectors="true" termPositions="true" termOffsets="true" />
+        <field name="licenceAbbreviation" type="text" indexed="true" stored="true" required="false" termVectors="true" termPositions="true" termOffsets="true" />
+        <field name="licenceShareable" type="facetText" indexed="true" stored="true" required="false" termVectors="true" termPositions="true" termOffsets="true" />
         <field name="countries" type="text" multiValued="true" indexed="true" stored="true" required="false" termVectors="true" termPositions="true" termOffsets="true" />
         <field name="aiGroups" type="text" multiValued="true" indexed="true" stored="true" required="false" termVectors="true" termPositions="true" termOffsets="true" />
         <field name="aiGroupsFacet" type="facetText" multiValued="true" indexed="true" stored="true" required="false" termVectors="true" termPositions="true" termOffsets="true" />

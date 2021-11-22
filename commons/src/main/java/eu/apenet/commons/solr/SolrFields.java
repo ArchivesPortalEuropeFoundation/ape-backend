@@ -86,6 +86,9 @@ public final class SolrFields {
     public final static String EAG_OTHER_NAMES = "otherNames";
     public final static String EAG_REPOSITORIES = "repositories";
     public final static String EAG_REPOSITORY_TYPE = "repositoryTypeFacet";
+    public final static String EAG_LICENCE_NAME = "licenceName";
+    public final static String EAG_LICENCE_ABBREVIATION = "licenceAbbreviation";
+    public final static String EAG_LICENCE_SHAREABLE = "licenceShareable";
     public final static String EAG_DESCRIPTION = "description";
     public final static String EAG_OTHER = "other";
     public final static String EAG_AI_GROUPS = "aiGroups";
