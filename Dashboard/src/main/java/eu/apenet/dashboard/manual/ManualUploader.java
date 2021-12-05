@@ -2,8 +2,10 @@ package eu.apenet.dashboard.manual;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.jar.Manifest;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -188,11 +190,18 @@ public abstract class ManualUploader {
     }
 
     public String uploadFile(String uploadType, String fileName, File file, String contentType, Integer archivalInstitutionId, String uploadMethodString) {
-        return uploadFile(uploadType, fileName, file, contentType, archivalInstitutionId, uploadMethodString, null);
+        return uploadFile(uploadType, fileName, file, contentType, archivalInstitutionId, uploadMethodString, null, null);
     }
 
-    //This method uploads only one file to the Dashboard. It stores this file in a temporal directory
+    public String uploadFile(String uploadType, String fileName, File file, String contentType, Integer archivalInstitutionId, String uploadMethodString, String version) {
+        return uploadFile(uploadType, fileName, file, contentType, archivalInstitutionId, uploadMethodString, null, version);
+    }
+
     public String uploadFile(String uploadType, String fileName, File file, String contentType, Integer archivalInstitutionId, String uploadMethodString, Ingestionprofile profile) {
+        return uploadFile(uploadType, fileName, file, contentType, archivalInstitutionId, uploadMethodString, profile, null);
+    }
+    //This method uploads only one file to the Dashboard. It stores this file in a temporal directory
+    public String uploadFile(String uploadType, String fileName, File file, String contentType, Integer archivalInstitutionId, String uploadMethodString, Ingestionprofile profile, String version) {
 
         String result = null;
         String path = null;
@@ -472,10 +481,15 @@ public abstract class ManualUploader {
 
                             NodeList rightsDeclarationNodeList =  ((Element)controlNode).getElementsByTagName("rightsDeclaration");
 //                            Element oldRightsDeclarationElement = null;
+                            List<Node> nodesToBeDeleted = new ArrayList<>();
                             if (rightsDeclarationNodeList.getLength() > 0){
                                 for (int i = 0; i<rightsDeclarationNodeList.getLength(); i++){
-                                    controlNode.removeChild(rightsDeclarationNodeList.item(i));
+                                    nodesToBeDeleted.add(rightsDeclarationNodeList.item(i));
+
                                 }
+//                                for (Node nodeToDelete : nodesToBeDeleted){
+//                                    controlNode.removeChild(nodeToDelete);
+//                                }
 //                                oldRightsDeclarationElement = (Element) (rightsDeclarationNodeList.item(0));
                             }
 
@@ -502,7 +516,7 @@ public abstract class ManualUploader {
                             Element newRightsDeclarationElement2 = tempDoc.createElementNS(defaultNS,"rightsDeclaration");
                             Element citationElement2 = tempDoc.createElementNS(defaultNS,"citation");
                             citationElement2.appendChild(tempDoc.createTextNode("Archives Portal Europe Metadata Usage Guidelines"));
-                            citationElement2.setAttribute("href", "http://guidelines.portal");
+                            citationElement2.setAttribute("href", "https://www.archivesportaleurope.net/metadata-usage-guidelines");
                             Element descriptiveNoteElement2 = tempDoc.createElementNS(defaultNS,"descriptiveNote");
                             Element p1Element2 = tempDoc.createElementNS(defaultNS,"p");
                             p1Element2.appendChild(tempDoc.createTextNode("The licence specified here only applies to the metadata included in this file, not to any of the digital objects that might be linked from within the metadata. The metadata have been aggregated by Archives Portal Europe and have, in this context, been converted from local formats into the central one as agreed between Archives Portal Europe and the rights holder. The Archives Portal Europe Metadata Usage Guidelines provide further notes with regard to the use and re-use of the metadata."));
@@ -514,30 +528,31 @@ public abstract class ManualUploader {
 //                                controlNode.replaceChild(newRightsDeclarationElement, oldRightsDeclarationElement);
 //                            }
 //                            else {
-                                NodeList nodeList =  ((Element)controlNode).getElementsByTagName("localControl");
-                                if (nodeList != null && nodeList.getLength()>0){
+                            if (nodesToBeDeleted.size() == 2){
+                                controlNode.replaceChild(newRightsDeclarationElement, nodesToBeDeleted.get(0));
+                                controlNode.replaceChild(newRightsDeclarationElement2, nodesToBeDeleted.get(1));
+                            }
+                            else {
+                                NodeList nodeList = ((Element) controlNode).getElementsByTagName("localControl");
+                                if (nodeList != null && nodeList.getLength() > 0) {
                                     controlNode.insertBefore(newRightsDeclarationElement, nodeList.item(0));
                                     controlNode.insertBefore(newRightsDeclarationElement2, nodeList.item(0));
-                                }
-                                else {
-                                    nodeList =  ((Element)controlNode).getElementsByTagName("localTypeDeclaration");
-                                    if (nodeList != null && nodeList.getLength()>0){
+                                } else {
+                                    nodeList = ((Element) controlNode).getElementsByTagName("localTypeDeclaration");
+                                    if (nodeList != null && nodeList.getLength() > 0) {
                                         controlNode.insertBefore(newRightsDeclarationElement, nodeList.item(0));
                                         controlNode.insertBefore(newRightsDeclarationElement2, nodeList.item(0));
-                                    }
-                                    else {
-                                        nodeList =  ((Element)controlNode).getElementsByTagName("publicationStatus");
-                                        if (nodeList != null && nodeList.getLength()>0){
+                                    } else {
+                                        nodeList = ((Element) controlNode).getElementsByTagName("publicationStatus");
+                                        if (nodeList != null && nodeList.getLength() > 0) {
                                             controlNode.insertBefore(newRightsDeclarationElement, nodeList.item(0));
                                             controlNode.insertBefore(newRightsDeclarationElement2, nodeList.item(0));
-                                        }
-                                        else {
-                                            nodeList =  ((Element)controlNode).getElementsByTagName("sources");
-                                            if (nodeList != null && nodeList.getLength()>0){
+                                        } else {
+                                            nodeList = ((Element) controlNode).getElementsByTagName("sources");
+                                            if (nodeList != null && nodeList.getLength() > 0) {
                                                 controlNode.insertBefore(newRightsDeclarationElement, nodeList.item(0));
                                                 controlNode.insertBefore(newRightsDeclarationElement2, nodeList.item(0));
-                                            }
-                                            else {
+                                            } else {
                                                 controlNode.appendChild(newRightsDeclarationElement);
                                                 controlNode.appendChild(newRightsDeclarationElement2);
                                             }
@@ -545,12 +560,12 @@ public abstract class ManualUploader {
                                     }
                                 }
 //                            }
-
+                            }
 //                            Maintenance Event
                             SimpleDateFormat df = new SimpleDateFormat();
                             Element maintenanceEventElement = tempDoc.createElementNS(defaultNS,"maintenanceEvent");
                             Element agentElement = tempDoc.createElementNS(defaultNS,"agent");
-                            agentElement.appendChild(tempDoc.createTextNode("Converted_apeEAD_version_2012"));
+                            agentElement.appendChild(tempDoc.createTextNode("Converted_APE_version_"+version));
                             Element agentTypeElement = tempDoc.createElementNS(defaultNS,"agentType");
                             agentTypeElement.appendChild(tempDoc.createTextNode("machine"));
                             Element agentDateTimeElement = tempDoc.createElementNS(defaultNS,"eventDateTime");

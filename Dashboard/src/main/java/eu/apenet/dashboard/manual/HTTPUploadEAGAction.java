@@ -1,9 +1,11 @@
 package eu.apenet.dashboard.manual;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Properties;
 
 import eu.apenet.commons.view.jsp.SelectItem;
 import eu.apenet.persistence.vo.RightsInformation;
@@ -48,9 +50,13 @@ public class HTTPUploadEAGAction extends AbstractInstitutionAction {
 	public static final String PDM = "PDM";
 
 	private List<SelectItem> rightsList = new ArrayList<>();
-	private String shareEagWithWikimediaLicence;
+
+	//Current eag licence information in the DB and the EAG xml file
 	private boolean shouldShowLicencePopup = false;
 	private RightsInformation shareEagWithWikimediaRightsInformation;
+
+	//Eag licence information from the web form
+	private String shareEagWithWikimediaLicence;
 	private String shouldShareEagWithCC0;
 	private String doNotShowPopupAgain;
 
@@ -219,19 +225,34 @@ public class HTTPUploadEAGAction extends AbstractInstitutionAction {
 				if (shareEagWithWikimediaLicence != null){
 					rightsInformation = DAOFactory.instance().getRightsInformationDAO().getRightsInformation(Integer.parseInt(shareEagWithWikimediaLicence));
 				}
-				else if (shouldShareEagWithCC0 != null){
-					rightsInformation = DAOFactory.instance().getRightsInformationDAO().getRightsInformation(CC_0);
-					doNotShowPopupAgain2 = doNotShowPopupAgain!=null;
+				else if (shouldShowLicencePopup) {
+				 	if (shouldShareEagWithCC0 != null) {
+						rightsInformation = DAOFactory.instance().getRightsInformationDAO().getRightsInformation(CC_0);
+						doNotShowPopupAgain2 = doNotShowPopupAgain != null;
+					} else {
+						rightsInformation = shareEagWithWikimediaRightsInformation;
+						doNotShowPopupAgain2 = doNotShowPopupAgain != null;
+					}
 				}
 				else {
 					rightsInformation = shareEagWithWikimediaRightsInformation;
-					doNotShowPopupAgain2 = doNotShowPopupAgain!=null;
+					doNotShowPopupAgain2 = !shouldShowLicencePopup;
 				}
 
+				String version  = getClass().getPackage().getImplementationVersion();
+				if (version==null) {
+					Properties prop = new Properties();
+					try {
+						prop.load(getServletContext().getResourceAsStream("/META-INF/MANIFEST.MF"));
+						version = prop.getProperty("Implementation-Version");
+					} catch (IOException e) {
+
+					}
+				}
 				uploader_http = new ManualHTTPUploader(uploadMethod);
 				uploader_http.setShareWithWikimediaRightsInformation(rightsInformation);
 				uploader_http.setDoNotShowPopupAgain(doNotShowPopupAgain2);
-        	    result = uploader_http.uploadFile(uploadType, this.getHttpFileFileName(), this.getHttpFile(), format, archivalInstitutionId, uploadMethod);
+        	    result = uploader_http.uploadFile(uploadType, this.getHttpFileFileName(), this.getHttpFile(), format, archivalInstitutionId, uploadMethod, version);
 
         	    if (result.equals("success") || result.equals("success_with_url_warning")) {
         	    	this.filesNotUploaded = this.uploader_http.getFilesNotUploaded();
