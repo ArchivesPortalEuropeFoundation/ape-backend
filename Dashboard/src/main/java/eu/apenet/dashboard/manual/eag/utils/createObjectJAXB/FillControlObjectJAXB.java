@@ -105,7 +105,7 @@ public class FillControlObjectJAXB implements ObjectJAXB{
 		RightsDeclaration rightsDeclaration2 = new RightsDeclaration();
 		//Citation
 		Citation citation2 = new Citation();
-		citation2.setHref("http://guidelines.portal");
+		citation2.setHref("https://www.archivesportaleurope.net/metadata-usage-guidelines");
 		citation2.setContent("Archives Portal Europe Metadata Usage Guidelines");
 		rightsDeclaration2.setCitation(citation2);
 		//DescriptiveNote
