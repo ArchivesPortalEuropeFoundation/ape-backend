@@ -16,6 +16,7 @@ public enum FacetType {
 //    EAD3_END_DATE(Ead3SolrFields.END_DATE, true, false),
     COUNTRY(Ead3SolrFields.COUNTRY, Ead3SolrFields.COUNTRY_ID, true, true, "country."),
     AI(Ead3SolrFields.AI, Ead3SolrFields.AI_ID, true),
+    EAG_METADATA_USE(SolrFields.EAG_LICENCE_SHAREABLE, false, true, "eag.licence.shareable.", false, true),
 //    FOND(SolrFields.TITLE_OF_FOND, SolrFields.FOND_ID, true), //ToDo: Merge
     TOPIC(Ead3SolrFields.TOPIC, false, true, "topics.", true),
     TYPE(Ead3SolrFields.RECORD_TYPE, false, true, "advancedsearch.text."),
@@ -70,6 +71,19 @@ public enum FacetType {
         this.date = false;
         this.startDate = false;
         this.multiSelect = true;
+    }
+
+    private FacetType(String name, boolean hasId, boolean valueIsKey, String prefix, boolean needToBeLowercase, boolean isMultiselect) {
+        this.name = name;
+        this.refinementField = name;
+        this.hasId = hasId;
+        this.valueIsKey = valueIsKey;
+        this.prefix = prefix;
+        this.date = false;
+        this.startDate = false;
+        this.multiSelect = isMultiselect;
+        this.needToBeLowercase = needToBeLowercase;
+
     }
 
     private FacetType(String name, boolean hasId, boolean valueIsKey, String prefix) {
@@ -171,6 +185,7 @@ public enum FacetType {
         result.add(new ListFacetSettings(FacetType.COUNTRY));
         result.add(new ListFacetSettings(FacetType.EAG_AI_GROUPS));
         result.add(new ListFacetSettings(FacetType.EAG_REPOSITORY_TYPE));
+        result.add(new ListFacetSettings(FacetType.EAG_METADATA_USE));
         return result;
     }
 

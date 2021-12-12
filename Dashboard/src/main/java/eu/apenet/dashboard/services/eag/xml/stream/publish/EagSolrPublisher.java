@@ -79,7 +79,7 @@ public class EagSolrPublisher extends AbstractSolrPublisher {
             case "CC BY-SA":
             case "CC0":
             case "PDM":
-                result = "Yes";
+                result = "yes";
                 break;
             case "CC BY-NC":
             case "CC BY-NC-ND":
@@ -87,13 +87,13 @@ public class EagSolrPublisher extends AbstractSolrPublisher {
             case "NoC-NC":
             case "NoC-OKLR":
             case "InC-EDU":
-                result = "Yes, with conditions";
+                result = "yesWithConditions";
                 break;
             case "InC":
             case "InC-EU-OW":
             case "CNE":
             default:
-                result = "Maybe, seek permission";
+                result = "maybeSeekPermission";
                 break;
         }
 
