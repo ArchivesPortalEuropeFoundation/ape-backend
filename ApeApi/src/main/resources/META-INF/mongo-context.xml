@@ -7,8 +7,12 @@
     http://www.springframework.org/schema/data/mongo
     http://www.springframework.org/schema/data/mongo/spring-mongo-1.0.xsd">
 
-    <mongo:mongo id="mongo" />
+    <mongo:mongo id="mongo" host="#{mongoHost}"/>
 
     <mongo:repositories base-package="eu.archivesportaleurope.apeapi.transaction.repository.mongo"/>
 
+    <bean id="mongoHost"
+          class="org.springframework.web.context.support.ServletContextParameterFactoryBean">
+        <property name="initParamName" value="MongoHost" />
+    </bean>
 </beans>
