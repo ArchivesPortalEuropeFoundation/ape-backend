@@ -81,6 +81,7 @@ public class EagSolrPublisher extends AbstractSolrPublisher {
                 result = "yes";
                 break;
             case "CC BY-NC":
+            case "CC BY-ND":
             case "CC BY-NC-ND":
             case "CC BY-NC-SA":
             case "NoC-NC":
