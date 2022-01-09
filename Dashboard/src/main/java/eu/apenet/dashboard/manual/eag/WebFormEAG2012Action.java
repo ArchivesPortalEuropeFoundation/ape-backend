@@ -1030,6 +1030,10 @@ public class WebFormEAG2012Action extends AbstractInstitutionAction {
                         }
                         archivalInstitution.setEagPath(path);
                         archivalInstitution.setRepositorycode(eag2012.getRecordIdValue());
+
+                        archivalInstitution.setShareWithWikimedia(eag2012.getShareEagWithWikimediaLicence());
+                        archivalInstitution.setShareWithWikimediaId(eag2012.getShareEagWithWikimediaLicence().getId());
+
                         archivalInstitutionDao.store(archivalInstitution);
                         log.info("EAG2012 stored to " + path);
                         EagService.publish(archivalInstitution);
@@ -1064,10 +1068,6 @@ public class WebFormEAG2012Action extends AbstractInstitutionAction {
                 log.error(APEnetUtilities.generateThrowableLog(e));
             }
 
-            archivalInstitution.setShareWithWikimedia(eag2012.getShareEagWithWikimediaLicence());
-            archivalInstitution.setShareWithWikimediaId(eag2012.getShareEagWithWikimediaLicence().getId());
-            ArchivalInstitutionDAO archivalInstitutionDAO = DAOFactory.instance().getArchivalInstitutionDAO();
-            archivalInstitutionDAO.store(archivalInstitution);
         }
         String result = this.editWebFormEAG2012();
 
