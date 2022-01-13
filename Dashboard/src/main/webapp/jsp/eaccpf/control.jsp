@@ -46,6 +46,36 @@
             <td><input type="button" value="<s:property value="getText('eaccpf.control.addlocalidentifier')" />" id="addLocalIdButton" onClick="addLocalId('<s:property value="getText('eaccpf.control.error.emptyfields')" />');" /></td>
         </tr>
     </table>
+
+    <table style="width: 50%" class="tablePadding">
+        <tr id="rightsInformation_title">
+            <td colspan="2"><b><s:property value="getText('eaccpf.control.rightsdeclaration.title')" /></b></td>
+        </tr>
+        <tr id="rightsInformation_licence">
+            <td>
+                <b><s:property value="getText('eaccpf.control.rightsdeclaration.licence.label')" />:*</b>
+            </td>
+            <td>
+                <select style="width: 100%" id="controlRightsInformation" name="controlRightsInformation">
+                    <s:iterator value="rightsList" var="rightsLicence">
+                        <option value='<s:property value="#rightsLicence.value"/>' <s:if test='%{#rightsLicence.value == loader.controlScriptCode}'>selected="selected"</s:if><s:elseif test='%{#rightsLicence.value == defaultRightsInformation}'>selected="selected"</s:elseif>><s:property value="#rightsLicence.content"/></option>
+                    </s:iterator>
+                </select>
+            </td>
+        </tr>
+        <tr id="rightsInformation_description">
+            <td>
+                <s:textarea label="%{getText('eaccpf.control.rightsdeclaration.description.label')}" id="controlRightsDescription" name="controlRightsDescription" value="%{defaultRightsDescription}"/>
+            </td>
+        </tr>
+        <tr id="rightsInformation_rightsholder">
+            <td>
+                <s:textfield label="%{getText('eaccpf.control.rightsdeclaration.rightsholder.label')}" id="controlRightsHolder" name="controlRightsHolder" value="%{defaultRightsHolder}"/>
+            </td>
+        </tr>
+        <tr/>
+    </table>
+
     <table id="usedLanguagesAndScripts" class="tablePadding">
         <tr>
             <th colspan="4"><s:property value="getText('eaccpf.control.usedlanguagesandscriptsfordescription')" /></th>

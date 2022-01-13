@@ -11,6 +11,8 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import eu.apenet.dpt.utils.eaccpf.*;
+import eu.apenet.persistence.vo.RightsInformation;
 import org.apache.commons.lang.StringUtils;
 
 import eu.apenet.commons.types.XmlType;
@@ -19,65 +21,6 @@ import eu.apenet.dashboard.services.eaccpf.CreateEacCpfTask;
 import eu.apenet.dashboard.services.ead3.publish.Ead3ToEacFieldMapKeys;
 import eu.apenet.dashboard.services.ead3.publish.Ead3ToEacFieldMapStaticValues;
 import eu.apenet.dashboard.types.ead3.ApeType;
-import eu.apenet.dpt.utils.eaccpf.Abbreviation;
-import eu.apenet.dpt.utils.eaccpf.Address;
-import eu.apenet.dpt.utils.eaccpf.AddressLine;
-import eu.apenet.dpt.utils.eaccpf.AgencyCode;
-import eu.apenet.dpt.utils.eaccpf.AgencyName;
-import eu.apenet.dpt.utils.eaccpf.Agent;
-import eu.apenet.dpt.utils.eaccpf.AgentType;
-import eu.apenet.dpt.utils.eaccpf.BiogHist;
-import eu.apenet.dpt.utils.eaccpf.Citation;
-import eu.apenet.dpt.utils.eaccpf.Control;
-import eu.apenet.dpt.utils.eaccpf.ConventionDeclaration;
-import eu.apenet.dpt.utils.eaccpf.CpfDescription;
-import eu.apenet.dpt.utils.eaccpf.CpfRelation;
-import eu.apenet.dpt.utils.eaccpf.Date;
-import eu.apenet.dpt.utils.eaccpf.DateRange;
-import eu.apenet.dpt.utils.eaccpf.DateSet;
-import eu.apenet.dpt.utils.eaccpf.Description;
-import eu.apenet.dpt.utils.eaccpf.DescriptiveNote;
-import eu.apenet.dpt.utils.eaccpf.EacCpf;
-import eu.apenet.dpt.utils.eaccpf.EntityId;
-import eu.apenet.dpt.utils.eaccpf.EntityType;
-import eu.apenet.dpt.utils.eaccpf.EventDateTime;
-import eu.apenet.dpt.utils.eaccpf.EventDescription;
-import eu.apenet.dpt.utils.eaccpf.EventType;
-import eu.apenet.dpt.utils.eaccpf.ExistDates;
-import eu.apenet.dpt.utils.eaccpf.FromDate;
-import eu.apenet.dpt.utils.eaccpf.Function;
-import eu.apenet.dpt.utils.eaccpf.FunctionRelation;
-import eu.apenet.dpt.utils.eaccpf.Functions;
-import eu.apenet.dpt.utils.eaccpf.Identity;
-import eu.apenet.dpt.utils.eaccpf.Language;
-import eu.apenet.dpt.utils.eaccpf.LanguageDeclaration;
-import eu.apenet.dpt.utils.eaccpf.LocalDescription;
-import eu.apenet.dpt.utils.eaccpf.LocalDescriptions;
-import eu.apenet.dpt.utils.eaccpf.MaintenanceAgency;
-import eu.apenet.dpt.utils.eaccpf.MaintenanceEvent;
-import eu.apenet.dpt.utils.eaccpf.MaintenanceHistory;
-import eu.apenet.dpt.utils.eaccpf.MaintenanceStatus;
-import eu.apenet.dpt.utils.eaccpf.Occupation;
-import eu.apenet.dpt.utils.eaccpf.Occupations;
-import eu.apenet.dpt.utils.eaccpf.OtherRecordId;
-import eu.apenet.dpt.utils.eaccpf.P;
-import eu.apenet.dpt.utils.eaccpf.Part;
-import eu.apenet.dpt.utils.eaccpf.Place;
-import eu.apenet.dpt.utils.eaccpf.PlaceEntry;
-import eu.apenet.dpt.utils.eaccpf.Places;
-import eu.apenet.dpt.utils.eaccpf.PublicationStatus;
-import eu.apenet.dpt.utils.eaccpf.RecordId;
-import eu.apenet.dpt.utils.eaccpf.RelationEntry;
-import eu.apenet.dpt.utils.eaccpf.Relations;
-import eu.apenet.dpt.utils.eaccpf.ResourceRelation;
-import eu.apenet.dpt.utils.eaccpf.Script;
-import eu.apenet.dpt.utils.eaccpf.Source;
-import eu.apenet.dpt.utils.eaccpf.SourceEntry;
-import eu.apenet.dpt.utils.eaccpf.Sources;
-import eu.apenet.dpt.utils.eaccpf.StructureOrGenealogy;
-import eu.apenet.dpt.utils.eaccpf.Term;
-import eu.apenet.dpt.utils.eaccpf.ToDate;
-import eu.apenet.dpt.utils.eaccpf.UseDates;
 import eu.apenet.persistence.dao.EacCpfDAO;
 import eu.apenet.persistence.dao.UserDAO;
 import eu.apenet.persistence.factory.DAOFactory;
@@ -281,6 +224,58 @@ public class CreateEacCpf {
                     languageDeclaration.setScript(script);
                 }
                 control.setLanguageDeclaration(languageDeclaration);
+            }
+        }
+
+        // eacCpf/control/rightsDeclaration
+        if (null != parameters.get("controlRightsInformation")) {
+            if (!"----".equals(((String[]) parameters.get("controlRightsInformation"))[0])
+                    && !((String[]) parameters.get("controlRightsInformation"))[0].trim().isEmpty()
+            ) {
+                RightsDeclaration rightsDeclaration = new RightsDeclaration();
+
+                String rightsDescription = null;
+                if (parameters.containsKey("controlRightsDescription")) {
+                    rightsDescription = ((String[]) parameters.get("controlRightsDescription"))[0];
+                }
+                String rightsHolder = null;
+                if (parameters.containsKey("controlRightsHolder")) {
+                    rightsHolder = ((String[]) parameters.get("controlRightsHolder"))[0];
+                }
+                String rightsLicence = null;
+                if (parameters.containsKey("controlRightsInformation")) {
+                    rightsLicence = ((String[]) parameters.get("controlRightsInformation"))[0];
+                }
+                RightsInformation rightsInformation = DAOFactory.instance().getRightsInformationDAO().getRightsInformation(Integer.parseInt(rightsLicence));
+
+                rightsDeclaration.setLang("eng");
+                //Abbreviation
+                Abbreviation abbreviation = new Abbreviation();
+                abbreviation.setValue(rightsInformation.getAbbreviation());
+                rightsDeclaration.setAbbreviation(abbreviation);
+                //Citation
+                Citation citation = new Citation();
+                citation.setHref(rightsInformation.getLink());
+                citation.setContent(rightsInformation.getRightsName());
+                rightsDeclaration.setCitation(citation);
+                //DescriptiveNote
+                DescriptiveNote descriptiveNote = new DescriptiveNote();
+                P p1 = new P();
+                p1.setContent(rightsInformation.getDescription());
+                descriptiveNote.getP().add(p1);
+                if (StringUtils.isNotEmpty(rightsDescription)) {
+                    P p2 = new P();
+                    p2.setContent(rightsDescription);
+                    descriptiveNote.getP().add(p2);
+                }
+                if (StringUtils.isNotEmpty(rightsHolder)) {
+                    P p2 = new P();
+                    p2.setContent(rightsHolder);
+                    descriptiveNote.getP().add(p2);
+                }
+                rightsDeclaration.setDescriptiveNote(descriptiveNote);
+
+                control.getRightsDeclaration().add(rightsDeclaration);
             }
         }
 

@@ -4,26 +4,7 @@
  */
 package eu.apenet.dashboard.manual.eaccpf;
 
-import eu.apenet.dpt.utils.eaccpf.Places;
-import eu.apenet.dpt.utils.eaccpf.EacCpf;
-import eu.apenet.dpt.utils.eaccpf.CpfRelation;
-import eu.apenet.dpt.utils.eaccpf.EntityId;
-import eu.apenet.dpt.utils.eaccpf.Occupations;
-import eu.apenet.dpt.utils.eaccpf.StructureOrGenealogy;
-import eu.apenet.dpt.utils.eaccpf.OtherRecordId;
-import eu.apenet.dpt.utils.eaccpf.FunctionRelation;
-import eu.apenet.dpt.utils.eaccpf.Date;
-import eu.apenet.dpt.utils.eaccpf.Functions;
-import eu.apenet.dpt.utils.eaccpf.P;
-import eu.apenet.dpt.utils.eaccpf.ResourceRelation;
-import eu.apenet.dpt.utils.eaccpf.Function;
-import eu.apenet.dpt.utils.eaccpf.Occupation;
-import eu.apenet.dpt.utils.eaccpf.Identity;
-import eu.apenet.dpt.utils.eaccpf.NameEntryParallel;
-import eu.apenet.dpt.utils.eaccpf.BiogHist;
-import eu.apenet.dpt.utils.eaccpf.Place;
-import eu.apenet.dpt.utils.eaccpf.DateRange;
-import eu.apenet.dpt.utils.eaccpf.NameEntry;
+import eu.apenet.dpt.utils.eaccpf.*;
 import eu.apenet.dashboard.manual.eaccpf.util.BiographyType;
 import eu.apenet.dashboard.manual.eaccpf.util.DateType;
 import eu.apenet.dashboard.manual.eaccpf.util.FunctionType;
@@ -43,6 +24,9 @@ import java.util.Random;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
+
+import eu.apenet.persistence.factory.DAOFactory;
+import eu.apenet.persistence.vo.RightsInformation;
 import org.apache.commons.io.FileUtils;
 
 /**
@@ -77,6 +61,10 @@ public class EacCpfLoader {
     private List<RelationType> cpfRelations;
     private List<RelationType> resRelations;
     private List<RelationType> fncRelations;
+
+    private RightsInformation rightsInformation;
+    private String rightsDescription;
+    private String rightsHolder;
 
     public EacCpfLoader() {
     }
@@ -372,6 +360,26 @@ public class EacCpfLoader {
                 this.setControlScriptCode(this.eacCpf.getControl().getLanguageDeclaration().getScript().getScriptCode());
             }
         }
+
+        // Rights declaration
+        if (this.eacCpf.getControl() != null && this.eacCpf.getControl().getRightsDeclaration() != null) {
+            RightsDeclaration rightsDeclaration = this.eacCpf.getControl().getRightsDeclaration().get(0);
+            if (rightsDeclaration.getAbbreviation()!=null){
+                String abbreviation = rightsDeclaration.getAbbreviation().getValue();
+                if (abbreviation != null){
+                    RightsInformation rightsInformation = DAOFactory.instance().getRightsInformationDAO().getRightsInformation(abbreviation);
+                    this.rightsInformation = rightsInformation;
+                }
+                List<P> ps = rightsDeclaration.getDescriptiveNote().getP();
+                if (ps.size()==2){
+                    this.rightsDescription = ps.get(1).getContent();
+                }
+                else if (ps.size()>2){
+                    this.rightsDescription = ps.get(1).getContent();
+                    this.rightsHolder = ps.get(2).getContent();
+                }
+            }
+        }
     }
 
     /**
@@ -528,5 +536,29 @@ public class EacCpfLoader {
 
     public void setFncRelations(List<RelationType> fncRelations) {
         this.fncRelations = fncRelations;
+    }
+
+    public void setRightsInformation(RightsInformation rightsInformation) {
+        this.rightsInformation = rightsInformation;
+    }
+
+    public void setRightsDescription(String rightsDescription) {
+        this.rightsDescription = rightsDescription;
+    }
+
+    public void setRightsHolder(String rightsHolder) {
+        this.rightsHolder = rightsHolder;
+    }
+
+    public RightsInformation getRightsInformation() {
+        return rightsInformation;
+    }
+
+    public String getRightsDescription() {
+        return rightsDescription;
+    }
+
+    public String getRightsHolder() {
+        return rightsHolder;
     }
 }

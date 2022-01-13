@@ -4,14 +4,14 @@
  */
 package eu.apenet.dashboard.manual.eaccpf.actions;
 
+import eu.apenet.commons.view.jsp.SelectItem;
 import eu.apenet.dashboard.AbstractInstitutionAction;
 import eu.apenet.dashboard.manual.eaccpf.util.MapEntry;
-import java.util.TreeMap;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Random;
-import java.util.Set;
-import java.util.TreeSet;
+import eu.apenet.persistence.factory.DAOFactory;
+import eu.apenet.persistence.vo.ArchivalInstitution;
+import eu.apenet.persistence.vo.RightsInformation;
+
+import java.util.*;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -36,10 +36,36 @@ public abstract class EacCpfAction extends AbstractInstitutionAction {
 
     private String apeId;
 
+    private List<SelectItem> rightsList = new ArrayList<>();
+    private static final String IN_COPYRIGHT_EU_ORPHAN_WORK = "InC-EU-OW";
+    private static final String NO_COPYRIGHT_OTHER_KNOWN_LEGAL_RESTRICTIONS = "NoC-OKLR";
+    private static final String COPYRIGHT_NOT_EVALUATED = "CNE";
+
+    private ArchivalInstitution archivalInstitution;
+    private String aiDefaultRightsInformation;
+
     public EacCpfAction() {
         Random random = new Random();
         long fakeId = random.nextLong();
         this.apeId = Long.toString(fakeId);
+    }
+
+    @Override
+    public void prepare() throws Exception {
+        super.prepare();
+
+        archivalInstitution = DAOFactory.instance().getArchivalInstitutionDAO().getArchivalInstitution(getAiId());
+        aiDefaultRightsInformation = archivalInstitution.getRightsInformation().getId()+"";
+
+        List<RightsInformation> rightsInformations = DAOFactory.instance().getRightsInformationDAO().getRightsInformations();
+        rightsInformations.forEach((rightsInformation) -> {
+            if (!(rightsInformation.getAbbreviation().equals(IN_COPYRIGHT_EU_ORPHAN_WORK)
+                    || rightsInformation.getAbbreviation().equals(NO_COPYRIGHT_OTHER_KNOWN_LEGAL_RESTRICTIONS)
+                    || rightsInformation.getAbbreviation().equals(COPYRIGHT_NOT_EVALUATED))) {
+                SelectItem selectItem = new SelectItem(rightsInformation.getId(), rightsInformation.getRightsName());
+                rightsList.add(selectItem);
+            }
+        });
     }
 
     protected void setUpLanguages() {
@@ -117,5 +143,29 @@ public abstract class EacCpfAction extends AbstractInstitutionAction {
 
     public void setApeId(String apeId) {
         this.apeId = apeId;
+    }
+
+    public void setRightsList(List<SelectItem> rightsList) {
+        this.rightsList = rightsList;
+    }
+
+    public List<SelectItem> getRightsList() {
+        return rightsList;
+    }
+
+    public void setArchivalInstitution(ArchivalInstitution archivalInstitution) {
+        this.archivalInstitution = archivalInstitution;
+    }
+
+    public ArchivalInstitution getArchivalInstitution() {
+        return archivalInstitution;
+    }
+
+    public void setAiDefaultRightsInformation(String aiDefaultRightsInformation) {
+        this.aiDefaultRightsInformation = aiDefaultRightsInformation;
+    }
+
+    public String getAiDefaultRightsInformation() {
+        return aiDefaultRightsInformation;
     }
 }

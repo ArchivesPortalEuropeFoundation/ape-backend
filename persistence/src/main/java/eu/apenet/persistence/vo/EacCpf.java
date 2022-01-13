@@ -19,6 +19,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.Size;
 
 @Entity
 @Table(name = "eac_cpf")
@@ -72,8 +73,16 @@ public class EacCpf extends AbstractContent {
     private Integer rightsInformationId;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "rights_information", foreignKey = @ForeignKey(name = "archival_institution_rinf_id_fkey"), insertable = false, updatable = false)
+    @JoinColumn(name = "rights_information", foreignKey = @ForeignKey(name = "eac_cpf_rinf_id_fkey"), insertable = false, updatable = false)
     private RightsInformation rightsInformation;
+
+    @Size(max = 2147483647)
+    @Column(name = "rights_description", length = 2147483647)
+    private String rightsDescription;
+
+    @Size(max = 255)
+    @Column(name = "rights_holder", length = 255)
+    private String rightsHolder;
 
     @Override
     public Integer getId() {
@@ -284,5 +293,21 @@ public class EacCpf extends AbstractContent {
 
     public void setRightsInformation(RightsInformation rightsInformation) {
         this.rightsInformation = rightsInformation;
+    }
+
+    public void setRightsDescription(String rightsDescription) {
+        this.rightsDescription = rightsDescription;
+    }
+
+    public void setRightsHolder(String rightsHolder) {
+        this.rightsHolder = rightsHolder;
+    }
+
+    public String getRightsDescription() {
+        return rightsDescription;
+    }
+
+    public String getRightsHolder() {
+        return rightsHolder;
     }
 }

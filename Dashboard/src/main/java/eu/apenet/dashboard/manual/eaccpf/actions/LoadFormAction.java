@@ -49,6 +49,9 @@ public class LoadFormAction extends EacCpfAction {
     private String useMode;
     private String defaultLanguage;
     private String defaultScript;
+    private String defaultRightsInformation;
+    private String defaultRightsDescription;
+    private String defaultRightsHolder;
     private String openLabel;
 
     private static final String OTHER = "other";
@@ -120,6 +123,20 @@ public class LoadFormAction extends EacCpfAction {
         }
         if (getServletRequest().getParameter("defaultScript") != null) {
             defaultScript = getServletRequest().getParameter("defaultScript");
+        }
+        if (getServletRequest().getParameter("defaultRightsInformation") != null) {
+            defaultRightsInformation = getServletRequest().getParameter("defaultRightsInformation");
+        }
+        if (getServletRequest().getParameter("defaultRightsDescription") != null) {
+            defaultRightsDescription = getServletRequest().getParameter("defaultRightsDescription");
+        }
+        if (getServletRequest().getParameter("defaultRightsHolder") != null) {
+            defaultRightsHolder = getServletRequest().getParameter("defaultRightsHolder");
+        }
+        if (fileToLoad != null){
+            defaultRightsInformation = ""+this.loader.getRightsInformation().getId();
+            defaultRightsDescription = this.loader.getRightsDescription();
+            defaultRightsHolder = this.loader.getRightsHolder();
         }
 
         StringBuilder builder = new StringBuilder();
@@ -412,5 +429,29 @@ public class LoadFormAction extends EacCpfAction {
 
     public void setFileToLoad(String fileToLoad) {
         this.fileToLoad = fileToLoad;
+    }
+
+    public void setDefaultRightsInformation(String defaultRightsInformation) {
+        this.defaultRightsInformation = defaultRightsInformation;
+    }
+
+    public String getDefaultRightsInformation() {
+        return defaultRightsInformation;
+    }
+
+    public void setDefaultRightsDescription(String defaultRightsDescription) {
+        this.defaultRightsDescription = defaultRightsDescription;
+    }
+
+    public void setDefaultRightsHolder(String defaultRightsHolder) {
+        this.defaultRightsHolder = defaultRightsHolder;
+    }
+
+    public String getDefaultRightsDescription() {
+        return defaultRightsDescription;
+    }
+
+    public String getDefaultRightsHolder() {
+        return defaultRightsHolder;
     }
 }
