@@ -276,6 +276,21 @@ public class CreateEacCpf {
                 rightsDeclaration.setDescriptiveNote(descriptiveNote);
 
                 control.getRightsDeclaration().add(rightsDeclaration);
+
+
+                RightsDeclaration rightsDeclaration2 = new RightsDeclaration();
+                //Citation
+                Citation citation2 = new Citation();
+                citation2.setHref("https://www.archivesportaleurope.net/metadata-usage-guidelines");
+                citation2.setContent("Archives Portal Europe Metadata Usage Guidelines");
+                rightsDeclaration2.setCitation(citation2);
+                //DescriptiveNote
+                DescriptiveNote descriptiveNote2 = new DescriptiveNote();
+                P p12 = new P();
+                p12.setContent("The licence specified here only applies to the metadata included in this file, which have been created using tools provided by Archives Portal Europe. The Archives Portal Europe Metadata Usage Guidelines provide further notes with regard to the use and re-use of the metadata.");
+                descriptiveNote2.getP().add(p12);
+                rightsDeclaration2.setDescriptiveNote(descriptiveNote2);
+                control.getRightsDeclaration().add(rightsDeclaration2);
             }
         }
 
