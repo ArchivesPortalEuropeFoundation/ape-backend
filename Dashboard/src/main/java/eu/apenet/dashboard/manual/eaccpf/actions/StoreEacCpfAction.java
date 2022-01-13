@@ -9,11 +9,14 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 
+import eu.apenet.persistence.vo.RightsInformation;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
@@ -181,6 +184,23 @@ public class StoreEacCpfAction extends EacCpfAction {
                 storedEacEntry.setUploadDate(new Date());
                 storedEacEntry.setPath(path);
                 storedEacEntry.setValidated(ValidatedState.VALIDATED);
+
+                HttpServletRequest httpServletRequest = getServletRequest();
+                String rightsDescription = httpServletRequest.getParameter("controlRightsDescription");
+                String rightsHolder = httpServletRequest.getParameter("controlRightsHolder");
+                if (StringUtils.isNotEmpty(rightsDescription)) {
+                    storedEacEntry.setRightsDescription(rightsDescription);
+                }
+                if (StringUtils.isNotEmpty(rightsHolder)) {
+                    storedEacEntry.setRightsHolder(rightsHolder);
+                }
+                String rightsLicence =  httpServletRequest.getParameter("controlRightsInformation");
+                RightsInformation rightsInformation = DAOFactory.instance().getRightsInformationDAO().getRightsInformation(Integer.parseInt(rightsLicence));
+                if (rightsInformation != null){
+                    storedEacEntry.setRightsInformation(rightsInformation);
+                    storedEacEntry.setRightsInformationId(rightsInformation.getId());
+                }
+
                 eacCpfDAO.update(storedEacEntry);
 
                 this.setEacDaoId(Integer.toString(storedEacEntry.getId()));

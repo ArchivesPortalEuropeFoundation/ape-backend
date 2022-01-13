@@ -46,6 +46,8 @@ ALTER TABLE c_level
       ON UPDATE NO ACTION ON DELETE NO ACTION;
 
 ALTER TABLE eac_cpf ADD COLUMN rights_information integer;
+ALTER TABLE eac_cpf ADD COLUMN rights_holder character varying(255);
+ALTER TABLE eac_cpf ADD COLUMN rights_description text;
 ALTER TABLE eac_cpf
   ADD CONSTRAINT eac_cpf_rinf_id_fkey FOREIGN KEY (rights_information)
       REFERENCES rights_information (id) MATCH SIMPLE

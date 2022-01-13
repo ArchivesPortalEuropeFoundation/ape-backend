@@ -16,13 +16,50 @@
                     <td><b><s:property value="getText('eaccpf.start.createInstance')" />:*</b></td>
                     <td><s:radio id="new" name="cpfType" list="cpfTypeList" listKey="key" listValue="value" value="defaultCpfType"/></td>
                 </tr>
+
                 <tr>
-                    <td colspan="2"><s:property value="getText('eaccpf.start.text')" /></td>
+                    <td>
+                        <table style="width: 80%">
+                            <tr id="rightsInformation_title">
+                                <td colspan="2"><b><s:property value="getText('eaccpf.control.rightsdeclaration.title')" /></b></td>
+                            </tr>
+                            <tr id="rightsInformation_licence">
+                                <td>
+                                    <s:property value="getText('eaccpf.control.rightsdeclaration.licence.label')" />:
+                                </td>
+                                <td>
+                                    <s:select cssStyle="width: 100%" id="defaultRightsInformation" name="defaultRightsInformation" list="rightsList" listKey="value" listValue="content" value="%{aiDefaultRightsInformation}"/>
+                                </td>
+                            </tr>
+                            <tr id="rightsInformation_description">
+                                <td style="vertical-align: top;">
+                                    <s:property value="getText('eaccpf.control.rightsdeclaration.description.label')" />:
+                                </td>
+                                <td>
+                                    <s:textarea id="defaultRightsDescription" name="defaultRightsDescription"/>
+                                </td>
+                            </tr>
+                            <tr id="rightsInformation_rightsholder">
+                                <td>
+                                    <s:property value="getText('eaccpf.control.rightsdeclaration.rightsholder.label')" />:
+                                </td>
+                                <td>
+                                    <s:textfield id="defaultRightsHolder" name="defaultRightsHolder" value="%{archivalInstitution.getAiname()}"/>
+                                </td>
+                            </tr>
+                            <tr/>
+                        </table>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td colspan="2"><b><s:property value="getText('eaccpf.start.text')" /></b></td>
                 </tr>
                 <tr id="newLanguage">
                     <td><s:property value="getText('eaccpf.start.language')" />:&nbsp;&nbsp;&nbsp;<s:select id="new" name="defaultLanguage" list="languages" listKey="key" listValue="value" /></td>
                     <td><s:property value="getText('eaccpf.start.script')" />:&nbsp;&nbsp;&nbsp;<s:select id="new" name="defaultScript" list="scriptList" listKey="key" listValue="value" /></td>
                 </tr>
+
             </table>
         </div>
         <table id="goButtonPanel">
