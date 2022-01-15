@@ -5,6 +5,7 @@ import java.net.MalformedURLException;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
+import eu.apenet.persistence.vo.RightsInformation;
 import org.apache.commons.lang.StringUtils;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.common.SolrInputDocument;
@@ -53,6 +54,10 @@ public class EacCpfSolrPublisher extends AbstractSolrPublisher {
         doc.addField(SolrFields.EAC_CPF_NUMBER_OF_NAME_RELATIONS, eacCpfPublishData.getNumberOfNameRelations());
         doc.addField(SolrFields.EAC_CPF_NUMBER_OF_INSTITUTIONS_RELATIONS, eacCpfPublishData.getNumberOfInstitutionsRelations());
 
+        doc.addField(SolrFields.EAG_LICENCE_NAME, eacCpf.getRightsInformation().getRightsName());
+        doc.addField(SolrFields.EAG_LICENCE_ABBREVIATION, eacCpf.getRightsInformation().getAbbreviation());
+        doc.addField(SolrFields.EAG_LICENCE_SHAREABLE, getLicenceShareableType(archivalInstitution.getShareWithWikimedia()));
+
         doc.addField(Ead3SolrFields.OPEN_DATA, archivalInstitution.isOpenDataEnabled());
         addSolrDocument(doc);
     }
@@ -86,5 +91,35 @@ public class EacCpfSolrPublisher extends AbstractSolrPublisher {
 
     public long unpublish(EacCpf eacCpf) throws SolrServerException, IOException {
         return getSolrServerHolder().deleteByQuery("(" + Ead3SolrFields.AI_ID + ":" + eacCpf.getAiId() + " AND " + Ead3SolrFields.ID + ":\"" + eacCpf.getId() + "\")");
+    }
+
+    private static String getLicenceShareableType(RightsInformation rightsInformation){
+        String result = "";
+
+        switch (rightsInformation.getAbbreviation()){
+            case "CC BY":
+            case "CC BY-SA":
+            case "CC0":
+            case "PDM":
+                result = "yes";
+                break;
+            case "CC BY-NC":
+            case "CC BY-ND":
+            case "CC BY-NC-ND":
+            case "CC BY-NC-SA":
+            case "NoC-NC":
+            case "NoC-OKLR":
+            case "InC-EDU":
+                result = "yesWithConditions";
+                break;
+            case "InC":
+            case "InC-EU-OW":
+            case "CNE":
+            default:
+                result = "maybeSeekPermission";
+                break;
+        }
+
+        return result;
     }
 }
