@@ -95,7 +95,10 @@
         <field name="entityId" type="unitidType" indexed="true" stored="true" required="false"  multiValued="true"/>
         <field name="entityTypeFacet" type="facetText" indexed="true" stored="true" required="false"/>
         <field name="language" type="languageText" indexed="true" stored="true" required="false"/>
-	  
+
+        <field name="licenceName" type="text" indexed="true" stored="true" required="false" termVectors="true" termPositions="true" termOffsets="true" />
+        <field name="licenceAbbreviation" type="text" indexed="true" stored="true" required="false" termVectors="true" termPositions="true" termOffsets="true" />
+        <field name="licenceShareable" type="facetText" indexed="true" stored="true" required="false" termVectors="true" termPositions="true" termOffsets="true" />
 
 
 
