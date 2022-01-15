@@ -363,20 +363,25 @@ public class EacCpfLoader {
 
         // Rights declaration
         if (this.eacCpf.getControl() != null && this.eacCpf.getControl().getRightsDeclaration() != null) {
-            RightsDeclaration rightsDeclaration = this.eacCpf.getControl().getRightsDeclaration().get(0);
-            if (rightsDeclaration.getAbbreviation()!=null){
-                String abbreviation = rightsDeclaration.getAbbreviation().getValue();
-                if (abbreviation != null){
-                    RightsInformation rightsInformation = DAOFactory.instance().getRightsInformationDAO().getRightsInformation(abbreviation);
-                    this.rightsInformation = rightsInformation;
-                }
-                List<P> ps = rightsDeclaration.getDescriptiveNote().getP();
-                if (ps.size()==2){
-                    this.rightsDescription = ps.get(1).getContent();
-                }
-                else if (ps.size()>2){
-                    this.rightsDescription = ps.get(1).getContent();
-                    this.rightsHolder = ps.get(2).getContent();
+            for (RightsDeclaration rightsDeclaration : this.eacCpf.getControl().getRightsDeclaration()) {
+                if (rightsDeclaration.getLocalType()!= null && rightsDeclaration.getLocalType().equals("institution")) {
+                    if (rightsDeclaration.getAbbreviation() != null) {
+                        String abbreviation = rightsDeclaration.getAbbreviation().getValue();
+                        if (abbreviation != null) {
+                            RightsInformation rightsInformation = DAOFactory.instance().getRightsInformationDAO().getRightsInformation(abbreviation);
+                            this.rightsInformation = rightsInformation;
+                        }
+                        List<P> ps = rightsDeclaration.getDescriptiveNote().getP();
+                        for (P p : ps){
+                            if (p.getId()!=null) {
+                                if (p.getId().equals("description")) {
+                                    this.rightsDescription = ps.get(1).getContent();
+                                } else if (p.getId().equals("rightsHolder")) {
+                                    this.rightsHolder = ps.get(2).getContent();
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }

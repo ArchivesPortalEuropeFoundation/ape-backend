@@ -249,6 +249,7 @@ public class CreateEacCpf {
                 RightsInformation rightsInformation = DAOFactory.instance().getRightsInformationDAO().getRightsInformation(Integer.parseInt(rightsLicence));
 
                 rightsDeclaration.setLang("eng");
+                rightsDeclaration.setLocalType("institution");
                 //Abbreviation
                 Abbreviation abbreviation = new Abbreviation();
                 abbreviation.setValue(rightsInformation.getAbbreviation());
@@ -265,11 +266,13 @@ public class CreateEacCpf {
                 descriptiveNote.getP().add(p1);
                 if (StringUtils.isNotEmpty(rightsDescription)) {
                     P p2 = new P();
+                    p2.setId("description");
                     p2.setContent(rightsDescription);
                     descriptiveNote.getP().add(p2);
                 }
                 if (StringUtils.isNotEmpty(rightsHolder)) {
                     P p2 = new P();
+                    p2.setId("rightsHolder");
                     p2.setContent(rightsHolder);
                     descriptiveNote.getP().add(p2);
                 }
@@ -279,6 +282,8 @@ public class CreateEacCpf {
 
 
                 RightsDeclaration rightsDeclaration2 = new RightsDeclaration();
+                rightsDeclaration2.setLang("eng");
+                rightsDeclaration2.setLocalType("ape");
                 //Citation
                 Citation citation2 = new Citation();
                 citation2.setHref("https://www.archivesportaleurope.net/metadata-usage-guidelines");
