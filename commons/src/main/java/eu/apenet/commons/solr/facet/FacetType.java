@@ -17,6 +17,7 @@ public enum FacetType {
     COUNTRY(Ead3SolrFields.COUNTRY, Ead3SolrFields.COUNTRY_ID, true, true, "country."),
     AI(Ead3SolrFields.AI, Ead3SolrFields.AI_ID, true),
     EAG_METADATA_USE(SolrFields.EAG_LICENCE_SHAREABLE, false, true, "eag.licence.shareable.", false, true),
+    EAC_CPF_METADATA_USE(SolrFields.EAG_LICENCE_SHAREABLE, false, true, "eaccpf.licence.shareable.", false, true),
 //    FOND(SolrFields.TITLE_OF_FOND, SolrFields.FOND_ID, true), //ToDo: Merge
     TOPIC(Ead3SolrFields.TOPIC, false, true, "topics.", true),
     TYPE(Ead3SolrFields.RECORD_TYPE, false, true, "advancedsearch.text."),
@@ -194,6 +195,7 @@ public enum FacetType {
         result.add(new ListFacetSettings(FacetType.COUNTRY));
         result.add(new ListFacetSettings(FacetType.AI));
         result.add(new ListFacetSettings(FacetType.EAC_CPF_ENTITY_TYPE));
+        result.add(new ListFacetSettings(FacetType.EAC_CPF_METADATA_USE));
         result.add(new ListFacetSettings(FacetType.EAC_CPF_PLACES, true, 2));
         //result.add(new ListFacetSettings(FacetType.EAC_CPF_OCCUPATION, true,2));	
         //result.add(new ListFacetSettings(FacetType.EAC_CPF_MANDATE, true,2));	
