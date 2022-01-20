@@ -28,7 +28,8 @@
     <!-- please, remember to add <interceptor-ref name="changeLanguageStack"/> to this new action -->
 
     <!-- <package name="default" namespace="/" extends="struts-default"> -->
-    <package name="default" namespace="/" extends="struts-security">
+    <package name="default" namespace="/" extends="struts-security,json-default">
+
         <result-types>
             <result-type name="tiles" class="org.apache.struts2.views.tiles.TilesResult" />
         </result-types>
@@ -48,6 +49,10 @@
         <action name="changeLanguage" class="eu.apenet.dashboard.language.ChangeLanguageAction">
             <interceptor-ref name="internacionalizationStack"/>
             <result name="redirect" type="redirect">${url}</result>
+        </action>
+
+        <action name="eagApi" class="eu.apenet.api.eag.EagApiAction">
+            <result type="json" />
         </action>
 
         <!-- Content Provider Information -->

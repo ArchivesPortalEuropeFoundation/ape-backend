@@ -159,6 +159,10 @@
                 </exclusion>
             </exclusions>
         </dependency>
+        <dependency>
+            <groupId>org.apache.struts</groupId>
+            <artifactId>struts2-json-plugin</artifactId>
+        </dependency>
         <!--JSon object-->
         <dependency>
             <groupId>com.google.code.gson</groupId>
