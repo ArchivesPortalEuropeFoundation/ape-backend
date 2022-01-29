@@ -18,7 +18,7 @@
             <td><s:label key="ingestionprofiles.defaultActionNoEadid" /></td>
             <td><s:select id="noEadidAction" name="noEadidAction" list="noEadidActions" listKey="value" listValue="content" /></td>
         </tr>
-        <tr>
+        <tr id="defaultDaoType">
             <td><s:label key="ingestionprofiles.defaultDao" /></td>
             <td>
                 <s:select id="daoType" name="daoType" list="daoTypes" listKey="value" listValue="content" />
