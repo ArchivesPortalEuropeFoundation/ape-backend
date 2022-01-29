@@ -242,36 +242,32 @@ public class IngestionprofilesAction extends AbstractInstitutionAction {
                 profile.setRightsOfDigitalDescription("");
                 profile.setRightsOfDigitalHolder("");
             }
-
-            // Rights for EAD data.
-            if (this.getRightEadData() != null
-                    && !this.getRightEadData().isEmpty()
-                    && !this.getRightEadData().equalsIgnoreCase(AjaxConversionOptionsConstants.NO_SELECTED)) {
-                profile.setRightsOfEADData(this.getRightEadData());
-                profile.setRightsOfEADDataText(this.recoverRightsStatementText(this.getRightEadData()));
-                profile.setRightsOfEADDescription(this.getRightEadDescription());
-                profile.setRightsOfEADHolder(this.getRightEadHolder());
-            } else {
-                profile.setRightsOfEADData("");
-                profile.setRightsOfEADDataText("");
-                profile.setRightsOfEADDescription("");
-                profile.setRightsOfEADHolder("");
-            }
-
-            if (getDefaultXslFile() != null && !getDefaultXslFile().equals("-1")) {
-                profile.setXslUploadId(Long.parseLong(getDefaultXslFile()));
-            }
-        } else {
+        }
+        else {
             // Rights for digital objects.
             profile.setRightsOfDigitalObjects("");
             profile.setRightsOfDigitalObjectsText("");
             profile.setRightsOfDigitalDescription("");
             profile.setRightsOfDigitalHolder("");
-            // Rights for EAD data.
+        }
+
+        // Rights for EAD data.
+        if (this.getRightEadData() != null
+                && !this.getRightEadData().isEmpty()
+                && !this.getRightEadData().equalsIgnoreCase(AjaxConversionOptionsConstants.NO_SELECTED)) {
+            profile.setRightsOfEADData(this.getRightEadData());
+            profile.setRightsOfEADDataText(this.recoverRightsStatementText(this.getRightEadData()));
+            profile.setRightsOfEADDescription(this.getRightEadDescription());
+            profile.setRightsOfEADHolder(this.getRightEadHolder());
+        } else {
             profile.setRightsOfEADData("");
             profile.setRightsOfEADDataText("");
             profile.setRightsOfEADDescription("");
             profile.setRightsOfEADHolder("");
+        }
+
+        if (getDefaultXslFile() != null && !getDefaultXslFile().equals("-1")) {
+            profile.setXslUploadId(Long.parseLong(getDefaultXslFile()));
         }
 
         profile.setSourceOfIdentifiers(sourceOfIdentifiers);

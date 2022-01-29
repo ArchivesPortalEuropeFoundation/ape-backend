@@ -159,28 +159,39 @@ function showHideRightsConversion() {
         $("tr#trRightForDigitalObject").hide();
         $("tr#trDescriptionRightForDigitalObject").hide();
         $("tr#trHolderRightForDigitalObject").hide();
-        $("tr#trRightForEADData").hide();
-        $("tr#trDescriptionRightForEADData").hide();
-        $("tr#trHolderRightForEADData").hide();
+        $("tr#defaultDaoType").hide();
+
+        // $("tr#trRightForEADData").hide();
+        // $("tr#trDescriptionRightForEADData").hide();
+        // $("tr#trHolderRightForEADData").hide();
     } else {
         $("tr#trRightForDigitalObject").show();
         $("tr#trDescriptionRightForDigitalObject").show();
         $("tr#trHolderRightForDigitalObject").show();
-        $("tr#trRightForEADData").show();
-        $("tr#trDescriptionRightForEADData").show();
-        $("tr#trHolderRightForEADData").show();
+        $("tr#defaultDaoType").show();
+
+        // $("tr#trRightForEADData").show();
+        // $("tr#trDescriptionRightForEADData").show();
+        // $("tr#trHolderRightForEADData").show();
     }
 }
 
 function showHideEacExtractionFromEad3() {
     var assocType = $("#associatedFiletypeCb").val();
-    if (assocType == 4) {
-        $("tr#extractEacObject").show();
-        $("tr#xslConversion").hide();
+    // if (assocType == 4) {
+    //     $("tr#extractEacObject").show();
+    //     $("tr#xslConversion").hide();
+    //     $("#tab-europeana").hide();
+    // } else {
+    //     $("tr#extractEacObject").hide();
+    //     $("tr#xslConversion").show();
+    //     $("#tab-europeana").show();
+    // }
+    $("tr#xslConversion").show();
+    $("tr#extractEacObject").hide();
+    if (assocType == 2) {
         $("#tab-europeana").hide();
     } else {
-        $("tr#extractEacObject").hide();
-        $("tr#xslConversion").show();
         $("#tab-europeana").show();
     }
 }
