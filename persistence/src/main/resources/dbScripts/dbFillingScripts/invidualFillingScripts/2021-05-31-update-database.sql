@@ -70,3 +70,8 @@ ALTER TABLE source_guide
   ADD CONSTRAINT source_guide_rinf_id_fkey FOREIGN KEY (rights_information)
       REFERENCES rights_information (id) MATCH SIMPLE
       ON UPDATE NO ACTION ON DELETE NO ACTION;
+
+ALTER TABLE ingestionprofile ADD COLUMN rights_of_ead_data_id integer;
+ALTER TABLE ingestionprofile ADD CONSTRAINT ingestion_profile_rinf_id_fkey FOREIGN KEY (rights_of_ead_data_id)
+      REFERENCES rights_information (id) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION;

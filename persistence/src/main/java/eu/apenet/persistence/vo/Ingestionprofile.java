@@ -113,6 +113,13 @@ public class Ingestionprofile implements Serializable {
     @JoinColumn(name = "xsl_upload_id", foreignKey = @ForeignKey(name = "xsl_upload_id_fkey"), insertable = false, updatable = false)
     private XslUpload xslUpload;
 
+    @Column(name = "rights_of_ead_data_id")
+    private Integer rightsInformationOfEADDataId;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "rights_of_ead_data_id", foreignKey = @ForeignKey(name = "ingestion_profile_rinf_id_fkey"), insertable = false, updatable = false)
+    private RightsInformation rightsInformationOfEADData;
+
     public Ingestionprofile() {
     }
 
@@ -518,5 +525,21 @@ public class Ingestionprofile implements Serializable {
 
     public void setXslUpload(XslUpload xslUpload) {
         this.xslUpload = xslUpload;
+    }
+
+    public void setRightsInformationOfEADDataId(Integer rightsInformationOfEADDataId) {
+        this.rightsInformationOfEADDataId = rightsInformationOfEADDataId;
+    }
+
+    public void setRightsInformationOfEADData(RightsInformation rightsInformationOfEADData) {
+        this.rightsInformationOfEADData = rightsInformationOfEADData;
+    }
+
+    public Integer getRightsInformationOfEADDataId() {
+        return rightsInformationOfEADDataId;
+    }
+
+    public RightsInformation getRightsInformationOfEADData() {
+        return rightsInformationOfEADData;
     }
 }

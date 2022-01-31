@@ -12,6 +12,7 @@ import java.util.Locale;
 import java.util.Set;
 import java.util.TreeSet;
 
+import eu.apenet.dashboard.security.SecurityContext;
 import eu.apenet.persistence.vo.*;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -48,6 +49,11 @@ public class IngestionprofilesAction extends AbstractInstitutionAction {
     private static final String OPTION_ARCHDESC_UNITTITLE = "archdescUnittitle";
     private static final String OPTION_TITLESTMT_TITLEPROPER = "titlestmtTitleproper";
 
+    private static final String IN_COPYRIGHT_EU_ORPHAN_WORK = "InC-EU-OW";
+    private static final String NO_COPYRIGHT_OTHER_KNOWN_LEGAL_RESTRICTIONS = "NoC-OKLR";
+    private static final String COPYRIGHT_NOT_EVALUATED = "CNE";
+    public static final String CC_0 = "CC0";
+
     //Collections for basic tab
     private Set<SelectItem> ingestionprofiles = new LinkedHashSet<>();
     private Set<SelectItem> associatedFiletypes = new LinkedHashSet<>();
@@ -58,6 +64,8 @@ public class IngestionprofilesAction extends AbstractInstitutionAction {
     private Set<SelectItem> rightsDigitalObjects = new LinkedHashSet<>(); // Rights for digital objects.
     private Set<SelectItem> rightsEadData = new LinkedHashSet<>(); // Rights for EAD data.
     private Set<SelectItem> xslFiles = new LinkedHashSet<>();
+    private RightsInformation aiRightsInformation;
+    private RightsInformation defaultRightsInformation;
 
     //Collections for Europeana tab
     private Set<SelectItem> sourceOfIdentifiersSet = new TreeSet<>();
@@ -81,6 +89,7 @@ public class IngestionprofilesAction extends AbstractInstitutionAction {
     private String rightDigitalObjects;
     private String rightDigitalDescription;
     private String rightDigitalHolder;
+    private RightsInformation rightsInformationEadData;
     private String rightEadData;
     private String rightEadDescription;
     private String rightEadHolder;
@@ -160,6 +169,8 @@ public class IngestionprofilesAction extends AbstractInstitutionAction {
                 this.setRightEadData(ingestionprofile.getRightsOfEADData());
                 this.setRightEadDescription(ingestionprofile.getRightsOfEADDescription());
                 this.setRightEadHolder(ingestionprofile.getRightsOfEADHolder());
+                this.setRightsInformationEadData(ingestionprofile.getRightsInformationOfEADData());
+                this.setDefaultRightsInformation(ingestionprofile.getRightsInformationOfEADData());
 
                 sourceOfIdentifiers = ingestionprofile.getSourceOfIdentifiers();
                 if (sourceOfIdentifiers == null || sourceOfIdentifiers.isEmpty()) {
@@ -255,8 +266,13 @@ public class IngestionprofilesAction extends AbstractInstitutionAction {
         if (this.getRightEadData() != null
                 && !this.getRightEadData().isEmpty()
                 && !this.getRightEadData().equalsIgnoreCase(AjaxConversionOptionsConstants.NO_SELECTED)) {
-            profile.setRightsOfEADData(this.getRightEadData());
-            profile.setRightsOfEADDataText(this.recoverRightsStatementText(this.getRightEadData()));
+
+            RightsInformation selectedRightsInformation = DAOFactory.instance().getRightsInformationDAO().getRightsInformation(Integer.parseInt(this.getRightEadData()));
+            profile.setRightsInformationOfEADData(selectedRightsInformation);
+            profile.setRightsInformationOfEADDataId(selectedRightsInformation.getId());
+
+            profile.setRightsOfEADData(selectedRightsInformation.getLink());
+            profile.setRightsOfEADDataText(selectedRightsInformation.getRightsName());
             profile.setRightsOfEADDescription(this.getRightEadDescription());
             profile.setRightsOfEADHolder(this.getRightEadHolder());
         } else {
@@ -484,11 +500,25 @@ public class IngestionprofilesAction extends AbstractInstitutionAction {
         daoTypes.add(new SelectItem("0", getText("ingestionprofiles.dao.unspecified")));
 
         // Set of available permissions.
-        Set<SelectItem> rightsSet = this.addRightsOptions();
+        Set<SelectItem> rightsSetForDaos = this.addRightsOptions(true);
+        Set<SelectItem> rightsSetForData = this.addRightsOptions(false);
         // Rights for digital objects.
-        this.getRightsDigitalObjects().addAll(rightsSet);
+        this.getRightsDigitalObjects().addAll(rightsSetForDaos);
         // Rights for EAD data.
-        this.getRightsEadData().addAll(rightsSet);
+        this.getRightsEadData().addAll(rightsSetForData);
+
+        Integer aiId = null;
+        if (SecurityContext.get().getSelectedInstitution() != null) {
+            aiId = SecurityContext.get().getSelectedInstitution().getId();
+        }
+        if (aiId != null) {
+            ArchivalInstitution archivalInstitution = DAOFactory.instance().getArchivalInstitutionDAO().findById(aiId);
+            this.setAiRightsInformation(archivalInstitution.getRightsInformation());
+            if (this.defaultRightsInformation == null){
+                this.defaultRightsInformation = archivalInstitution.getRightsInformation();
+            }
+        }
+
 
         //Europeana preferences
         sourceOfIdentifiersSet.add(new SelectItem(IngestionprofilesAction.OPTION_UNITID, this.getText("ead2ese.label.id.unitid").replaceAll(">", "&#62;").replaceAll("<", "&#60;")));
@@ -538,23 +568,21 @@ public class IngestionprofilesAction extends AbstractInstitutionAction {
      *
      * @return Set with all the available rights statements for EAD data.
      */
-    private Set<SelectItem> addRightsOptions() {
+    private Set<SelectItem> addRightsOptions(boolean addDefault) {
         Set<SelectItem> rightsSet = new LinkedHashSet<>();
-        rightsSet.add(new SelectItem(AjaxConversionOptionsConstants.NO_SELECTED, "---"));
-        rightsSet.add(new SelectItem(AjaxConversionOptionsConstants.PUBLIC_DOMAIN_MARK, getText("content.message.rights.public.domain")));
-        rightsSet.add(new SelectItem(AjaxConversionOptionsConstants.CREATIVECOMMONS_CC0_PUBLIC, getText("content.message.rights.creative.public.domain")));
-        rightsSet.add(new SelectItem(AjaxConversionOptionsConstants.CREATIVECOMMONS_ATTRIBUTION, getText("content.message.rights.creative.attribution")));
-        rightsSet.add(new SelectItem(AjaxConversionOptionsConstants.CREATIVECOMMONS_ATTRIBUTION_SHARE, getText("content.message.rights.creative.attribution.sharealike")));
-        rightsSet.add(new SelectItem(AjaxConversionOptionsConstants.CREATIVECOMMONS_ATTRIBUTION_NO_DERIVATES, getText("content.message.rights.creative.attribution.no.derivates")));
-        rightsSet.add(new SelectItem(AjaxConversionOptionsConstants.CREATIVECOMMONS_ATTRIBUTION_NON_COMERCIAL, getText("content.message.rights.creative.attribution.non.commercial")));
-        rightsSet.add(new SelectItem(AjaxConversionOptionsConstants.CREATIVECOMMONS_ATTRIBUTION_NC_SHARE, getText("content.message.rights.creative.attribution.non.commercial.sharealike")));
-        rightsSet.add(new SelectItem(AjaxConversionOptionsConstants.CREATIVECOMMONS_ATTRIBUTION_NC_NO_DERIVATES, getText("content.message.rights.creative.attribution.non.commercial.no.derivates")));
-        rightsSet.add(new SelectItem(AjaxConversionOptionsConstants.EUROPEANA_COPYRIGHT_NOT_EVALUATED, getText("ead2ese.content.license.europeana.copyrightnotevaluated")));
-        rightsSet.add(new SelectItem(AjaxConversionOptionsConstants.EUROPEANA_IN_COPYRIGHT, getText("ead2ese.content.license.europeana.incopyright")));
-        rightsSet.add(new SelectItem(AjaxConversionOptionsConstants.EUROPEANA_IN_COPYRIGHT_EU_ORPHAN_WORK, getText("ead2ese.content.license.europeana.incopyright.euorphan")));
-        rightsSet.add(new SelectItem(AjaxConversionOptionsConstants.EUROPEANA_IN_COPYRIGHT_EDUCATIONAL_USE_ONLY, getText("ead2ese.content.license.europeana.incopyright.eduuse")));
-        rightsSet.add(new SelectItem(AjaxConversionOptionsConstants.EUROPEANA_NO_COPYRIGHT_NONCOMMERCIAL_USE_ONLY, getText("ead2ese.content.license.europeana.nocopyright.noncommercial")));
-        rightsSet.add(new SelectItem(AjaxConversionOptionsConstants.EUROPEANA_NO_COPYRIGHT_OTHER_KNOWN_LEGAL_RESTRICTIONS, getText("ead2ese.content.license.europeana.nocopyright.otherlegal")));
+        if (addDefault) {
+            rightsSet.add(new SelectItem(AjaxConversionOptionsConstants.NO_SELECTED, "---"));
+        }
+
+        List<RightsInformation> rightsInformations = DAOFactory.instance().getRightsInformationDAO().getRightsInformations();
+        rightsInformations.forEach((rightsInformation) -> {
+            if (!(rightsInformation.getAbbreviation().equals(IN_COPYRIGHT_EU_ORPHAN_WORK)
+                    || rightsInformation.getAbbreviation().equals(NO_COPYRIGHT_OTHER_KNOWN_LEGAL_RESTRICTIONS)
+                    /*|| rightsInformation.getAbbreviation().equals(COPYRIGHT_NOT_EVALUATED)*/)) {
+                SelectItem selectItem = new SelectItem(rightsInformation.getId(), rightsInformation.getRightsName());
+                rightsSet.add(selectItem);
+            }
+        });
 
         return rightsSet;
     }
@@ -633,6 +661,22 @@ public class IngestionprofilesAction extends AbstractInstitutionAction {
         this.rightsDigitalObjects = rightsDigitalObjects;
     }
 
+    public void setRightsInformationEadData(RightsInformation rightsInformationEadData) {
+        this.rightsInformationEadData = rightsInformationEadData;
+    }
+
+    public RightsInformation getRightsInformationEadData() {
+        return rightsInformationEadData;
+    }
+
+    public void setDefaultRightsInformation(RightsInformation defaultRightsInformation) {
+        this.defaultRightsInformation = defaultRightsInformation;
+    }
+
+    public RightsInformation getDefaultRightsInformation() {
+        return defaultRightsInformation;
+    }
+
     /**
      * @return the rightsEadData
      */
@@ -645,6 +689,14 @@ public class IngestionprofilesAction extends AbstractInstitutionAction {
      */
     public void setRightsEadData(Set<SelectItem> rightsEadData) {
         this.rightsEadData = rightsEadData;
+    }
+
+    public void setAiRightsInformation(RightsInformation aiRightsInformation) {
+        this.aiRightsInformation = aiRightsInformation;
+    }
+
+    public RightsInformation getAiRightsInformation() {
+        return aiRightsInformation;
     }
 
     /**
