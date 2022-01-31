@@ -160,6 +160,9 @@ function showHideRightsConversion() {
         $("tr#trDescriptionRightForDigitalObject").hide();
         $("tr#trHolderRightForDigitalObject").hide();
         $("tr#defaultDaoType").hide();
+        $("tr#xslConversion").hide();
+        $("#labelEadData").hide();
+        $("#labelEaccpfData").show();
 
         // $("tr#trRightForEADData").hide();
         // $("tr#trDescriptionRightForEADData").hide();
@@ -169,6 +172,9 @@ function showHideRightsConversion() {
         $("tr#trDescriptionRightForDigitalObject").show();
         $("tr#trHolderRightForDigitalObject").show();
         $("tr#defaultDaoType").show();
+        $("tr#xslConversion").show();
+        $("#labelEadData").show();
+        $("#labelEaccpfData").hide();
 
         // $("tr#trRightForEADData").show();
         // $("tr#trDescriptionRightForEADData").show();
@@ -187,7 +193,7 @@ function showHideEacExtractionFromEad3() {
     //     $("tr#xslConversion").show();
     //     $("#tab-europeana").show();
     // }
-    $("tr#xslConversion").show();
+    // $("tr#xslConversion").show();
     $("tr#extractEacObject").hide();
     if (assocType == 2) {
         $("#tab-europeana").hide();

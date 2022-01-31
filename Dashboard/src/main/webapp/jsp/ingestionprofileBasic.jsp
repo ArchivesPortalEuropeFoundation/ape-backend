@@ -67,10 +67,11 @@
         </tr>
         <tr id="trRightForEADData">
             <td id="tdLabelRightForEADData">
-                <s:label key="content.message.default.rights.ead.data" for="rightEadData"/>
+                <s:label id="labelEadData" key="content.message.default.rights.ead.data" for="rightEadData"/>
+                <s:label id="labelEaccpfData" key="content.message.default.rights.eaccpf.data" for="rightEadData"/>
             </td>
             <td id="tdSelectRightForEADData">
-                <s:select id="rightEadData" name="rightEadData" list="rightsEadData" listKey="value" listValue="content" onchange="deleteMessage($(this));" />
+                <s:select id="rightEadData" name="rightEadData" list="rightsEadData" listKey="value" listValue="content" value="defaultRightsInformation.getId()"  onchange="deleteMessage($(this));" />
             </td>
         </tr>
         <tr id="trDescriptionRightForEADData">
