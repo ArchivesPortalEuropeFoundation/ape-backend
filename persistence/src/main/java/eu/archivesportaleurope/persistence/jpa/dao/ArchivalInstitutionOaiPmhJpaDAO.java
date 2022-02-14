@@ -1,5 +1,6 @@
 package eu.archivesportaleurope.persistence.jpa.dao;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -60,10 +61,15 @@ public class ArchivalInstitutionOaiPmhJpaDAO extends AbstractHibernateDAO<Archiv
 
 	@Override
 	public List<String> getSets(String url) {
-        TypedQuery<String> typedQuery = getEntityManager().createQuery("SELECT archivalInstitutionOaiPmh.set FROM ArchivalInstitutionOaiPmh archivalInstitutionOaiPmh "
-        		+ "WHERE archivalInstitutionOaiPmh.url  = :url ", String.class);
+        TypedQuery<ArchivalInstitutionOaiPmh> typedQuery = getEntityManager().createQuery("SELECT aoai FROM ArchivalInstitutionOaiPmh aoai "
+        		+ "WHERE aoai.url  = :url ", ArchivalInstitutionOaiPmh.class);
         typedQuery.setParameter("url", url);
-        return typedQuery.getResultList();
+        List<ArchivalInstitutionOaiPmh> results = typedQuery.getResultList();
+        List<String> response = new ArrayList<>();
+        for (ArchivalInstitutionOaiPmh archivalInstitutionOaiPmh : results){
+            response.add(archivalInstitutionOaiPmh.getSet());
+        }
+        return response;//typedQuery.getResultList();
 
 	}
 
