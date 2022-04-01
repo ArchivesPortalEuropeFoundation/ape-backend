@@ -18,6 +18,7 @@ public class PropertiesKeys {
 	public static final String APE_DASHBOARD_DOMAIN= "ape.dashboard.domain";
 	public static final String APE_PORTAL_DOMAIN= "ape.portal.domain";
 	public static final String APE_PORTAL_EAD_DISPLAY = "ape.portal.ead.display";
-	public static final String APE_PORTAL_EAC_DISPLAY = "ape.portal.eac.display";	
+	public static final String APE_PORTAL_EAC_DISPLAY = "ape.portal.eac.display";
 
+	public static final String APE_DASHBOARD_ENVIRONMENT = "ape.dashboard.environment";
 }
