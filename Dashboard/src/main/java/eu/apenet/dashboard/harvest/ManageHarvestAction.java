@@ -31,7 +31,7 @@ public class ManageHarvestAction extends AbstractAction {
 	 */
 	private static final long serialVersionUID = -6086665250239818127L;
 	private static final Logger LOGGER = Logger.getLogger(ManageHarvestAction.class);
-    private static final SimpleDateFormat DATE_TIME = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss");
+    private static final SimpleDateFormat DATE_TIME = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
     private Integer harvestId;
     private boolean processOnceADay = true;
     private String selectedAction;

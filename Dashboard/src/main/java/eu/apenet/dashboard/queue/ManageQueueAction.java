@@ -44,7 +44,7 @@ import java.io.IOException;
 public class ManageQueueAction extends AbstractAction {
 
     private static final Logger LOGGER = Logger.getLogger(ManageQueueAction.class);
-    private static final SimpleDateFormat DATE_TIME = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss");
+    private static final SimpleDateFormat DATE_TIME = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
     private Integer queueItemId;
     private Integer aiId;
     private String selectedAction;
