@@ -375,9 +375,9 @@ public class EacCpfLoader {
                         for (P p : ps){
                             if (p.getId()!=null) {
                                 if (p.getId().equals("description")) {
-                                    this.rightsDescription = ps.get(1).getContent();
+                                    this.rightsDescription = p.getContent();
                                 } else if (p.getId().equals("rightsHolder")) {
-                                    this.rightsHolder = ps.get(2).getContent();
+                                    this.rightsHolder = p.getContent();
                                 }
                             }
                         }
