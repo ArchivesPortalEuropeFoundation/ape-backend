@@ -2,15 +2,19 @@ package eu.apenet.dashboard.harvest;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
 import eu.apenet.dashboard.utils.ContentUtils;
 import eu.apenet.persistence.vo.ArchivalInstitutionOaiPmh;
 import eu.apenet.persistence.vo.OaiPmhStatus;
+import org.apache.log4j.Logger;
 
 public class DisplayHarvestProfileItem {
-    private static final SimpleDateFormat DATE_TIME = new SimpleDateFormat("dd-MM-yyyy hh:mm");
+	private final Logger log = Logger.getLogger(getClass());
+
+    private static final SimpleDateFormat DATE_TIME = new SimpleDateFormat("dd-MM-yyyy HH:mm");
     private static final SimpleDateFormat DATE = new SimpleDateFormat("dd-MM-yyyy");
 	private long id;
 	private String country;
@@ -44,7 +48,26 @@ public class DisplayHarvestProfileItem {
 			this.lastHarvesting = DATE.format(archivalInstitutionOaiPmh.getLastHarvesting());
 		}
 		if (archivalInstitutionOaiPmh.getNewHarvesting() != null){
-			this.newHarvesting = DATE.format(archivalInstitutionOaiPmh.getNewHarvesting());
+			//if the newHarvesting time is after 22:00, then add one day, because it will actually run the next day
+			Date realDate = archivalInstitutionOaiPmh.getNewHarvesting();
+			Calendar realCal = Calendar.getInstance();
+			realCal.setTime(realDate);
+			Date newDate = new Date(realDate.getTime());
+			Calendar cal = Calendar.getInstance();
+			cal.setTime(newDate);
+			cal.set(Calendar.HOUR_OF_DAY, 22);
+			cal.set(Calendar.MINUTE, 00);
+			cal.set(Calendar.SECOND, 00);
+			cal.set(Calendar.MILLISECOND, 00);
+			if (realCal.compareTo(cal)>0){
+				cal = Calendar.getInstance();
+				cal.setTime(realDate);
+				cal.add(Calendar.DAY_OF_MONTH, 1);
+				this.newHarvesting = DATE.format(cal.getTime());
+			}
+			else {
+				this.newHarvesting = DATE.format(archivalInstitutionOaiPmh.getNewHarvesting());
+			}
 			readyForHarvesting = now.after(archivalInstitutionOaiPmh.getNewHarvesting());
 
 		}else {
