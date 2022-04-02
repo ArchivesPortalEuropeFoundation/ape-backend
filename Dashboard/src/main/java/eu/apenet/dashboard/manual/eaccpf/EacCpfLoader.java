@@ -217,7 +217,6 @@ public class EacCpfLoader {
             functions = new ArrayList<FunctionType>();
             occupations = new ArrayList<OccupationType>();
             genealogies = new ArrayList<GenealogyType>();
-            biographies = new ArrayList<BiographyType>();
 
             for (Object object : descriptionObjects) {
                 if (object instanceof Places) {
@@ -268,6 +267,8 @@ public class EacCpfLoader {
         //BIOGRAPHIES
         if (this.eacCpf.getCpfDescription() != null && this.eacCpf.getCpfDescription().getDescription() != null
                 && this.eacCpf.getCpfDescription().getDescription().getBiogHist() != null) {
+
+            biographies = new ArrayList<BiographyType>();
 
             for (BiogHist biogHist : this.eacCpf.getCpfDescription().getDescription().getBiogHist()) {
                 if (biogHist.getChronListOrPOrCitation() != null
