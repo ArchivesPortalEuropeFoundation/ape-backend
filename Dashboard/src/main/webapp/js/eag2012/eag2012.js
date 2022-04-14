@@ -1973,7 +1973,7 @@ function addRepositories(text1, text2, text3, text4, text5, text6, text7, proper
     //clone and put the 3 new tables
     $("div#tab-contact").append("<table id=\"contactTable_" + (counter + 1) + "\" class=\"tablePadding\">" + $("table#contactTable").clone().html() + "</table>");
     $("table#contactTable_" + (counter + 1) + " input#currentContactNumberTab").attr("value", (counter + 1));
-    $("div#tab-accessAndServices").append("<table id=\"accessAndServicesTable_" + (counter + 1) + "\" class=\"tablePadding\">" + $("table#accessAndServicesTable").clone().html() + "</table>");
+    $("div#tab-accessAndServices").append("<table id=\"accessAndServicesTable_" + (counter + 1) + "\" class=\"tablePadding\">" + $("table#accessAndServicesTable_"+counter).clone().html() + "</table>");
     $("div#tab-description").append("<table id=\"descriptionTable_" + (counter + 1) + "\" class=\"tablePadding\">" + $("table#descriptionTable").clone().html() + "</table>");
 
     // Remove attr "disabled" for all elements in "contact" tab.
