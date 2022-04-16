@@ -55,6 +55,10 @@
             <result type="json" />
         </action>
 
+        <action name="eacApi" class="eu.apenet.api.eac.EacApiAction">
+            <result type="json" />
+        </action>
+
         <!-- Content Provider Information -->
         <action name="dashboardHome" class="eu.apenet.dashboard.DashboardHomeAction">
             <interceptor-ref name="changeLanguageStack"/>
