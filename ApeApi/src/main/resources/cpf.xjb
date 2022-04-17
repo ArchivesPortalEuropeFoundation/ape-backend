@@ -8,7 +8,7 @@
     xsi:schemaLocation="http://java.sun.com/xml/ns/jaxb http://java.sun.com/xml/ns/jaxb/bindingschema_2_0.xsd"
     jaxb:extensionBindingPrefixes="xjc annox" version="2.1">
 
-    <jaxb:bindings schemaLocation="cpf.xsd" version="1.0">
+    <jaxb:bindings schemaLocation="apeEAC-CPF.xsd" version="1.0">
         <jaxb:schemaBindings>
             <jaxb:package name="de.staatsbibliothek_berlin.eac"/>
         </jaxb:schemaBindings>
