@@ -11,7 +11,9 @@ import eu.apenet.persistence.vo.ArchivalInstitution;
 import eu.apenet.persistence.vo.EacCpf;
 import net.sf.saxon.s9api.SaxonApiException;
 import org.apache.commons.lang.StringUtils;
+import org.apache.struts2.ServletActionContext;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.xml.transform.Source;
 import javax.xml.transform.stream.StreamSource;
 import java.io.*;
@@ -49,6 +51,7 @@ public class EacApiAction {
     }
 
     public String execute() throws IOException, SaxonApiException {
+        HttpServletResponse response = ServletActionContext.getResponse();
 
         EacCpfDAO eacCpfDAO = DAOFactory.instance().getEacCpfDAO();
         EacCpf eaccpf = eacCpfDAO.getEacCpfByIdentifier(aiName, eaccpfId,!preview);
@@ -80,7 +83,7 @@ public class EacApiAction {
                 this.html = stringWriter.toString();
             }
         }
-
+        response.setHeader("Access-Control-Allow-Origin","*");
         return Action.SUCCESS;
     }
 
