@@ -1,0 +1,4957 @@
+{
+  "swagger" : "2.0",
+  "info" : {
+    "description" : "This is a list of usable API services available from Archives Portal Europe. Here you can test these services, but to do so you need API key.\n                                    Please register at <a href=\"https://www.archivesportaleurope.net/get-api-key\">APE server</a> to get your API key.",
+    "version" : "5.0.0",
+    "title" : "Archives Portal Europe",
+    "termsOfService" : "http://www.archivesportaleurope.net/terms-of-use",
+    "contact" : {
+      "name" : "Ape Admin",
+      "url" : "http://www.archivesportaleurope.net/contact",
+      "email" : "root@www.archivesportaleurope.net"
+    },
+    "license" : {
+      "name" : "CreativeCommons0 1.0",
+      "url" : "https://creativecommons.org/publicdomain/zero/1.0/"
+    }
+  },
+  "basePath" : "/services",
+  "tags" : [ {
+    "name" : "content"
+  }, {
+    "name" : "download"
+  }, {
+    "name" : "hierarchy"
+  }, {
+    "name" : "institute"
+  }, {
+    "name" : "search"
+  }, {
+    "name" : "version"
+  } ],
+  "paths" : {
+    "/content/eac-cpf/{id}" : {
+      "get" : {
+        "tags" : [ "content" ],
+        "summary" : "Return content response of an EAC-CPF item",
+        "description" : "",
+        "operationId" : "getEacCpfContent",
+        "consumes" : [ "application/vnd.ape-v5+json" ],
+        "produces" : [ "application/vnd.ape-v5+json" ],
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "$ref" : "#/definitions/ContentResponseEacCpf"
+            }
+          },
+          "400" : {
+            "description" : "Bad request"
+          },
+          "401" : {
+            "description" : "Unauthorized"
+          },
+          "500" : {
+            "description" : "Internal server error"
+          }
+        }
+      }
+    },
+    "/content/ead/archdesc/{id}" : {
+      "get" : {
+        "tags" : [ "content" ],
+        "summary" : "Return content response of an EAD item",
+        "description" : "",
+        "operationId" : "getEadContent",
+        "consumes" : [ "application/vnd.ape-v5+json" ],
+        "produces" : [ "application/vnd.ape-v5+json" ],
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "$ref" : "#/definitions/ContentResponseEad"
+            }
+          },
+          "400" : {
+            "description" : "Bad request"
+          },
+          "401" : {
+            "description" : "Unauthorized"
+          },
+          "500" : {
+            "description" : "Internal server error"
+          }
+        }
+      }
+    },
+    "/content/ead/clevel/{id}" : {
+      "get" : {
+        "tags" : [ "content" ],
+        "summary" : "Return content response of clevel",
+        "description" : "",
+        "operationId" : "getClevelContent",
+        "consumes" : [ "application/vnd.ape-v5+json" ],
+        "produces" : [ "application/vnd.ape-v5+json" ],
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "$ref" : "#/definitions/ContentResponseClevel"
+            }
+          },
+          "400" : {
+            "description" : "Bad request"
+          },
+          "401" : {
+            "description" : "Unauthorized"
+          },
+          "500" : {
+            "description" : "Internal server error"
+          }
+        }
+      }
+    },
+    "/content/ead/clevels" : {
+      "post" : {
+        "tags" : [ "content" ],
+        "summary" : "Return the contents of the given valid clevel ids, maximum 1k ids are allowed",
+        "description" : "",
+        "operationId" : "getClevelContent",
+        "consumes" : [ "application/vnd.ape-v5+json" ],
+        "produces" : [ "application/vnd.ape-v5+json" ],
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "body",
+          "description" : "Search EAD units\nMaximum 1000 ids are allowed",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/ContentRequest"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "$ref" : "#/definitions/ContentResponseClevelList"
+            }
+          },
+          "400" : {
+            "description" : "Bad request"
+          },
+          "401" : {
+            "description" : "Unauthorized"
+          },
+          "500" : {
+            "description" : "Internal server error"
+          }
+        }
+      }
+    },
+    "/download/eac-cpf/{id}" : {
+      "get" : {
+        "tags" : [ "download" ],
+        "summary" : "Download raw xml of an EAC-CPF item",
+        "description" : "",
+        "operationId" : "downloadXmlEacCpf",
+        "consumes" : [ "application/vnd.ape-v5+json" ],
+        "produces" : [ "application/octet-stream" ],
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "type" : "string"
+            }
+          },
+          "400" : {
+            "description" : "Bad request"
+          },
+          "401" : {
+            "description" : "Unauthorized"
+          },
+          "500" : {
+            "description" : "Internal server error"
+          }
+        }
+      }
+    },
+    "/download/ead/{id}" : {
+      "get" : {
+        "tags" : [ "download" ],
+        "summary" : "Download raw xml of an EAD item",
+        "description" : "",
+        "operationId" : "downloadXmlEad",
+        "consumes" : [ "application/vnd.ape-v5+json" ],
+        "produces" : [ "application/octet-stream" ],
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "type" : "string"
+            }
+          },
+          "400" : {
+            "description" : "Bad request"
+          },
+          "401" : {
+            "description" : "Unauthorized"
+          },
+          "500" : {
+            "description" : "Internal server error"
+          }
+        }
+      }
+    },
+    "/hierarchy/ead/{id}/ancestors" : {
+      "post" : {
+        "tags" : [ "hierarchy" ],
+        "summary" : "Get all ancestors of a given id",
+        "description" : "",
+        "operationId" : "getAncestors",
+        "consumes" : [ "application/vnd.ape-v5+json" ],
+        "produces" : [ "application/vnd.ape-v5+json" ],
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "$ref" : "#/definitions/HierarchyResponseSet"
+            }
+          },
+          "400" : {
+            "description" : "Bad request"
+          },
+          "401" : {
+            "description" : "Unauthorized"
+          },
+          "500" : {
+            "description" : "Internal server error"
+          }
+        }
+      }
+    },
+    "/hierarchy/ead/{id}/children" : {
+      "post" : {
+        "tags" : [ "hierarchy" ],
+        "summary" : "Get all children of a given id",
+        "description" : "",
+        "operationId" : "getChildren",
+        "consumes" : [ "application/vnd.ape-v5+json" ],
+        "produces" : [ "application/vnd.ape-v5+json" ],
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "in" : "body",
+          "name" : "body",
+          "description" : "Search EAD units\nCount should not be more than 50",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/PageRequest"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "$ref" : "#/definitions/HierarchyResponseSet"
+            }
+          },
+          "400" : {
+            "description" : "Bad request"
+          },
+          "401" : {
+            "description" : "Unauthorized"
+          },
+          "500" : {
+            "description" : "Internal server error"
+          }
+        }
+      }
+    },
+    "/institute/getDocs" : {
+      "post" : {
+        "tags" : [ "institute" ],
+        "summary" : "List of documents of the given type from the given Archival institute",
+        "description" : "",
+        "operationId" : "getInsDocument",
+        "consumes" : [ "application/vnd.ape-v5+json" ],
+        "produces" : [ "application/vnd.ape-v5+json" ],
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "body",
+          "description" : "Search EAD units\nCount should not be more than 50",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/InstituteDocRequest"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "$ref" : "#/definitions/InstituteEadResponseSet"
+            }
+          },
+          "400" : {
+            "description" : "Bad request"
+          },
+          "401" : {
+            "description" : "Unauthorized"
+          },
+          "500" : {
+            "description" : "Internal server error"
+          }
+        }
+      }
+    },
+    "/institute/getInstitutes" : {
+      "post" : {
+        "tags" : [ "institute" ],
+        "summary" : "List of Archival institutes",
+        "description" : "",
+        "operationId" : "getInsByOpenData",
+        "consumes" : [ "application/vnd.ape-v5+json" ],
+        "produces" : [ "application/vnd.ape-v5+json" ],
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "body",
+          "description" : "Page request by count and startIndex",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/PageRequest"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "$ref" : "#/definitions/ArchivalInstitutesResponse"
+            }
+          },
+          "400" : {
+            "description" : "Bad request"
+          },
+          "401" : {
+            "description" : "Unauthorized"
+          },
+          "500" : {
+            "description" : "Internal server error"
+          }
+        }
+      }
+    },
+    "/search/eac-cpf" : {
+      "post" : {
+        "tags" : [ "search" ],
+        "summary" : "Search for EAC-CPF",
+        "description" : "",
+        "operationId" : "eacCpfSearch",
+        "consumes" : [ "application/vnd.ape-v5+json" ],
+        "produces" : [ "application/vnd.ape-v5+json" ],
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "body",
+          "description" : "Search EAC units\nCount should not be more than 50",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/SearchRequest"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "$ref" : "#/definitions/EacCpfFacetedResponseSet"
+            }
+          },
+          "400" : {
+            "description" : "Bad request"
+          },
+          "401" : {
+            "description" : "Unauthorized"
+          },
+          "500" : {
+            "description" : "Internal server error"
+          }
+        }
+      }
+    },
+    "/search/ead" : {
+      "post" : {
+        "tags" : [ "search" ],
+        "summary" : "Search for EAD",
+        "description" : "",
+        "operationId" : "search",
+        "consumes" : [ "application/vnd.ape-v5+json" ],
+        "produces" : [ "application/vnd.ape-v5+json" ],
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "body",
+          "description" : "Search EAD units\nCount should not be more than 50",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/SearchRequest"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "$ref" : "#/definitions/EadFactedResponseSet"
+            }
+          },
+          "400" : {
+            "description" : "Bad request"
+          },
+          "401" : {
+            "description" : "Unauthorized"
+          },
+          "500" : {
+            "description" : "Internal server error"
+          }
+        }
+      }
+    },
+    "/search/ead/docList" : {
+      "post" : {
+        "tags" : [ "search" ],
+        "summary" : "Search for EAD docList",
+        "description" : "",
+        "operationId" : "searchEadDocs",
+        "consumes" : [ "application/vnd.ape-v5+json" ],
+        "produces" : [ "application/vnd.ape-v5+json" ],
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "body",
+          "description" : "Search EAD units\nCount should not be more than 50",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/SearchDocRequest"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "$ref" : "#/definitions/EadFactedDocResponseSet"
+            }
+          },
+          "400" : {
+            "description" : "Bad request"
+          },
+          "401" : {
+            "description" : "Unauthorized"
+          },
+          "500" : {
+            "description" : "Internal server error"
+          }
+        }
+      }
+    },
+    "/search/ead/{id}/children" : {
+      "post" : {
+        "tags" : [ "search" ],
+        "summary" : "Search the term in all children of a given id",
+        "description" : "",
+        "operationId" : "getChildren",
+        "consumes" : [ "application/vnd.ape-v5+json" ],
+        "produces" : [ "application/vnd.ape-v5+json" ],
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "in" : "body",
+          "name" : "body",
+          "description" : "Search EAD units\nCount should not be more than 50",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/QueryPageRequest"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "$ref" : "#/definitions/EadResponseSet"
+            }
+          },
+          "400" : {
+            "description" : "Bad request"
+          },
+          "401" : {
+            "description" : "Unauthorized"
+          },
+          "500" : {
+            "description" : "Internal server error"
+          }
+        }
+      }
+    },
+    "/search/ead/{id}/descendants" : {
+      "post" : {
+        "tags" : [ "search" ],
+        "summary" : "Search the term in all descendants of a given id",
+        "description" : "",
+        "operationId" : "getDescendants",
+        "consumes" : [ "application/vnd.ape-v5+json" ],
+        "produces" : [ "application/vnd.ape-v5+json" ],
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "in" : "body",
+          "name" : "body",
+          "description" : "Search EAD units\nCount should not be more than 50",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/SearchRequest"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "$ref" : "#/definitions/EadFactedResponseSet"
+            }
+          },
+          "400" : {
+            "description" : "Bad request"
+          },
+          "401" : {
+            "description" : "Unauthorized"
+          },
+          "500" : {
+            "description" : "Internal server error"
+          }
+        }
+      }
+    },
+    "/search/ead/{id}/descendantsWithAncestors" : {
+      "post" : {
+        "tags" : [ "search" ],
+        "summary" : "Search all descendants (with the ancestors list) of a given ead id",
+        "description" : "",
+        "operationId" : "getDescendantsWithAncestors",
+        "consumes" : [ "application/vnd.ape-v5+json" ],
+        "produces" : [ "application/vnd.ape-v5+json" ],
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "in" : "body",
+          "name" : "body",
+          "description" : "Search EAD units\nCount should not be more than 50",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/SearchRequest"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "$ref" : "#/definitions/EadHierarchyResponseSet"
+            }
+          },
+          "400" : {
+            "description" : "Bad request"
+          },
+          "401" : {
+            "description" : "Unauthorized"
+          },
+          "500" : {
+            "description" : "Internal server error"
+          }
+        }
+      }
+    },
+    "/search/searchEadFindingAidNo" : {
+      "post" : {
+        "tags" : [ "search" ],
+        "summary" : "Search Eads with FindingAidNo/FondsUnitId",
+        "description" : "",
+        "operationId" : "searchEadFindingAidNo",
+        "consumes" : [ "application/vnd.ape-v5+json" ],
+        "produces" : [ "application/vnd.ape-v5+json" ],
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "body",
+          "description" : "Search EAD units\nCount should not be more than 50",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/SearchPageRequestWithUnitId"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "$ref" : "#/definitions/EadFactedResponseSet"
+            }
+          },
+          "400" : {
+            "description" : "Bad request"
+          },
+          "401" : {
+            "description" : "Unauthorized"
+          },
+          "500" : {
+            "description" : "Internal server error"
+          }
+        }
+      }
+    },
+    "/version/current" : {
+      "get" : {
+        "tags" : [ "version" ],
+        "summary" : "Return current app version",
+        "description" : "",
+        "operationId" : "appVersion",
+        "responses" : {
+          "500" : {
+            "description" : "Internal server error"
+          }
+        }
+      }
+    },
+    "/version/previous" : {
+      "get" : {
+        "tags" : [ "version" ],
+        "summary" : "Return previous app version",
+        "description" : "",
+        "operationId" : "appVersionPre",
+        "responses" : {
+          "500" : {
+            "description" : "Internal server error"
+          }
+        }
+      }
+    }
+  },
+  "definitions" : {
+    "Abbreviation" : {
+      "type" : "object",
+      "properties" : {
+        "value" : {
+          "type" : "string"
+        }
+      }
+    },
+    "Abstract" : {
+      "type" : "object",
+      "properties" : {
+        "content" : {
+          "type" : "string"
+        },
+        "lang" : {
+          "type" : "string",
+          "xml" : {
+            "namespace" : "http://www.w3.org/XML/1998/namespace",
+            "attribute" : true
+          }
+        }
+      }
+    },
+    "AgencyCode" : {
+      "type" : "object",
+      "properties" : {
+        "value" : {
+          "type" : "string"
+        }
+      }
+    },
+    "AgencyName" : {
+      "type" : "object",
+      "properties" : {
+        "content" : {
+          "type" : "string"
+        },
+        "lang" : {
+          "type" : "string",
+          "xml" : {
+            "namespace" : "http://www.w3.org/XML/1998/namespace",
+            "attribute" : true
+          }
+        }
+      }
+    },
+    "Agent" : {
+      "type" : "object",
+      "properties" : {
+        "content" : {
+          "type" : "string"
+        },
+        "lang" : {
+          "type" : "string",
+          "xml" : {
+            "namespace" : "http://www.w3.org/XML/1998/namespace",
+            "attribute" : true
+          }
+        }
+      }
+    },
+    "AgentType" : {
+      "type" : "object",
+      "properties" : {
+        "value" : {
+          "type" : "string"
+        }
+      }
+    },
+    "AlternativeSet" : {
+      "type" : "object",
+      "required" : [ "setComponent" ],
+      "properties" : {
+        "setComponent" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/SetComponent"
+          }
+        },
+        "lang" : {
+          "type" : "string",
+          "xml" : {
+            "namespace" : "http://www.w3.org/XML/1998/namespace",
+            "attribute" : true
+          }
+        },
+        "base" : {
+          "type" : "string",
+          "xml" : {
+            "namespace" : "http://www.w3.org/XML/1998/namespace",
+            "attribute" : true
+          }
+        }
+      }
+    },
+    "Archdesc" : {
+      "type" : "object",
+      "required" : [ "did" ],
+      "properties" : {
+        "runner" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/Runner"
+          }
+        },
+        "did" : {
+          "$ref" : "#/definitions/Did"
+        },
+        "level" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          },
+          "enum" : [ "CLASS", "COLLECTION", "FILE", "FONDS", "ITEM", "OTHERLEVEL", "RECORDGRP", "SERIES", "SUBFONDS", "SUBGRP", "SUBSERIES" ]
+        },
+        "type" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        },
+        "relatedencoding" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        },
+        "otherlevel" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        },
+        "encodinganalog" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        },
+        "id" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        },
+        "altrender" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        },
+        "audience" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        },
+        "mdescFull" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/Serializable"
+          }
+        }
+      }
+    },
+    "ArchivalInstituteResponse" : {
+      "type" : "object",
+      "required" : [ "id", "totalDocs" ],
+      "properties" : {
+        "name" : {
+          "type" : "string",
+          "description" : "Name of the AI"
+        },
+        "id" : {
+          "type" : "integer",
+          "format" : "int32",
+          "description" : "Internal APE identifier of the result"
+        },
+        "country" : {
+          "type" : "string",
+          "description" : "Name of the country where the repository is. In English."
+        },
+        "countryId" : {
+          "type" : "integer",
+          "format" : "int32",
+          "description" : "Id of the country"
+        },
+        "totalDocs" : {
+          "type" : "integer",
+          "format" : "int32",
+          "description" : "Total number of documents found."
+        },
+        "repositoryCode" : {
+          "type" : "string",
+          "description" : "Code of the repository holding the fonds. Preferably, but not necessarily <a target='_blank' href='https://en.wikipedia.org/wiki/International_Standard_Identifier_for_Libraries_and_Related_Organizations'>ISIL</a>"
+        }
+      }
+    },
+    "ArchivalInstitutesResponse" : {
+      "type" : "object",
+      "required" : [ "institutes", "totalResults" ],
+      "properties" : {
+        "totalResults" : {
+          "type" : "integer",
+          "format" : "int64",
+          "description" : "Total number of AI found."
+        },
+        "institutes" : {
+          "type" : "array",
+          "description" : "Array of search result, total number of elements can be less than query limit.",
+          "items" : {
+            "$ref" : "#/definitions/ArchivalInstituteResponse"
+          }
+        }
+      }
+    },
+    "Author" : {
+      "type" : "object",
+      "properties" : {
+        "content" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/Serializable"
+          }
+        },
+        "encodinganalog" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        },
+        "id" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        },
+        "altrender" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        },
+        "audience" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        }
+      }
+    },
+    "BiogHist" : {
+      "type" : "object",
+      "properties" : {
+        "chronListOrPOrCitation" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/Serializable"
+          }
+        },
+        "localType" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        },
+        "abstract" : {
+          "$ref" : "#/definitions/Abstract"
+        }
+      }
+    },
+    "C" : {
+      "type" : "object",
+      "required" : [ "did" ],
+      "properties" : {
+        "head" : {
+          "$ref" : "#/definitions/Head"
+        },
+        "did" : {
+          "$ref" : "#/definitions/Did"
+        },
+        "theadAndC" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/Serializable"
+          }
+        },
+        "level" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          },
+          "enum" : [ "CLASS", "COLLECTION", "FILE", "FONDS", "ITEM", "OTHERLEVEL", "RECORDGRP", "SERIES", "SUBFONDS", "SUBGRP", "SUBSERIES" ]
+        },
+        "id" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        },
+        "altrender" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        },
+        "audience" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        },
+        "otherlevel" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        },
+        "encodinganalog" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        },
+        "tpattern" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        },
+        "mdescFull" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/Serializable"
+          }
+        }
+      },
+      "xml" : {
+        "name" : "c"
+      }
+    },
+    "Change" : {
+      "type" : "object",
+      "required" : [ "date", "item" ],
+      "properties" : {
+        "date" : {
+          "$ref" : "#/definitions/Date"
+        },
+        "item" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/Item"
+          }
+        },
+        "encodinganalog" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        },
+        "id" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        },
+        "altrender" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        },
+        "audience" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        }
+      }
+    },
+    "Citation" : {
+      "type" : "object",
+      "properties" : {
+        "content" : {
+          "type" : "string"
+        },
+        "lang" : {
+          "type" : "string",
+          "xml" : {
+            "namespace" : "http://www.w3.org/XML/1998/namespace",
+            "attribute" : true
+          }
+        },
+        "lastDateTimeVerified" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        },
+        "type" : {
+          "type" : "string",
+          "xml" : {
+            "namespace" : "http://www.w3.org/1999/xlink",
+            "attribute" : true
+          }
+        },
+        "href" : {
+          "type" : "string",
+          "xml" : {
+            "namespace" : "http://www.w3.org/1999/xlink",
+            "attribute" : true
+          }
+        },
+        "role" : {
+          "type" : "string",
+          "xml" : {
+            "namespace" : "http://www.w3.org/1999/xlink",
+            "attribute" : true
+          }
+        },
+        "arcrole" : {
+          "type" : "string",
+          "xml" : {
+            "namespace" : "http://www.w3.org/1999/xlink",
+            "attribute" : true
+          }
+        },
+        "title" : {
+          "type" : "string",
+          "xml" : {
+            "namespace" : "http://www.w3.org/1999/xlink",
+            "attribute" : true
+          }
+        },
+        "show" : {
+          "type" : "string",
+          "xml" : {
+            "namespace" : "http://www.w3.org/1999/xlink",
+            "attribute" : true
+          }
+        },
+        "actuate" : {
+          "type" : "string",
+          "xml" : {
+            "namespace" : "http://www.w3.org/1999/xlink",
+            "attribute" : true
+          }
+        }
+      }
+    },
+    "ComponentEntry" : {
+      "type" : "object",
+      "properties" : {
+        "content" : {
+          "type" : "string"
+        },
+        "localType" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        },
+        "scriptCode" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        },
+        "lang" : {
+          "type" : "string",
+          "xml" : {
+            "namespace" : "http://www.w3.org/XML/1998/namespace",
+            "attribute" : true
+          }
+        },
+        "transliteration" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        }
+      }
+    },
+    "ContentRequest" : {
+      "type" : "object",
+      "properties" : {
+        "idList" : {
+          "type" : "array",
+          "description" : "List of ids",
+          "items" : {
+            "type" : "string"
+          },
+          "maxItems" : 1000,
+          "minItems" : 1
+        }
+      }
+    },
+    "ContentResponseClevel" : {
+      "type" : "object",
+      "required" : [ "content", "findingAidNo", "id", "repository", "repositoryId", "unitTitle" ],
+      "properties" : {
+        "id" : {
+          "type" : "string",
+          "description" : "Internal APE identifier of the Descriptive Unit, Finding Aid, Holdings Guide or Source Guide. The same as your request parameter \"id\". "
+        },
+        "findingAidNo" : {
+          "type" : "string",
+          "description" : "Original identifier of the information provided by the repository."
+        },
+        "unitTitle" : {
+          "type" : "string",
+          "description" : "Title of the information provided by the repository."
+        },
+        "findingAidTitle" : {
+          "type" : "string",
+          "description" : "Title of the finding aid. "
+        },
+        "repositoryId" : {
+          "type" : "integer",
+          "format" : "int32",
+          "description" : "Internal APE identifier of the repository."
+        },
+        "repository" : {
+          "type" : "string",
+          "description" : "Name of the repository."
+        },
+        "content" : {
+          "description" : "Information of C-level in EAD, serialized as JSON. This part could potentially contain all the elements that can be part of a Component-element (&lt;c&gt;) of an EAD/XML-document. ",
+          "$ref" : "#/definitions/C"
+        }
+      }
+    },
+    "ContentResponseClevelList" : {
+      "type" : "object",
+      "required" : [ "results" ],
+      "properties" : {
+        "results" : {
+          "type" : "array",
+          "description" : "Array of search result, total number of elements can be less than query limit.",
+          "items" : {
+            "$ref" : "#/definitions/ContentResponseClevel"
+          }
+        }
+      }
+    },
+    "ContentResponseEacCpf" : {
+      "type" : "object",
+      "required" : [ "content", "id" ],
+      "properties" : {
+        "id" : {
+          "type" : "integer",
+          "format" : "int32",
+          "description" : "Internal APE identifier of the EAC-CPF. The same as your request parameter \"id\". "
+        },
+        "nameEntry" : {
+          "type" : "string",
+          "description" : "Name of the entity"
+        },
+        "repositoryId" : {
+          "type" : "integer",
+          "format" : "int32",
+          "description" : "Internal APE identifier of the repository."
+        },
+        "repositoryName" : {
+          "type" : "string",
+          "description" : "Name of the repository."
+        },
+        "content" : {
+          "description" : "Information in EAD-format, serialized as JSON. This part could potentially contain all the elements that can be part of an EAD/XML-document.",
+          "$ref" : "#/definitions/EacCpf"
+        }
+      }
+    },
+    "ContentResponseEad" : {
+      "type" : "object",
+      "required" : [ "content", "findingAidNo", "id", "repository", "repositoryId", "unitTitle" ],
+      "properties" : {
+        "id" : {
+          "type" : "string",
+          "description" : "Internal APE identifier of the Descriptive Unit, Finding Aid, Holdings Guide or Source Guide. The same as your request parameter \"id\". "
+        },
+        "findingAidNo" : {
+          "type" : "string",
+          "description" : "Original identifier of the information provided by the repository."
+        },
+        "unitTitle" : {
+          "type" : "string",
+          "description" : "Title of the information provided by the repository."
+        },
+        "findingAidTitle" : {
+          "type" : "string",
+          "description" : "Title of the finding aid. "
+        },
+        "repositoryId" : {
+          "type" : "integer",
+          "format" : "int32",
+          "description" : "Internal APE identifier of the repository."
+        },
+        "repository" : {
+          "type" : "string",
+          "description" : "Name of the repository."
+        },
+        "content" : {
+          "description" : "Information in EAD-format, serialized as JSON. This part could potentially contain all the elements that can be part of an EAD/XML-document.",
+          "$ref" : "#/definitions/Ead"
+        }
+      }
+    },
+    "Control" : {
+      "type" : "object",
+      "required" : [ "maintenanceAgency", "maintenanceHistory", "maintenanceStatus", "recordId" ],
+      "properties" : {
+        "recordId" : {
+          "$ref" : "#/definitions/RecordId"
+        },
+        "otherRecordId" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/OtherRecordId"
+          }
+        },
+        "maintenanceStatus" : {
+          "$ref" : "#/definitions/MaintenanceStatus"
+        },
+        "publicationStatus" : {
+          "$ref" : "#/definitions/PublicationStatus"
+        },
+        "maintenanceAgency" : {
+          "$ref" : "#/definitions/MaintenanceAgency"
+        },
+        "languageDeclaration" : {
+          "$ref" : "#/definitions/LanguageDeclaration"
+        },
+        "conventionDeclaration" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/ConventionDeclaration"
+          }
+        },
+        "rightsDeclaration" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/RightsDeclaration"
+          }
+        },
+        "localTypeDeclaration" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/LocalTypeDeclaration"
+          }
+        },
+        "localControl" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/LocalControl"
+          }
+        },
+        "maintenanceHistory" : {
+          "$ref" : "#/definitions/MaintenanceHistory"
+        },
+        "sources" : {
+          "$ref" : "#/definitions/Sources"
+        }
+      }
+    },
+    "ConventionDeclaration" : {
+      "type" : "object",
+      "required" : [ "citation" ],
+      "properties" : {
+        "abbreviation" : {
+          "$ref" : "#/definitions/Abbreviation"
+        },
+        "citation" : {
+          "$ref" : "#/definitions/Citation"
+        },
+        "descriptiveNote" : {
+          "$ref" : "#/definitions/DescriptiveNote"
+        }
+      }
+    },
+    "CpfDescription" : {
+      "type" : "object",
+      "required" : [ "description", "identity" ],
+      "properties" : {
+        "identity" : {
+          "$ref" : "#/definitions/Identity"
+        },
+        "description" : {
+          "$ref" : "#/definitions/Description"
+        },
+        "relations" : {
+          "$ref" : "#/definitions/Relations"
+        },
+        "alternativeSet" : {
+          "$ref" : "#/definitions/AlternativeSet"
+        }
+      }
+    },
+    "CpfRelation" : {
+      "type" : "object",
+      "properties" : {
+        "relationEntry" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/RelationEntry"
+          }
+        },
+        "date" : {
+          "$ref" : "#/definitions/Date"
+        },
+        "dateRange" : {
+          "$ref" : "#/definitions/DateRange"
+        },
+        "dateSet" : {
+          "$ref" : "#/definitions/DateSet"
+        },
+        "placeEntry" : {
+          "$ref" : "#/definitions/PlaceEntry"
+        },
+        "descriptiveNote" : {
+          "$ref" : "#/definitions/DescriptiveNote"
+        },
+        "lastDateTimeVerified" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        },
+        "type" : {
+          "type" : "string",
+          "xml" : {
+            "namespace" : "http://www.w3.org/1999/xlink",
+            "attribute" : true
+          }
+        },
+        "href" : {
+          "type" : "string",
+          "xml" : {
+            "namespace" : "http://www.w3.org/1999/xlink",
+            "attribute" : true
+          }
+        },
+        "role" : {
+          "type" : "string",
+          "xml" : {
+            "namespace" : "http://www.w3.org/1999/xlink",
+            "attribute" : true
+          }
+        },
+        "arcrole" : {
+          "type" : "string",
+          "xml" : {
+            "namespace" : "http://www.w3.org/1999/xlink",
+            "attribute" : true
+          }
+        },
+        "title" : {
+          "type" : "string",
+          "xml" : {
+            "namespace" : "http://www.w3.org/1999/xlink",
+            "attribute" : true
+          }
+        },
+        "show" : {
+          "type" : "string",
+          "xml" : {
+            "namespace" : "http://www.w3.org/1999/xlink",
+            "attribute" : true
+          }
+        },
+        "actuate" : {
+          "type" : "string",
+          "xml" : {
+            "namespace" : "http://www.w3.org/1999/xlink",
+            "attribute" : true
+          }
+        },
+        "cpfRelationType" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        }
+      }
+    },
+    "Creation" : {
+      "type" : "object",
+      "properties" : {
+        "content" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/Serializable"
+          }
+        },
+        "encodinganalog" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        },
+        "id" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        },
+        "altrender" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        },
+        "audience" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        }
+      }
+    },
+    "Date" : {
+      "type" : "object",
+      "properties" : {
+        "content" : {
+          "type" : "string"
+        },
+        "lang" : {
+          "type" : "string",
+          "xml" : {
+            "namespace" : "http://www.w3.org/XML/1998/namespace",
+            "attribute" : true
+          }
+        },
+        "localType" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        },
+        "standardDate" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        },
+        "notBefore" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        },
+        "notAfter" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        }
+      }
+    },
+    "DateFilterRequest" : {
+      "type" : "object",
+      "required" : [ "dateFieldId", "dateFieldName" ],
+      "properties" : {
+        "dateFieldName" : {
+          "type" : "string",
+          "description" : "Name of the date field"
+        },
+        "dateFieldId" : {
+          "type" : "string",
+          "description" : "Date field id"
+        }
+      }
+    },
+    "DateRange" : {
+      "type" : "object",
+      "properties" : {
+        "fromDate" : {
+          "$ref" : "#/definitions/FromDate"
+        },
+        "toDate" : {
+          "$ref" : "#/definitions/ToDate"
+        },
+        "localType" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        }
+      }
+    },
+    "DateSet" : {
+      "type" : "object",
+      "properties" : {
+        "date" : {
+          "$ref" : "#/definitions/Date"
+        },
+        "dateRange" : {
+          "$ref" : "#/definitions/DateRange"
+        },
+        "dateOrDateRange" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/Serializable"
+          }
+        }
+      }
+    },
+    "Defitem" : {
+      "type" : "object",
+      "required" : [ "item", "label" ],
+      "properties" : {
+        "label" : {
+          "$ref" : "#/definitions/Label"
+        },
+        "item" : {
+          "$ref" : "#/definitions/Item"
+        },
+        "id" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        },
+        "altrender" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        },
+        "audience" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        }
+      }
+    },
+    "Description" : {
+      "type" : "object",
+      "required" : [ "existDates" ],
+      "properties" : {
+        "existDates" : {
+          "$ref" : "#/definitions/ExistDates"
+        },
+        "placesOrLocalDescriptionsOrLegalStatuses" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/Serializable"
+          }
+        },
+        "biogHist" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/BiogHist"
+          }
+        }
+      }
+    },
+    "DescriptiveNote" : {
+      "type" : "object",
+      "required" : [ "p" ],
+      "properties" : {
+        "p" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/P"
+          }
+        }
+      }
+    },
+    "Descrules" : {
+      "type" : "object",
+      "properties" : {
+        "content" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/Serializable"
+          }
+        },
+        "encodinganalog" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        },
+        "id" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        },
+        "altrender" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        },
+        "audience" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        }
+      }
+    },
+    "Did" : {
+      "type" : "object",
+      "properties" : {
+        "head" : {
+          "$ref" : "#/definitions/Head"
+        },
+        "encodinganalog" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        },
+        "id" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        },
+        "altrender" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        },
+        "audience" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        },
+        "mdid" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/Serializable"
+          }
+        }
+      }
+    },
+    "Div" : {
+      "type" : "object",
+      "properties" : {
+        "head" : {
+          "$ref" : "#/definitions/Head"
+        },
+        "div" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/Div"
+          }
+        },
+        "id" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        },
+        "altrender" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        },
+        "audience" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        },
+        "mblocks" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/Serializable"
+          }
+        }
+      }
+    },
+    "EacCpf" : {
+      "type" : "object",
+      "required" : [ "control", "cpfDescription" ],
+      "properties" : {
+        "control" : {
+          "$ref" : "#/definitions/Control"
+        },
+        "cpfDescription" : {
+          "$ref" : "#/definitions/CpfDescription"
+        },
+        "lang" : {
+          "type" : "string",
+          "xml" : {
+            "namespace" : "http://www.w3.org/XML/1998/namespace",
+            "attribute" : true
+          }
+        },
+        "base" : {
+          "type" : "string",
+          "xml" : {
+            "namespace" : "http://www.w3.org/XML/1998/namespace",
+            "attribute" : true
+          }
+        }
+      },
+      "xml" : {
+        "name" : "eac-cpf"
+      }
+    },
+    "EacCpfFacetedResponseSet" : {
+      "type" : "object",
+      "required" : [ "eacSearchResults", "startIndex", "totalPages", "totalResults" ],
+      "properties" : {
+        "totalResults" : {
+          "type" : "integer",
+          "format" : "int64",
+          "description" : "Total number of documents found."
+        },
+        "startIndex" : {
+          "type" : "integer",
+          "format" : "int64",
+          "description" : "Position from where this response set started."
+        },
+        "totalPages" : {
+          "type" : "integer",
+          "format" : "int32",
+          "description" : "Total pages that can be generated based on query limit."
+        },
+        "eacSearchResults" : {
+          "type" : "array",
+          "description" : "Array of search result, total number of elements can be less than query limit.",
+          "items" : {
+            "$ref" : "#/definitions/EacCpfResponse"
+          }
+        },
+        "sortFields" : {
+          "type" : "array",
+          "description" : "Available fields for sort option",
+          "uniqueItems" : true,
+          "items" : {
+            "type" : "string"
+          }
+        },
+        "facetFields" : {
+          "description" : "Array of facet fileds.",
+          "$ref" : "#/definitions/EacFacetFields"
+        },
+        "facetDateFields" : {
+          "description" : "Array of facet date fileds.",
+          "$ref" : "#/definitions/FacetDateFields"
+        }
+      }
+    },
+    "EacCpfResponse" : {
+      "type" : "object",
+      "required" : [ "id" ],
+      "properties" : {
+        "id" : {
+          "type" : "string",
+          "description" : "Internal APE identifier of the result"
+        },
+        "recordId" : {
+          "type" : "string",
+          "description" : "Record Id in the repository"
+        },
+        "entityType" : {
+          "type" : "string",
+          "description" : "Type of the entity, (person, family or company)"
+        },
+        "nameEntries" : {
+          "type" : "array",
+          "description" : "All alternative names",
+          "items" : {
+            "type" : "string"
+          }
+        },
+        "nameEntriesWithHighlighting" : {
+          "type" : "array",
+          "description" : "All names with highlighting",
+          "items" : {
+            "type" : "string"
+          }
+        },
+        "existDates" : {
+          "type" : "string",
+          "description" : "date of existance"
+        },
+        "description" : {
+          "type" : "string",
+          "description" : "Description"
+        },
+        "descriptionWithHighlighting" : {
+          "type" : "string",
+          "description" : "Description with highlighting"
+        },
+        "other" : {
+          "type" : "string",
+          "description" : "Other description"
+        },
+        "otherWithHighlighting" : {
+          "type" : "string",
+          "description" : "Other description with highlighting"
+        },
+        "repository" : {
+          "type" : "string",
+          "description" : "Name of the repository holding the eacCpfs"
+        },
+        "repositoryCode" : {
+          "type" : "string",
+          "description" : "Code of the repository holding the eacCpfs. Preferably, but not necessarily <a target='_blank' href='https://en.wikipedia.org/wiki/International_Standard_Identifier_for_Libraries_and_Related_Organizations'>ISIL</a>"
+        },
+        "country" : {
+          "type" : "string",
+          "description" : "Name of the country where the repository is. In English."
+        },
+        "countryId" : {
+          "type" : "string",
+          "description" : "ID of the country where the repository is."
+        },
+        "numberOfArchivalMaterialRelations" : {
+          "type" : "string",
+          "description" : "Number of record that has been created by current EAC"
+        },
+        "numberOfNameRelations" : {
+          "type" : "string",
+          "description" : "Number of EAC record that has been created by current EAC"
+        }
+      }
+    },
+    "EacFacetFields" : {
+      "type" : "object",
+      "properties" : {
+        "country" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/NameCountPair"
+          }
+        },
+        "repository" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/NameCountPair"
+          }
+        },
+        "entityType" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/NameCountPair"
+          }
+        },
+        "place" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/NameCountPair"
+          }
+        },
+        "language" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/NameCountPair"
+          }
+        },
+        "unitDateType" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/NameCountPair"
+          }
+        }
+      }
+    },
+    "Ead" : {
+      "type" : "object",
+      "required" : [ "archdesc", "eadheader" ],
+      "properties" : {
+        "eadheader" : {
+          "$ref" : "#/definitions/Eadheader"
+        },
+        "frontmatter" : {
+          "$ref" : "#/definitions/Frontmatter"
+        },
+        "archdesc" : {
+          "$ref" : "#/definitions/Archdesc"
+        },
+        "relatedencoding" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        },
+        "id" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        },
+        "altrender" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        },
+        "audience" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        }
+      },
+      "xml" : {
+        "name" : "ead"
+      }
+    },
+    "EadDocResponse" : {
+      "type" : "object",
+      "required" : [ "id" ],
+      "properties" : {
+        "id" : {
+          "type" : "string",
+          "description" : "Internal APE identifier of the result"
+        },
+        "findingAidTitle" : {
+          "type" : "string",
+          "description" : "Title of the finding aid. "
+        },
+        "numberOfResults" : {
+          "type" : "integer",
+          "format" : "int64",
+          "description" : "Number of search hits on the current document."
+        },
+        "repository" : {
+          "type" : "string",
+          "description" : "Name of the repository holding the fonds"
+        },
+        "country" : {
+          "type" : "string",
+          "description" : "Name of the country where the repository is. In English. "
+        },
+        "language" : {
+          "type" : "string",
+          "description" : "Language of the description of the result."
+        },
+        "repositoryCode" : {
+          "type" : "string",
+          "description" : "Code of the repository holding the fonds. Preferably, but not necessarily <a target='_blank' href='https://en.wikipedia.org/wiki/International_Standard_Identifier_for_Libraries_and_Related_Organizations'>ISIL</a>"
+        },
+        "findingAidNo" : {
+          "type" : "string",
+          "description" : "Fonds unit ID"
+        },
+        "unitDate" : {
+          "type" : "string",
+          "description" : "Unit date"
+        },
+        "scopeContent" : {
+          "type" : "string",
+          "description" : "Abstract of the content / Scope Content"
+        },
+        "numberOfDigitalObjects" : {
+          "type" : "integer",
+          "format" : "int32",
+          "description" : "Number of DAO"
+        },
+        "numberOfDigitalObjectsInDescendents" : {
+          "type" : "integer",
+          "format" : "int32",
+          "description" : "Number of DAO below"
+        },
+        "numberOfDescendents" : {
+          "type" : "integer",
+          "format" : "int32",
+          "description" : "Number of Descendents"
+        }
+      }
+    },
+    "EadFacetFields" : {
+      "type" : "object",
+      "properties" : {
+        "country" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/NameCountPair"
+          }
+        },
+        "subject" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/NameCountPair"
+          }
+        },
+        "repository" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/NameCountPair"
+          }
+        },
+        "docType" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/NameCountPair"
+          }
+        },
+        "levelName" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/NameCountPair"
+          }
+        },
+        "hasDigitalObject" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/NameCountPair"
+          }
+        },
+        "digitalObjectType" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/NameCountPair"
+          }
+        },
+        "unitDateType" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/NameCountPair"
+          }
+        }
+      }
+    },
+    "EadFactedDocResponseSet" : {
+      "type" : "object",
+      "required" : [ "eadDocList", "facetDateFields", "facetFields", "startIndex", "totalDocs", "totalPages", "totalResults" ],
+      "properties" : {
+        "totalResults" : {
+          "type" : "integer",
+          "format" : "int64",
+          "description" : "Total number of documents found."
+        },
+        "startIndex" : {
+          "type" : "integer",
+          "format" : "int64",
+          "description" : "Position from where this response set started."
+        },
+        "totalPages" : {
+          "type" : "integer",
+          "format" : "int32",
+          "description" : "Total pages that can be generated based on query limit."
+        },
+        "totalDocs" : {
+          "type" : "integer",
+          "format" : "int32",
+          "description" : "Total number of EAD documents found."
+        },
+        "eadDocList" : {
+          "type" : "array",
+          "description" : "Array of search result, total number of elements can be less than query limit.",
+          "items" : {
+            "$ref" : "#/definitions/EadDocResponse"
+          }
+        },
+        "facetFields" : {
+          "description" : "Array of facet fileds.",
+          "$ref" : "#/definitions/EadFacetFields"
+        },
+        "facetDateFields" : {
+          "description" : "Array of facet date fileds.",
+          "$ref" : "#/definitions/FacetDateFields"
+        }
+      }
+    },
+    "EadFactedResponseSet" : {
+      "type" : "object",
+      "required" : [ "eadSearchResults", "facetDateFields", "facetFields", "startIndex", "totalPages", "totalResults" ],
+      "properties" : {
+        "totalResults" : {
+          "type" : "integer",
+          "format" : "int64",
+          "description" : "Total number of documents found."
+        },
+        "startIndex" : {
+          "type" : "integer",
+          "format" : "int64",
+          "description" : "Position from where this response set started."
+        },
+        "totalPages" : {
+          "type" : "integer",
+          "format" : "int32",
+          "description" : "Total pages that can be generated based on query limit."
+        },
+        "eadSearchResults" : {
+          "type" : "array",
+          "description" : "Array of search result, total number of elements can be less than query limit.",
+          "items" : {
+            "$ref" : "#/definitions/EadResponse"
+          }
+        },
+        "sortFields" : {
+          "type" : "array",
+          "description" : "Available fields for sort option",
+          "uniqueItems" : true,
+          "items" : {
+            "type" : "string"
+          }
+        },
+        "facetFields" : {
+          "description" : "Array of facet fileds.",
+          "$ref" : "#/definitions/EadFacetFields"
+        },
+        "facetDateFields" : {
+          "description" : "Array of facet date fileds.",
+          "$ref" : "#/definitions/FacetDateFields"
+        }
+      }
+    },
+    "EadHierarchyResponse" : {
+      "type" : "object",
+      "required" : [ "ancestors", "id" ],
+      "properties" : {
+        "id" : {
+          "type" : "string",
+          "description" : "Internal APE identifier of the result"
+        },
+        "findingAidTitle" : {
+          "type" : "string",
+          "description" : "Title of the finding aid. "
+        },
+        "findingAidNo" : {
+          "type" : "string",
+          "description" : "Identifier of the fonds provided by the repository."
+        },
+        "repository" : {
+          "type" : "string",
+          "description" : "Name of the repository holding the fonds"
+        },
+        "country" : {
+          "type" : "string",
+          "description" : "Name of the country where the repository is. In English. "
+        },
+        "language" : {
+          "type" : "string",
+          "description" : "Language of the description of the result."
+        },
+        "langMaterial" : {
+          "type" : "string",
+          "description" : "Language in which the result is created."
+        },
+        "unitDate" : {
+          "type" : "string",
+          "description" : "Date of creation of the result."
+        },
+        "repositoryCode" : {
+          "type" : "string",
+          "description" : "Code of the repository holding the fonds. Preferably, but not necessarily <a target='_blank' href='https://en.wikipedia.org/wiki/International_Standard_Identifier_for_Libraries_and_Related_Organizations'>ISIL</a>"
+        },
+        "hasDigitalObject" : {
+          "type" : "boolean",
+          "description" : "True if the unit has one or more digital object",
+          "default" : false
+        },
+        "numberOfDigitalObjects" : {
+          "type" : "integer",
+          "format" : "int32",
+          "description" : "Number of DAO"
+        },
+        "numberOfDigitalObjectsInDescendents" : {
+          "type" : "integer",
+          "format" : "int32",
+          "description" : "Number of DAO below"
+        },
+        "numberOfDescendents" : {
+          "type" : "integer",
+          "format" : "int32",
+          "description" : "Number of Descendents"
+        },
+        "docType" : {
+          "type" : "string",
+          "description" : "Type of the description of the result: \"Descriptive Unit\", \"Finding Aid\", \"Holdings Guide\" or \"Source Guide\""
+        },
+        "docTypeId" : {
+          "type" : "string",
+          "description" : "Id of the doc type"
+        },
+        "level" : {
+          "type" : "string",
+          "description" : "Type of result: \"archdesc\" for highest level description or \"clevel\" for subordinate components"
+        },
+        "indexDate" : {
+          "type" : "string",
+          "description" : "Date of publication of this document"
+        },
+        "unitId" : {
+          "type" : "string",
+          "description" : "Identifier of the result provided by the repository"
+        },
+        "unitTitle" : {
+          "type" : "string",
+          "description" : "Description of the result"
+        },
+        "unitTitleWithHighlighting" : {
+          "type" : "string",
+          "description" : "Description of the result, with the mark <b>&lt;em&gt;</b> to emphasize the search term that was used in the search request."
+        },
+        "scopeContent" : {
+          "type" : "string",
+          "description" : "More descriptive information about the result. "
+        },
+        "scopeContentWithHighlighting" : {
+          "type" : "string",
+          "description" : "More descriptive information about the result, with the mark <b>&lt;em&gt;</b> to emphasize the search term that was used in the search request."
+        },
+        "numberOfAncestors" : {
+          "type" : "integer",
+          "format" : "int32",
+          "description" : "Number of Ancestors"
+        },
+        "ancestors" : {
+          "type" : "array",
+          "description" : "Array of search result, total number of elements can be less than query limit.",
+          "items" : {
+            "$ref" : "#/definitions/SimplifiedHierarchyResponse"
+          }
+        }
+      }
+    },
+    "EadHierarchyResponseSet" : {
+      "type" : "object",
+      "required" : [ "eadSearchResults", "facetDateFields", "facetFields", "startIndex", "totalPages", "totalResults" ],
+      "properties" : {
+        "totalResults" : {
+          "type" : "integer",
+          "format" : "int64",
+          "description" : "Total number of documents found."
+        },
+        "startIndex" : {
+          "type" : "integer",
+          "format" : "int64",
+          "description" : "Position from where this response set started."
+        },
+        "totalPages" : {
+          "type" : "integer",
+          "format" : "int32",
+          "description" : "Total pages that can be generated based on query limit."
+        },
+        "eadSearchResults" : {
+          "type" : "array",
+          "description" : "Array of search result, total number of elements can be less than query limit.",
+          "items" : {
+            "$ref" : "#/definitions/EadHierarchyResponse"
+          }
+        },
+        "sortFields" : {
+          "type" : "array",
+          "description" : "Available fields for sort option",
+          "uniqueItems" : true,
+          "items" : {
+            "type" : "string"
+          }
+        },
+        "facetFields" : {
+          "description" : "Array of facet fileds.",
+          "$ref" : "#/definitions/EadFacetFields"
+        },
+        "facetDateFields" : {
+          "description" : "Array of facet date fileds.",
+          "$ref" : "#/definitions/FacetDateFields"
+        }
+      }
+    },
+    "EadResponse" : {
+      "type" : "object",
+      "required" : [ "id" ],
+      "properties" : {
+        "id" : {
+          "type" : "string",
+          "description" : "Internal APE identifier of the result"
+        },
+        "findingAidTitle" : {
+          "type" : "string",
+          "description" : "Title of the finding aid. "
+        },
+        "findingAidNo" : {
+          "type" : "string",
+          "description" : "Identifier of the fonds provided by the repository."
+        },
+        "repository" : {
+          "type" : "string",
+          "description" : "Name of the repository holding the fonds"
+        },
+        "country" : {
+          "type" : "string",
+          "description" : "Name of the country where the repository is. In English. "
+        },
+        "language" : {
+          "type" : "string",
+          "description" : "Language of the description of the result."
+        },
+        "langMaterial" : {
+          "type" : "string",
+          "description" : "Language in which the result is created."
+        },
+        "unitDate" : {
+          "type" : "string",
+          "description" : "Date of creation of the result."
+        },
+        "repositoryCode" : {
+          "type" : "string",
+          "description" : "Code of the repository holding the fonds. Preferably, but not necessarily <a target='_blank' href='https://en.wikipedia.org/wiki/International_Standard_Identifier_for_Libraries_and_Related_Organizations'>ISIL</a>"
+        },
+        "hasDigitalObject" : {
+          "type" : "boolean",
+          "description" : "True if the unit has one or more digital object",
+          "default" : false
+        },
+        "numberOfDigitalObjects" : {
+          "type" : "integer",
+          "format" : "int32",
+          "description" : "Number of DAO"
+        },
+        "numberOfDigitalObjectsInDescendents" : {
+          "type" : "integer",
+          "format" : "int32",
+          "description" : "Number of DAO below"
+        },
+        "numberOfDescendents" : {
+          "type" : "integer",
+          "format" : "int32",
+          "description" : "Number of Descendents"
+        },
+        "docType" : {
+          "type" : "string",
+          "description" : "Type of the description of the result: \"Descriptive Unit\", \"Finding Aid\", \"Holdings Guide\" or \"Source Guide\""
+        },
+        "docTypeId" : {
+          "type" : "string",
+          "description" : "Id of the doc type"
+        },
+        "level" : {
+          "type" : "string",
+          "description" : "Type of result: \"archdesc\" for highest level description or \"clevel\" for subordinate components"
+        },
+        "indexDate" : {
+          "type" : "string",
+          "description" : "Date of publication of this document"
+        },
+        "unitId" : {
+          "type" : "string",
+          "description" : "Identifier of the result provided by the repository"
+        },
+        "parentId" : {
+          "type" : "string",
+          "description" : "Parent Internal APE identifier of the result"
+        },
+        "unitTitle" : {
+          "type" : "string",
+          "description" : "Description of the result"
+        },
+        "unitTitleWithHighlighting" : {
+          "type" : "string",
+          "description" : "Description of the result, with the mark <b>&lt;em&gt;</b> to emphasize the search term that was used in the search request."
+        },
+        "scopeContent" : {
+          "type" : "string",
+          "description" : "More descriptive information about the result. "
+        },
+        "scopeContentWithHighlighting" : {
+          "type" : "string",
+          "description" : "More descriptive information about the result, with the mark <b>&lt;em&gt;</b> to emphasize the search term that was used in the search request."
+        },
+        "numberOfAncestors" : {
+          "type" : "integer",
+          "format" : "int32",
+          "description" : "Number of Ancestors"
+        }
+      }
+    },
+    "EadResponseSet" : {
+      "type" : "object",
+      "required" : [ "eadSearchResults", "startIndex", "totalPages", "totalResults" ],
+      "properties" : {
+        "totalResults" : {
+          "type" : "integer",
+          "format" : "int64",
+          "description" : "Total number of documents found."
+        },
+        "startIndex" : {
+          "type" : "integer",
+          "format" : "int64",
+          "description" : "Position from where this response set started."
+        },
+        "totalPages" : {
+          "type" : "integer",
+          "format" : "int32",
+          "description" : "Total pages that can be generated based on query limit."
+        },
+        "eadSearchResults" : {
+          "type" : "array",
+          "description" : "Array of search result, total number of elements can be less than query limit.",
+          "items" : {
+            "$ref" : "#/definitions/EadResponse"
+          }
+        },
+        "sortFields" : {
+          "type" : "array",
+          "description" : "Available fields for sort option",
+          "uniqueItems" : true,
+          "items" : {
+            "type" : "string"
+          }
+        }
+      }
+    },
+    "Eadheader" : {
+      "type" : "object",
+      "required" : [ "eadid", "filedesc" ],
+      "properties" : {
+        "eadid" : {
+          "$ref" : "#/definitions/Eadid"
+        },
+        "filedesc" : {
+          "$ref" : "#/definitions/Filedesc"
+        },
+        "profiledesc" : {
+          "$ref" : "#/definitions/Profiledesc"
+        },
+        "revisiondesc" : {
+          "$ref" : "#/definitions/Revisiondesc"
+        },
+        "langencoding" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        },
+        "scriptencoding" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        },
+        "dateencoding" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        },
+        "countryencoding" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        },
+        "repositoryencoding" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        },
+        "relatedencoding" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        },
+        "findaidstatus" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        },
+        "encodinganalog" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        },
+        "id" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        },
+        "altrender" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        },
+        "audience" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        }
+      }
+    },
+    "Eadid" : {
+      "type" : "object",
+      "properties" : {
+        "content" : {
+          "type" : "string"
+        },
+        "publicid" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        },
+        "urn" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        },
+        "url" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        },
+        "mainagencycode" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        },
+        "identifier" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        },
+        "encodinganalog" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        },
+        "countrycode" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        }
+      }
+    },
+    "Editionstmt" : {
+      "type" : "object",
+      "properties" : {
+        "editionOrP" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/Serializable"
+          }
+        },
+        "encodinganalog" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        },
+        "id" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        },
+        "altrender" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        },
+        "audience" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        }
+      }
+    },
+    "EntityId" : {
+      "type" : "object",
+      "properties" : {
+        "content" : {
+          "type" : "string"
+        },
+        "localType" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        }
+      }
+    },
+    "EntityType" : {
+      "type" : "object",
+      "properties" : {
+        "value" : {
+          "type" : "string"
+        }
+      }
+    },
+    "EventDateTime" : {
+      "type" : "object",
+      "properties" : {
+        "content" : {
+          "type" : "string"
+        },
+        "standardDateTime" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        }
+      }
+    },
+    "EventDescription" : {
+      "type" : "object",
+      "properties" : {
+        "content" : {
+          "type" : "string"
+        },
+        "lang" : {
+          "type" : "string",
+          "xml" : {
+            "namespace" : "http://www.w3.org/XML/1998/namespace",
+            "attribute" : true
+          }
+        }
+      }
+    },
+    "EventType" : {
+      "type" : "object",
+      "properties" : {
+        "value" : {
+          "type" : "string"
+        }
+      }
+    },
+    "ExistDates" : {
+      "type" : "object",
+      "properties" : {
+        "date" : {
+          "$ref" : "#/definitions/Date"
+        },
+        "dateRange" : {
+          "$ref" : "#/definitions/DateRange"
+        },
+        "dateSet" : {
+          "$ref" : "#/definitions/DateSet"
+        },
+        "descriptiveNote" : {
+          "$ref" : "#/definitions/DescriptiveNote"
+        }
+      }
+    },
+    "FacetDateFields" : {
+      "type" : "object",
+      "properties" : {
+        "fromDate" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/NameCountPair"
+          }
+        },
+        "toDate" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/NameCountPair"
+          }
+        }
+      }
+    },
+    "Filedesc" : {
+      "type" : "object",
+      "required" : [ "titlestmt" ],
+      "properties" : {
+        "titlestmt" : {
+          "$ref" : "#/definitions/Titlestmt"
+        },
+        "editionstmt" : {
+          "$ref" : "#/definitions/Editionstmt"
+        },
+        "publicationstmt" : {
+          "$ref" : "#/definitions/Publicationstmt"
+        },
+        "seriesstmt" : {
+          "$ref" : "#/definitions/Seriesstmt"
+        },
+        "notestmt" : {
+          "$ref" : "#/definitions/Notestmt"
+        },
+        "encodinganalog" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        },
+        "id" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        },
+        "altrender" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        },
+        "audience" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        }
+      }
+    },
+    "FromDate" : {
+      "type" : "object",
+      "properties" : {
+        "content" : {
+          "type" : "string"
+        },
+        "lang" : {
+          "type" : "string",
+          "xml" : {
+            "namespace" : "http://www.w3.org/XML/1998/namespace",
+            "attribute" : true
+          }
+        },
+        "standardDate" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        },
+        "notBefore" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        },
+        "notAfter" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        }
+      }
+    },
+    "Frontmatter" : {
+      "type" : "object",
+      "properties" : {
+        "titlepage" : {
+          "$ref" : "#/definitions/Titlepage"
+        },
+        "div" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/Div"
+          }
+        },
+        "id" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        },
+        "altrender" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        },
+        "audience" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        }
+      }
+    },
+    "FunctionRelation" : {
+      "type" : "object",
+      "properties" : {
+        "relationEntry" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/RelationEntry"
+          }
+        },
+        "date" : {
+          "$ref" : "#/definitions/Date"
+        },
+        "dateRange" : {
+          "$ref" : "#/definitions/DateRange"
+        },
+        "dateSet" : {
+          "$ref" : "#/definitions/DateSet"
+        },
+        "placeEntry" : {
+          "$ref" : "#/definitions/PlaceEntry"
+        },
+        "descriptiveNote" : {
+          "$ref" : "#/definitions/DescriptiveNote"
+        },
+        "lastDateTimeVerified" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        },
+        "type" : {
+          "type" : "string",
+          "xml" : {
+            "namespace" : "http://www.w3.org/1999/xlink",
+            "attribute" : true
+          }
+        },
+        "href" : {
+          "type" : "string",
+          "xml" : {
+            "namespace" : "http://www.w3.org/1999/xlink",
+            "attribute" : true
+          }
+        },
+        "role" : {
+          "type" : "string",
+          "xml" : {
+            "namespace" : "http://www.w3.org/1999/xlink",
+            "attribute" : true
+          }
+        },
+        "arcrole" : {
+          "type" : "string",
+          "xml" : {
+            "namespace" : "http://www.w3.org/1999/xlink",
+            "attribute" : true
+          }
+        },
+        "title" : {
+          "type" : "string",
+          "xml" : {
+            "namespace" : "http://www.w3.org/1999/xlink",
+            "attribute" : true
+          }
+        },
+        "show" : {
+          "type" : "string",
+          "xml" : {
+            "namespace" : "http://www.w3.org/1999/xlink",
+            "attribute" : true
+          }
+        },
+        "actuate" : {
+          "type" : "string",
+          "xml" : {
+            "namespace" : "http://www.w3.org/1999/xlink",
+            "attribute" : true
+          }
+        },
+        "functionRelationType" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        }
+      }
+    },
+    "Head" : {
+      "type" : "object",
+      "properties" : {
+        "content" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/Serializable"
+          }
+        },
+        "althead" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        },
+        "id" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        },
+        "altrender" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        },
+        "audience" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        }
+      }
+    },
+    "Head01" : {
+      "type" : "object",
+      "properties" : {
+        "content" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/Serializable"
+          }
+        },
+        "id" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        },
+        "altrender" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        },
+        "audience" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        }
+      }
+    },
+    "Head02" : {
+      "type" : "object",
+      "properties" : {
+        "content" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/Serializable"
+          }
+        },
+        "id" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        },
+        "altrender" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        },
+        "audience" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        }
+      }
+    },
+    "HierarchyResponse" : {
+      "type" : "object",
+      "required" : [ "id" ],
+      "properties" : {
+        "id" : {
+          "type" : "string",
+          "description" : "Internal APE identifier of the result"
+        },
+        "findingAidTitle" : {
+          "type" : "string",
+          "description" : "Title of the finding aid. "
+        },
+        "findingAidNo" : {
+          "type" : "string",
+          "description" : "Identifier of the fonds provided by the repository."
+        },
+        "repository" : {
+          "type" : "string",
+          "description" : "Name of the repository holding the fonds"
+        },
+        "country" : {
+          "type" : "string",
+          "description" : "Name of the country where the repository is. In English. "
+        },
+        "language" : {
+          "type" : "string",
+          "description" : "Language of the description of the result."
+        },
+        "langMaterial" : {
+          "type" : "string",
+          "description" : "Language in which the result is created."
+        },
+        "unitDate" : {
+          "type" : "string",
+          "description" : "Date of creation of the result."
+        },
+        "repositoryCode" : {
+          "type" : "string",
+          "description" : "Code of the repository holding the fonds. Preferably, but not necessarily <a target='_blank' href='https://en.wikipedia.org/wiki/International_Standard_Identifier_for_Libraries_and_Related_Organizations'>ISIL</a>"
+        },
+        "hasDigitalObject" : {
+          "type" : "boolean",
+          "description" : "True if the unit has one or more digital object",
+          "default" : false
+        },
+        "numberOfDigitalObjects" : {
+          "type" : "integer",
+          "format" : "int32",
+          "description" : "Number of DAO"
+        },
+        "numberOfDigitalObjectsInDescendents" : {
+          "type" : "integer",
+          "format" : "int32",
+          "description" : "Number of DAO below"
+        },
+        "numberOfDescendents" : {
+          "type" : "integer",
+          "format" : "int32",
+          "description" : "Number of Descendents"
+        },
+        "docType" : {
+          "type" : "string",
+          "description" : "Type of the description of the result: \"Descriptive Unit\", \"Finding Aid\", \"Holdings Guide\" or \"Source Guide\""
+        },
+        "docTypeId" : {
+          "type" : "string",
+          "description" : "Id of the doc type"
+        },
+        "level" : {
+          "type" : "string",
+          "description" : "Type of result: \"archdesc\" for highest level description or \"clevel\" for subordinate components"
+        },
+        "indexDate" : {
+          "type" : "string",
+          "description" : "Date of publication of this document"
+        },
+        "unitId" : {
+          "type" : "string",
+          "description" : "Identifier of the result provided by the repository"
+        },
+        "unitTitle" : {
+          "type" : "string",
+          "description" : "Description of the result"
+        },
+        "scopeContent" : {
+          "type" : "string",
+          "description" : "More descriptive information about the result. "
+        },
+        "siblingPosition" : {
+          "type" : "integer",
+          "format" : "int32",
+          "description" : "Index relative to its siblings"
+        },
+        "ancestorLevel" : {
+          "type" : "integer",
+          "format" : "int32",
+          "description" : "Greatest ancestor is a level 0"
+        }
+      }
+    },
+    "HierarchyResponseSet" : {
+      "type" : "object",
+      "required" : [ "results", "startIndex", "totalPages", "totalResults" ],
+      "properties" : {
+        "totalResults" : {
+          "type" : "integer",
+          "format" : "int64",
+          "description" : "Total number of documents found."
+        },
+        "startIndex" : {
+          "type" : "integer",
+          "format" : "int64",
+          "description" : "Position from where this response set started."
+        },
+        "totalPages" : {
+          "type" : "integer",
+          "format" : "int32",
+          "description" : "Total pages that can be generated based on query limit."
+        },
+        "results" : {
+          "type" : "array",
+          "description" : "Array of search result, total number of elements can be less than query limit.",
+          "items" : {
+            "$ref" : "#/definitions/HierarchyResponse"
+          }
+        }
+      }
+    },
+    "Identity" : {
+      "type" : "object",
+      "required" : [ "entityType" ],
+      "properties" : {
+        "entityId" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/EntityId"
+          }
+        },
+        "entityType" : {
+          "$ref" : "#/definitions/EntityType"
+        },
+        "nameEntryParallelOrNameEntry" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/Serializable"
+          }
+        },
+        "descriptiveNote" : {
+          "$ref" : "#/definitions/DescriptiveNote"
+        },
+        "identityType" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        }
+      }
+    },
+    "InstituteDocRequest" : {
+      "type" : "object",
+      "required" : [ "docType", "instituteId" ],
+      "properties" : {
+        "count" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : "5",
+          "description" : "Number of items to retrieve. Default is 5, maximum is 50.",
+          "minimum" : 0.0,
+          "maximum" : 50.0
+        },
+        "startIndex" : {
+          "type" : "integer",
+          "format" : "int32",
+          "description" : "Offset the list of returned results by this amount. Default is zero."
+        },
+        "instituteId" : {
+          "type" : "string",
+          "example" : " ",
+          "description" : "Institute's ID"
+        },
+        "docType" : {
+          "type" : "string",
+          "example" : "fa",
+          "description" : "Document type"
+        },
+        "sortRequest" : {
+          "description" : "Sorting result with fields and sorting type",
+          "$ref" : "#/definitions/SortRequest"
+        }
+      }
+    },
+    "InstituteEadResponse" : {
+      "type" : "object",
+      "required" : [ "id" ],
+      "properties" : {
+        "id" : {
+          "type" : "string",
+          "description" : "Internal APE identifier of the result"
+        },
+        "findingAidTitle" : {
+          "type" : "string",
+          "description" : "Title of the finding aid. "
+        },
+        "findingAidNo" : {
+          "type" : "string",
+          "description" : "Identifier of the fonds provided by the repository."
+        },
+        "repository" : {
+          "type" : "string",
+          "description" : "Name of the repository holding the fonds"
+        },
+        "country" : {
+          "type" : "string",
+          "description" : "Name of the country where the repository is. In English. "
+        },
+        "language" : {
+          "type" : "string",
+          "description" : "Language of the description of the result."
+        },
+        "langMaterial" : {
+          "type" : "string",
+          "description" : "Language in which the result is created."
+        },
+        "unitDate" : {
+          "type" : "string",
+          "description" : "Date of creation of the result."
+        },
+        "repositoryCode" : {
+          "type" : "string",
+          "description" : "Code of the repository holding the fonds. Preferably, but not necessarily <a target='_blank' href='https://en.wikipedia.org/wiki/International_Standard_Identifier_for_Libraries_and_Related_Organizations'>ISIL</a>"
+        },
+        "hasDigitalObject" : {
+          "type" : "boolean",
+          "description" : "True if the unit has one or more digital object",
+          "default" : false
+        },
+        "numberOfDigitalObjects" : {
+          "type" : "integer",
+          "format" : "int32",
+          "description" : "Number of DAO"
+        },
+        "numberOfDigitalObjectsInDescendents" : {
+          "type" : "integer",
+          "format" : "int32",
+          "description" : "Number of DAO below"
+        },
+        "numberOfDescendents" : {
+          "type" : "integer",
+          "format" : "int32",
+          "description" : "Number of Descendents"
+        },
+        "docType" : {
+          "type" : "string",
+          "description" : "Type of the description of the result: \"Descriptive Unit\", \"Finding Aid\", \"Holdings Guide\" or \"Source Guide\""
+        },
+        "docTypeId" : {
+          "type" : "string",
+          "description" : "Id of the doc type"
+        },
+        "level" : {
+          "type" : "string",
+          "description" : "Type of result: \"archdesc\" for highest level description or \"clevel\" for subordinate components"
+        },
+        "indexDate" : {
+          "type" : "string",
+          "description" : "Date of publication of this document"
+        }
+      }
+    },
+    "InstituteEadResponseSet" : {
+      "type" : "object",
+      "required" : [ "eadResults", "startIndex", "totalPages", "totalResults" ],
+      "properties" : {
+        "totalResults" : {
+          "type" : "integer",
+          "format" : "int64",
+          "description" : "Total number of documents found."
+        },
+        "startIndex" : {
+          "type" : "integer",
+          "format" : "int64",
+          "description" : "Position from where this response set started."
+        },
+        "totalPages" : {
+          "type" : "integer",
+          "format" : "int32",
+          "description" : "Total pages that can be generated based on query limit."
+        },
+        "eadResults" : {
+          "type" : "array",
+          "description" : "Array of search result, total number of elements can be less than query limit.",
+          "items" : {
+            "$ref" : "#/definitions/InstituteEadResponse"
+          }
+        },
+        "sortFields" : {
+          "type" : "array",
+          "description" : "Available fields for sort option",
+          "uniqueItems" : true,
+          "items" : {
+            "type" : "string"
+          }
+        }
+      }
+    },
+    "Item" : {
+      "type" : "object",
+      "properties" : {
+        "content" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/Serializable"
+          }
+        },
+        "id" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        },
+        "altrender" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        },
+        "audience" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        }
+      }
+    },
+    "Label" : {
+      "type" : "object",
+      "properties" : {
+        "content" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/Serializable"
+          }
+        },
+        "id" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        },
+        "altrender" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        },
+        "audience" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        }
+      }
+    },
+    "Language" : {
+      "type" : "object",
+      "properties" : {
+        "content" : {
+          "type" : "string"
+        },
+        "lang" : {
+          "type" : "string",
+          "xml" : {
+            "namespace" : "http://www.w3.org/XML/1998/namespace",
+            "attribute" : true
+          }
+        },
+        "languageCode" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        }
+      }
+    },
+    "LanguageDeclaration" : {
+      "type" : "object",
+      "required" : [ "language", "script" ],
+      "properties" : {
+        "language" : {
+          "$ref" : "#/definitions/Language"
+        },
+        "script" : {
+          "$ref" : "#/definitions/Script"
+        },
+        "descriptiveNote" : {
+          "$ref" : "#/definitions/DescriptiveNote"
+        }
+      }
+    },
+    "Langusage" : {
+      "type" : "object",
+      "properties" : {
+        "content" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/Serializable"
+          }
+        },
+        "encodinganalog" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        },
+        "id" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        },
+        "altrender" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        },
+        "audience" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        }
+      }
+    },
+    "List" : {
+      "type" : "object",
+      "properties" : {
+        "head" : {
+          "$ref" : "#/definitions/Head"
+        },
+        "item" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/Item"
+          }
+        },
+        "listhead" : {
+          "$ref" : "#/definitions/Listhead"
+        },
+        "defitem" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/Defitem"
+          }
+        },
+        "type" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        },
+        "mark" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        },
+        "numeration" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        },
+        "continuation" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        },
+        "id" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        },
+        "altrender" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        },
+        "audience" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        }
+      }
+    },
+    "Listhead" : {
+      "type" : "object",
+      "properties" : {
+        "head01" : {
+          "$ref" : "#/definitions/Head01"
+        },
+        "head02" : {
+          "$ref" : "#/definitions/Head02"
+        },
+        "id" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        },
+        "altrender" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        },
+        "audience" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        }
+      }
+    },
+    "LocalControl" : {
+      "type" : "object",
+      "properties" : {
+        "term" : {
+          "$ref" : "#/definitions/Term"
+        },
+        "date" : {
+          "$ref" : "#/definitions/Date"
+        },
+        "dateRange" : {
+          "$ref" : "#/definitions/DateRange"
+        },
+        "localType" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        }
+      }
+    },
+    "LocalTypeDeclaration" : {
+      "type" : "object",
+      "required" : [ "citation" ],
+      "properties" : {
+        "abbreviation" : {
+          "$ref" : "#/definitions/Abbreviation"
+        },
+        "citation" : {
+          "$ref" : "#/definitions/Citation"
+        },
+        "descriptiveNote" : {
+          "$ref" : "#/definitions/DescriptiveNote"
+        }
+      }
+    },
+    "MaintenanceAgency" : {
+      "type" : "object",
+      "required" : [ "agencyCode", "agencyName" ],
+      "properties" : {
+        "agencyCode" : {
+          "$ref" : "#/definitions/AgencyCode"
+        },
+        "otherAgencyCode" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/OtherAgencyCode"
+          }
+        },
+        "agencyName" : {
+          "$ref" : "#/definitions/AgencyName"
+        },
+        "descriptiveNote" : {
+          "$ref" : "#/definitions/DescriptiveNote"
+        }
+      }
+    },
+    "MaintenanceEvent" : {
+      "type" : "object",
+      "required" : [ "agent", "agentType", "eventDateTime", "eventType" ],
+      "properties" : {
+        "eventType" : {
+          "$ref" : "#/definitions/EventType"
+        },
+        "eventDateTime" : {
+          "$ref" : "#/definitions/EventDateTime"
+        },
+        "agentType" : {
+          "$ref" : "#/definitions/AgentType"
+        },
+        "agent" : {
+          "$ref" : "#/definitions/Agent"
+        },
+        "eventDescription" : {
+          "$ref" : "#/definitions/EventDescription"
+        },
+        "lang" : {
+          "type" : "string",
+          "xml" : {
+            "namespace" : "http://www.w3.org/XML/1998/namespace",
+            "attribute" : true
+          }
+        }
+      }
+    },
+    "MaintenanceHistory" : {
+      "type" : "object",
+      "required" : [ "maintenanceEvent" ],
+      "properties" : {
+        "maintenanceEvent" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/MaintenanceEvent"
+          }
+        }
+      }
+    },
+    "MaintenanceStatus" : {
+      "type" : "object",
+      "properties" : {
+        "value" : {
+          "type" : "string"
+        }
+      }
+    },
+    "NameCountPair" : {
+      "type" : "object",
+      "properties" : {
+        "id" : {
+          "type" : "string"
+        },
+        "name" : {
+          "type" : "string"
+        },
+        "frequency" : {
+          "type" : "integer",
+          "format" : "int64"
+        }
+      }
+    },
+    "Note" : {
+      "type" : "object",
+      "properties" : {
+        "type" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        },
+        "label" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        },
+        "show" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        },
+        "actuate" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        },
+        "encodinganalog" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        },
+        "id" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        },
+        "altrender" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        },
+        "audience" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        },
+        "mblocks" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/Serializable"
+          }
+        }
+      }
+    },
+    "Notestmt" : {
+      "type" : "object",
+      "required" : [ "note" ],
+      "properties" : {
+        "note" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/Note"
+          }
+        },
+        "encodinganalog" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        },
+        "id" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        },
+        "altrender" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        },
+        "audience" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        }
+      }
+    },
+    "OtherAgencyCode" : {
+      "type" : "object",
+      "properties" : {
+        "value" : {
+          "type" : "string"
+        },
+        "localType" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        }
+      }
+    },
+    "OtherRecordId" : {
+      "type" : "object",
+      "properties" : {
+        "content" : {
+          "type" : "string"
+        },
+        "localType" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        }
+      }
+    },
+    "P" : {
+      "type" : "object",
+      "properties" : {
+        "content" : {
+          "type" : "string"
+        },
+        "lang" : {
+          "type" : "string",
+          "xml" : {
+            "namespace" : "http://www.w3.org/XML/1998/namespace",
+            "attribute" : true
+          }
+        }
+      }
+    },
+    "PageRequest" : {
+      "type" : "object",
+      "properties" : {
+        "count" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : "5",
+          "description" : "Number of items to retrieve. Default is 5, maximum is 50.",
+          "minimum" : 0.0,
+          "maximum" : 50.0
+        },
+        "startIndex" : {
+          "type" : "integer",
+          "format" : "int32",
+          "description" : "Offset the list of returned results by this amount. Default is zero."
+        }
+      }
+    },
+    "PlaceEntry" : {
+      "type" : "object",
+      "properties" : {
+        "content" : {
+          "type" : "string"
+        },
+        "localType" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        },
+        "countryCode" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        },
+        "vocabularySource" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        },
+        "longitude" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        },
+        "latitude" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        },
+        "scriptCode" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        },
+        "lang" : {
+          "type" : "string",
+          "xml" : {
+            "namespace" : "http://www.w3.org/XML/1998/namespace",
+            "attribute" : true
+          }
+        },
+        "transliteration" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        }
+      }
+    },
+    "Profiledesc" : {
+      "type" : "object",
+      "properties" : {
+        "creation" : {
+          "$ref" : "#/definitions/Creation"
+        },
+        "langusage" : {
+          "$ref" : "#/definitions/Langusage"
+        },
+        "descrules" : {
+          "$ref" : "#/definitions/Descrules"
+        },
+        "encodinganalog" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        },
+        "id" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        },
+        "altrender" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        },
+        "audience" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        }
+      }
+    },
+    "PublicationStatus" : {
+      "type" : "object",
+      "properties" : {
+        "value" : {
+          "type" : "string"
+        }
+      }
+    },
+    "Publicationstmt" : {
+      "type" : "object",
+      "properties" : {
+        "publisherOrDateOrAddress" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/Serializable"
+          }
+        },
+        "encodinganalog" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        },
+        "id" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        },
+        "altrender" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        },
+        "audience" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        }
+      }
+    },
+    "QueryPageRequest" : {
+      "type" : "object",
+      "required" : [ "query" ],
+      "properties" : {
+        "count" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : "5",
+          "description" : "Number of items to retrieve. Default is 5, maximum is 50.",
+          "minimum" : 0.0,
+          "maximum" : 50.0
+        },
+        "startIndex" : {
+          "type" : "integer",
+          "format" : "int32",
+          "description" : "Offset the list of returned results by this amount. Default is zero."
+        },
+        "query" : {
+          "type" : "string",
+          "example" : "*",
+          "description" : "Search query string"
+        }
+      }
+    },
+    "RecordId" : {
+      "type" : "object",
+      "properties" : {
+        "value" : {
+          "type" : "string"
+        }
+      }
+    },
+    "RelationEntry" : {
+      "type" : "object",
+      "properties" : {
+        "content" : {
+          "type" : "string"
+        },
+        "localType" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        },
+        "scriptCode" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        },
+        "lang" : {
+          "type" : "string",
+          "xml" : {
+            "namespace" : "http://www.w3.org/XML/1998/namespace",
+            "attribute" : true
+          }
+        },
+        "transliteration" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        }
+      }
+    },
+    "Relations" : {
+      "type" : "object",
+      "properties" : {
+        "cpfRelation" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/CpfRelation"
+          }
+        },
+        "resourceRelation" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/ResourceRelation"
+          }
+        },
+        "functionRelation" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/FunctionRelation"
+          }
+        }
+      }
+    },
+    "ResourceRelation" : {
+      "type" : "object",
+      "properties" : {
+        "relationEntry" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/RelationEntry"
+          }
+        },
+        "date" : {
+          "$ref" : "#/definitions/Date"
+        },
+        "dateRange" : {
+          "$ref" : "#/definitions/DateRange"
+        },
+        "dateSet" : {
+          "$ref" : "#/definitions/DateSet"
+        },
+        "placeEntry" : {
+          "$ref" : "#/definitions/PlaceEntry"
+        },
+        "descriptiveNote" : {
+          "$ref" : "#/definitions/DescriptiveNote"
+        },
+        "lastDateTimeVerified" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        },
+        "type" : {
+          "type" : "string",
+          "xml" : {
+            "namespace" : "http://www.w3.org/1999/xlink",
+            "attribute" : true
+          }
+        },
+        "href" : {
+          "type" : "string",
+          "xml" : {
+            "namespace" : "http://www.w3.org/1999/xlink",
+            "attribute" : true
+          }
+        },
+        "role" : {
+          "type" : "string",
+          "xml" : {
+            "namespace" : "http://www.w3.org/1999/xlink",
+            "attribute" : true
+          }
+        },
+        "arcrole" : {
+          "type" : "string",
+          "xml" : {
+            "namespace" : "http://www.w3.org/1999/xlink",
+            "attribute" : true
+          }
+        },
+        "title" : {
+          "type" : "string",
+          "xml" : {
+            "namespace" : "http://www.w3.org/1999/xlink",
+            "attribute" : true
+          }
+        },
+        "show" : {
+          "type" : "string",
+          "xml" : {
+            "namespace" : "http://www.w3.org/1999/xlink",
+            "attribute" : true
+          }
+        },
+        "actuate" : {
+          "type" : "string",
+          "xml" : {
+            "namespace" : "http://www.w3.org/1999/xlink",
+            "attribute" : true
+          }
+        },
+        "resourceRelationType" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        }
+      }
+    },
+    "Revisiondesc" : {
+      "type" : "object",
+      "properties" : {
+        "list" : {
+          "$ref" : "#/definitions/List"
+        },
+        "change" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/Change"
+          }
+        },
+        "encodinganalog" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        },
+        "id" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        },
+        "altrender" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        },
+        "audience" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        }
+      }
+    },
+    "RightsDeclaration" : {
+      "type" : "object",
+      "required" : [ "citation" ],
+      "properties" : {
+        "abbreviation" : {
+          "$ref" : "#/definitions/Abbreviation"
+        },
+        "citation" : {
+          "$ref" : "#/definitions/Citation"
+        },
+        "descriptiveNote" : {
+          "$ref" : "#/definitions/DescriptiveNote"
+        },
+        "lang" : {
+          "type" : "string",
+          "xml" : {
+            "namespace" : "http://www.w3.org/XML/1998/namespace",
+            "attribute" : true
+          }
+        },
+        "localType" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        }
+      }
+    },
+    "Runner" : {
+      "type" : "object",
+      "properties" : {
+        "content" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/Serializable"
+          }
+        },
+        "placement" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        },
+        "role" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        },
+        "id" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        },
+        "altrender" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        },
+        "audience" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        }
+      }
+    },
+    "Script" : {
+      "type" : "object",
+      "properties" : {
+        "content" : {
+          "type" : "string"
+        },
+        "lang" : {
+          "type" : "string",
+          "xml" : {
+            "namespace" : "http://www.w3.org/XML/1998/namespace",
+            "attribute" : true
+          }
+        },
+        "scriptCode" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        }
+      }
+    },
+    "SearchDocRequest" : {
+      "type" : "object",
+      "required" : [ "docType", "query" ],
+      "properties" : {
+        "count" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : "5",
+          "description" : "Number of items to retrieve. Default is 5, maximum is 50.",
+          "minimum" : 0.0,
+          "maximum" : 50.0
+        },
+        "startIndex" : {
+          "type" : "integer",
+          "format" : "int32",
+          "description" : "Offset the list of returned results by this amount. Default is zero."
+        },
+        "query" : {
+          "type" : "string",
+          "example" : "*",
+          "description" : "Search query string"
+        },
+        "docType" : {
+          "type" : "string",
+          "example" : "fa",
+          "description" : "Document type"
+        },
+        "filters" : {
+          "type" : "array",
+          "description" : "List of search filters using facet filed",
+          "items" : {
+            "$ref" : "#/definitions/SearchFilterRequest"
+          }
+        },
+        "dateFilters" : {
+          "type" : "array",
+          "description" : "List of search filters using date",
+          "items" : {
+            "$ref" : "#/definitions/DateFilterRequest"
+          }
+        }
+      }
+    },
+    "SearchFilterRequest" : {
+      "type" : "object",
+      "required" : [ "facetFieldIds", "facetFieldName" ],
+      "properties" : {
+        "facetFieldName" : {
+          "type" : "string",
+          "description" : "Name of the facet field"
+        },
+        "facetFieldIds" : {
+          "type" : "array",
+          "description" : "List of field ids",
+          "items" : {
+            "type" : "string"
+          }
+        }
+      }
+    },
+    "SearchPageRequestWithUnitId" : {
+      "type" : "object",
+      "required" : [ "findingAidNo" ],
+      "properties" : {
+        "count" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : "5",
+          "description" : "Number of items to retrieve. Default is 5, maximum is 50.",
+          "minimum" : 0.0,
+          "maximum" : 50.0
+        },
+        "startIndex" : {
+          "type" : "integer",
+          "format" : "int32",
+          "description" : "Offset the list of returned results by this amount. Default is zero."
+        },
+        "findingAidNo" : {
+          "type" : "string",
+          "description" : "Finding Aid No"
+        },
+        "unitId" : {
+          "type" : "string",
+          "example" : " ",
+          "description" : "Unit Id of the level"
+        },
+        "filters" : {
+          "type" : "array",
+          "description" : "List of search filters using facet filed",
+          "items" : {
+            "$ref" : "#/definitions/SearchFilterRequest"
+          }
+        },
+        "dateFilters" : {
+          "type" : "array",
+          "description" : "List of search filters using date",
+          "items" : {
+            "$ref" : "#/definitions/DateFilterRequest"
+          }
+        },
+        "sortRequest" : {
+          "description" : "Sorting result with fields and sorting type",
+          "$ref" : "#/definitions/SortRequest"
+        }
+      }
+    },
+    "SearchRequest" : {
+      "type" : "object",
+      "required" : [ "query" ],
+      "properties" : {
+        "count" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : "5",
+          "description" : "Number of items to retrieve. Default is 5, maximum is 50.",
+          "minimum" : 0.0,
+          "maximum" : 50.0
+        },
+        "startIndex" : {
+          "type" : "integer",
+          "format" : "int32",
+          "description" : "Offset the list of returned results by this amount. Default is zero."
+        },
+        "query" : {
+          "type" : "string",
+          "example" : "*",
+          "description" : "Search query string"
+        },
+        "filters" : {
+          "type" : "array",
+          "description" : "List of search filters using facet filed",
+          "items" : {
+            "$ref" : "#/definitions/SearchFilterRequest"
+          }
+        },
+        "dateFilters" : {
+          "type" : "array",
+          "description" : "List of search filters using date",
+          "items" : {
+            "$ref" : "#/definitions/DateFilterRequest"
+          }
+        },
+        "sortRequest" : {
+          "description" : "Sorting result with fields and sorting type",
+          "$ref" : "#/definitions/SortRequest"
+        }
+      }
+    },
+    "Serializable" : {
+      "type" : "object"
+    },
+    "Seriesstmt" : {
+      "type" : "object",
+      "properties" : {
+        "titleproperOrNumOrP" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/Serializable"
+          }
+        },
+        "encodinganalog" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        },
+        "id" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        },
+        "altrender" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        },
+        "audience" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        }
+      }
+    },
+    "SetComponent" : {
+      "type" : "object",
+      "properties" : {
+        "componentEntry" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/ComponentEntry"
+          }
+        },
+        "descriptiveNote" : {
+          "$ref" : "#/definitions/DescriptiveNote"
+        },
+        "lang" : {
+          "type" : "string",
+          "xml" : {
+            "namespace" : "http://www.w3.org/XML/1998/namespace",
+            "attribute" : true
+          }
+        },
+        "lastDateTimeVerified" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        },
+        "type" : {
+          "type" : "string",
+          "xml" : {
+            "namespace" : "http://www.w3.org/1999/xlink",
+            "attribute" : true
+          }
+        },
+        "href" : {
+          "type" : "string",
+          "xml" : {
+            "namespace" : "http://www.w3.org/1999/xlink",
+            "attribute" : true
+          }
+        },
+        "role" : {
+          "type" : "string",
+          "xml" : {
+            "namespace" : "http://www.w3.org/1999/xlink",
+            "attribute" : true
+          }
+        },
+        "arcrole" : {
+          "type" : "string",
+          "xml" : {
+            "namespace" : "http://www.w3.org/1999/xlink",
+            "attribute" : true
+          }
+        },
+        "title" : {
+          "type" : "string",
+          "xml" : {
+            "namespace" : "http://www.w3.org/1999/xlink",
+            "attribute" : true
+          }
+        },
+        "show" : {
+          "type" : "string",
+          "xml" : {
+            "namespace" : "http://www.w3.org/1999/xlink",
+            "attribute" : true
+          }
+        },
+        "actuate" : {
+          "type" : "string",
+          "xml" : {
+            "namespace" : "http://www.w3.org/1999/xlink",
+            "attribute" : true
+          }
+        }
+      }
+    },
+    "SimplifiedHierarchyResponse" : {
+      "type" : "object",
+      "required" : [ "id" ],
+      "properties" : {
+        "id" : {
+          "type" : "string",
+          "description" : "Internal APE identifier of the result"
+        },
+        "unitId" : {
+          "type" : "string",
+          "description" : "Identifier of the result provided by the repository"
+        },
+        "siblingPosition" : {
+          "type" : "integer",
+          "format" : "int32",
+          "description" : "Index relative to its siblings"
+        },
+        "ancestorLevel" : {
+          "type" : "integer",
+          "format" : "int32",
+          "description" : "Greatest ancestor is a level 0"
+        }
+      }
+    },
+    "SortRequest" : {
+      "type" : "object",
+      "properties" : {
+        "sortType" : {
+          "type" : "string",
+          "example" : "asc",
+          "description" : "Type of sorting. Allowed values can be asc or desc"
+        },
+        "fields" : {
+          "type" : "array",
+          "description" : "Sorting fields",
+          "items" : {
+            "type" : "string"
+          }
+        }
+      }
+    },
+    "Source" : {
+      "type" : "object",
+      "properties" : {
+        "sourceEntry" : {
+          "$ref" : "#/definitions/SourceEntry"
+        },
+        "descriptiveNote" : {
+          "$ref" : "#/definitions/DescriptiveNote"
+        },
+        "lastDateTimeVerified" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        },
+        "type" : {
+          "type" : "string",
+          "xml" : {
+            "namespace" : "http://www.w3.org/1999/xlink",
+            "attribute" : true
+          }
+        },
+        "href" : {
+          "type" : "string",
+          "xml" : {
+            "namespace" : "http://www.w3.org/1999/xlink",
+            "attribute" : true
+          }
+        },
+        "role" : {
+          "type" : "string",
+          "xml" : {
+            "namespace" : "http://www.w3.org/1999/xlink",
+            "attribute" : true
+          }
+        },
+        "arcrole" : {
+          "type" : "string",
+          "xml" : {
+            "namespace" : "http://www.w3.org/1999/xlink",
+            "attribute" : true
+          }
+        },
+        "title" : {
+          "type" : "string",
+          "xml" : {
+            "namespace" : "http://www.w3.org/1999/xlink",
+            "attribute" : true
+          }
+        },
+        "show" : {
+          "type" : "string",
+          "xml" : {
+            "namespace" : "http://www.w3.org/1999/xlink",
+            "attribute" : true
+          }
+        },
+        "actuate" : {
+          "type" : "string",
+          "xml" : {
+            "namespace" : "http://www.w3.org/1999/xlink",
+            "attribute" : true
+          }
+        }
+      }
+    },
+    "SourceEntry" : {
+      "type" : "object",
+      "properties" : {
+        "content" : {
+          "type" : "string"
+        },
+        "scriptCode" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        },
+        "lang" : {
+          "type" : "string",
+          "xml" : {
+            "namespace" : "http://www.w3.org/XML/1998/namespace",
+            "attribute" : true
+          }
+        },
+        "transliteration" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        }
+      }
+    },
+    "Sources" : {
+      "type" : "object",
+      "required" : [ "source" ],
+      "properties" : {
+        "source" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/Source"
+          }
+        }
+      }
+    },
+    "Sponsor" : {
+      "type" : "object",
+      "properties" : {
+        "content" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/Serializable"
+          }
+        },
+        "encodinganalog" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        },
+        "id" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        },
+        "altrender" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        },
+        "audience" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        }
+      }
+    },
+    "Subtitle" : {
+      "type" : "object",
+      "properties" : {
+        "content" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/Serializable"
+          }
+        },
+        "encodinganalog" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        },
+        "id" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        },
+        "altrender" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        },
+        "audience" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        }
+      }
+    },
+    "Term" : {
+      "type" : "object",
+      "properties" : {
+        "content" : {
+          "type" : "string"
+        },
+        "lastDateTimeVerified" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        },
+        "vocabularySource" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        },
+        "scriptCode" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        },
+        "lang" : {
+          "type" : "string",
+          "xml" : {
+            "namespace" : "http://www.w3.org/XML/1998/namespace",
+            "attribute" : true
+          }
+        },
+        "transliteration" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        }
+      }
+    },
+    "Titlepage" : {
+      "type" : "object",
+      "properties" : {
+        "addressOrChronlistOrList" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/Serializable"
+          }
+        },
+        "id" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        },
+        "altrender" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        },
+        "audience" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        }
+      }
+    },
+    "Titleproper" : {
+      "type" : "object",
+      "properties" : {
+        "content" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/Serializable"
+          }
+        },
+        "render" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          },
+          "enum" : [ "ALTRENDER", "BOLD", "BOLDDOUBLEQUOTE", "BOLDITALIC", "BOLDSINGLEQUOTE", "BOLDSMCAPS", "BOLDUNDERLINE", "DOUBLEQUOTE", "ITALIC", "NONPROPORT", "SINGLEQUOTE", "SMCAPS", "SUB", "SUPER", "UNDERLINE" ]
+        },
+        "type" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        },
+        "encodinganalog" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        },
+        "id" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        },
+        "altrender" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        },
+        "audience" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        }
+      }
+    },
+    "Titlestmt" : {
+      "type" : "object",
+      "required" : [ "titleproper" ],
+      "properties" : {
+        "titleproper" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/Titleproper"
+          }
+        },
+        "subtitle" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/Subtitle"
+          }
+        },
+        "author" : {
+          "$ref" : "#/definitions/Author"
+        },
+        "sponsor" : {
+          "$ref" : "#/definitions/Sponsor"
+        },
+        "encodinganalog" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        },
+        "id" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        },
+        "altrender" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        },
+        "audience" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        }
+      }
+    },
+    "ToDate" : {
+      "type" : "object",
+      "properties" : {
+        "content" : {
+          "type" : "string"
+        },
+        "lang" : {
+          "type" : "string",
+          "xml" : {
+            "namespace" : "http://www.w3.org/XML/1998/namespace",
+            "attribute" : true
+          }
+        },
+        "standardDate" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        },
+        "notBefore" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        },
+        "notAfter" : {
+          "type" : "string",
+          "xml" : {
+            "attribute" : true
+          }
+        }
+      }
+    }
+  }
+}
