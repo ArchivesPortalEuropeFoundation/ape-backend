@@ -5,6 +5,7 @@ import eu.apenet.commons.StrutsResourceBundleSource;
 import eu.apenet.commons.solr.SolrField;
 import eu.apenet.commons.utils.APEnetUtilities;
 import eu.apenet.commons.xslt.eac.EacXslt;
+import eu.apenet.persistence.dao.ArchivalInstitutionDAO;
 import eu.apenet.persistence.dao.EacCpfDAO;
 import eu.apenet.persistence.factory.DAOFactory;
 import eu.apenet.persistence.vo.ArchivalInstitution;
@@ -29,7 +30,9 @@ public class EacApiAction {
     public static final String EACCPFDETAILS_PREVIEW_XSLT = "eaccpfdetailspreview";
 
     private String eaccpfId;
+    private String aiId;
     private String aiName;
+    private String aiRepositoryCode;
     private Boolean preview = false;
     private String element;
     private String term;
@@ -54,7 +57,16 @@ public class EacApiAction {
         HttpServletResponse response = ServletActionContext.getResponse();
 
         EacCpfDAO eacCpfDAO = DAOFactory.instance().getEacCpfDAO();
-        EacCpf eaccpf = eacCpfDAO.getEacCpfByIdentifier(aiName, eaccpfId,!preview);
+        ArchivalInstitutionDAO archivalInstitutionDAO = DAOFactory.instance().getArchivalInstitutionDAO();
+        if (aiId != null){
+            ArchivalInstitution archivalInstitution = archivalInstitutionDAO.findById(Integer.parseInt(aiId));
+            aiRepositoryCode = archivalInstitution.getRepositorycode();
+        }
+        else if (aiName != null){
+            ArchivalInstitution archivalInstitution = archivalInstitutionDAO.getArchivalInstitutionByAiName(aiName);
+            aiRepositoryCode = archivalInstitution.getRepositorycode();
+        }
+        EacCpf eaccpf = eacCpfDAO.getEacCpfByIdentifier(aiRepositoryCode, eaccpfId,!preview);
         ArchivalInstitution archivalInstitution = eaccpf.getArchivalInstitution();
 
         File file= new File(APEnetUtilities.getApePortalAndDashboardConfig().getRepoDirPath() + eaccpf.getPath());
@@ -205,5 +217,21 @@ public class EacApiAction {
 
     public String getHtml() {
         return html;
+    }
+
+    public void setAiId(String aiId) {
+        this.aiId = aiId;
+    }
+
+    public void setAiRepositoryCode(String aiRepositoryCode) {
+        this.aiRepositoryCode = aiRepositoryCode;
+    }
+
+    public String getAiId() {
+        return aiId;
+    }
+
+    public String getAiRepositoryCode() {
+        return aiRepositoryCode;
     }
 }
