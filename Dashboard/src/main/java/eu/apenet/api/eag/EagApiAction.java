@@ -51,12 +51,18 @@ public class EagApiAction {
         ArchivalInstitution archivalInstitution;
         if (aiId != null) {
             archivalInstitution = archivalInstitutionDAO.findById(Integer.parseInt(aiId));
+            aiName = archivalInstitution.getAiname();
+            aiRepositoryCode = archivalInstitution.getRepositorycode();
         }
         else if (aiName != null) {
             archivalInstitution = archivalInstitutionDAO.getArchivalInstitutionByAiName(aiName);
+            aiRepositoryCode = archivalInstitution.getRepositorycode();
+            aiId = ""+archivalInstitution.getAiId();
         }
         else {
             archivalInstitution = archivalInstitutionDAO.getArchivalInstitutionByRepositoryCode(aiRepositoryCode);
+            aiId = ""+archivalInstitution.getAiId();
+            aiName = archivalInstitution.getAiname();
         }
         String eagPath = APEnetUtilities.getDashboardConfig().getRepoDirPath() + archivalInstitution.getEagPath();
 

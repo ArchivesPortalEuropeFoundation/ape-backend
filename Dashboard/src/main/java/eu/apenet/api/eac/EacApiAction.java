@@ -58,14 +58,23 @@ public class EacApiAction {
 
         EacCpfDAO eacCpfDAO = DAOFactory.instance().getEacCpfDAO();
         ArchivalInstitutionDAO archivalInstitutionDAO = DAOFactory.instance().getArchivalInstitutionDAO();
+
         if (aiId != null){
             ArchivalInstitution archivalInstitution = archivalInstitutionDAO.findById(Integer.parseInt(aiId));
             aiRepositoryCode = archivalInstitution.getRepositorycode();
+            aiName = archivalInstitution.getAiname();
         }
         else if (aiName != null){
             ArchivalInstitution archivalInstitution = archivalInstitutionDAO.getArchivalInstitutionByAiName(aiName);
             aiRepositoryCode = archivalInstitution.getRepositorycode();
+            aiId = ""+archivalInstitution.getAiId();
         }
+        else {
+            ArchivalInstitution archivalInstitution = archivalInstitutionDAO.getArchivalInstitutionByRepositoryCode(aiRepositoryCode);
+            aiId = ""+archivalInstitution.getAiId();
+            aiName = archivalInstitution.getAiname();
+        }
+
         EacCpf eaccpf = eacCpfDAO.getEacCpfByIdentifier(aiRepositoryCode, eaccpfId,!preview);
         ArchivalInstitution archivalInstitution = eaccpf.getArchivalInstitution();
 

@@ -39,7 +39,7 @@
                     <xsl:value-of select="ape:resource('eag2012.portal.email')"/>
                     <xsl:text>:</xsl:text>
                 </td>
-                <td>
+                <td class="gel_email gel_contactDetails">
                     <xsl:variable name="list" select="$parent/eag:email"></xsl:variable>
                     <xsl:choose>
                         <xsl:when test="count($list) > 1">
@@ -207,7 +207,7 @@
                         <xsl:value-of select="ape:resource('eag2012.portal.webpage')"/>
                         <xsl:text>:</xsl:text>
                     </td>
-                    <td>
+                    <td class="gel_webpage gel_contactDetails">
                         <xsl:call-template name="multilaguageWebpage">
                             <xsl:with-param name="list" select="$parent/eag:webpage"/>
                         </xsl:call-template>
@@ -243,7 +243,7 @@
                     <xsl:value-of select="ape:resource('eag2012.portal.tel')"/>
                     <xsl:text>:</xsl:text>
                 </td>
-                <td>
+                <td class="gel_telephone gel_contactDetails">
                     <xsl:for-each select="$parent/eag:telephone">
                         <div>
                             <xsl:value-of select="."/>

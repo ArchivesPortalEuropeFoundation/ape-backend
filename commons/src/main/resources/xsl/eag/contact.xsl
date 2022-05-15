@@ -53,7 +53,7 @@
                             <xsl:value-of select="ape:resource('eag2012.portal.visitorsaddress')"/>
                             <xsl:text>:</xsl:text>
                         </td>
-                        <td class="address">
+                        <td class="address gel_address gel_contactDetails">
                             <xsl:call-template name="multilanguageAddress">
                                 <xsl:with-param name="list" select="eag:location[not(@localType) or @localType='visitors address']"></xsl:with-param>
                             </xsl:call-template>
@@ -67,7 +67,7 @@
                             <xsl:value-of select="ape:resource('eag2012.portal.district')"/>
                             <xsl:text>:</xsl:text>
                         </td>
-                        <td>
+                        <td class="gel_district gel_contactDetails">
                             <xsl:call-template name="multilanguage">
                                 <xsl:with-param name="list" select="eag:location[not(@localType) or @localType='visitors address']/eag:localentity"></xsl:with-param>
                             </xsl:call-template>
@@ -81,7 +81,7 @@
                             <xsl:value-of select="ape:resource('eag2012.portal.countylocalauthority')"/>
                             <xsl:text>:</xsl:text>
                         </td>
-                        <td>
+                        <td class="gel_county gel_contactDetails">
                             <xsl:call-template name="multilanguage">
                                 <xsl:with-param name="list" select="eag:location[not(@localType) or @localType='visitors address']/eag:secondem"></xsl:with-param>
                             </xsl:call-template>
@@ -95,7 +95,7 @@
                             <xsl:value-of select="ape:resource('eag2012.portal.regionautonomousauthority')"/>
                             <xsl:text>:</xsl:text>
                         </td>
-                        <td>
+                        <td class="gel_region gel_contactDetails">
                             <xsl:call-template name="multilanguage">
                                 <xsl:with-param name="list" select="eag:location[not(@localType) or @localType='visitors address']/eag:firstdem"></xsl:with-param>
                             </xsl:call-template>
@@ -109,7 +109,7 @@
                             <xsl:value-of select="ape:resource('eag2012.portal.postaladdress')"></xsl:value-of>
                             <xsl:text>:</xsl:text>
                         </td>
-                        <td class="postalAddress">
+                        <td class="postalAddress gel_postalAddress gel_contactDetails">
                             <xsl:call-template name="multilanguagePostalAddress">
                                 <xsl:with-param name="list" select="eag:location[@localType='postal address']"></xsl:with-param>
                             </xsl:call-template>
@@ -123,7 +123,7 @@
                             <xsl:value-of select="ape:resource('eag2012.portal.country')"/>
                             <xsl:text>:</xsl:text>
                         </td>
-                        <td>
+                        <td class="gel_country gel_contactDetails">
                             <xsl:call-template name="multilanguage">
                                 <xsl:with-param name="list" select="eag:location[not(@localType) or @localType='visitors address']/eag:country"></xsl:with-param>
                             </xsl:call-template>
@@ -148,7 +148,7 @@
                             <xsl:value-of select="ape:resource('eag2012.portal.fax')"/>
                             <xsl:text>:</xsl:text>
                         </td>
-                        <td>
+                        <td class="gel_fax gel_contactDetails">
                             <xsl:for-each select="eag:fax">
                                 <div>										
                                     <xsl:value-of select="."/>
