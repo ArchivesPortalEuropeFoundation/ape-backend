@@ -194,8 +194,11 @@
 			                            <c:choose>
 			                                <c:when test="${item.enabled}">
 			                                	<option value="NOW">
-													<s:text name="admin.harvestermanagement.harvester.start" />
-												</option>			                                
+													<s:text name="admin.harvestermanagement.harvester.startnow" />
+												</option>
+												<option value="NOW_TODAY">
+													<s:text name="admin.harvestermanagement.harvester.starttoday" />
+												</option>
 			                                	<option value="DISABLE">
 													<s:text name="admin.harvestermanagement.harvester.idle" />
 												</option>

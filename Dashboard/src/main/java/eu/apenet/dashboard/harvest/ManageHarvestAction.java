@@ -5,7 +5,14 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ThreadFactory;
+import java.util.concurrent.TimeUnit;
 
+import com.google.common.util.concurrent.ThreadFactoryBuilder;
+import eu.apenet.dashboard.listener.Duration;
+import eu.apenet.dashboard.listener.HarvesterTask;
 import eu.apenet.dashboard.security.SecurityContext;
 import org.apache.log4j.Logger;
 
@@ -92,10 +99,29 @@ public class ManageHarvestAction extends AbstractAction {
         ArchivalInstitutionOaiPmhDAO archivalInstitutionOaiPmhDAO = DAOFactory.instance().getArchivalInstitutionOaiPmhDAO();
         ArchivalInstitutionOaiPmh archivalInstitutionOaiPmh = archivalInstitutionOaiPmhDAO.findById(harvestId.longValue());
 		boolean isAdmin = SecurityContext.get().isAdmin();
-    	if ("NOW".equals(selectedAction)){
-    		archivalInstitutionOaiPmh.setNewHarvesting(new Date());
-    		archivalInstitutionOaiPmhDAO.update(archivalInstitutionOaiPmh);
-    	}else if ("METHOD".equals(selectedAction)){
+    	if ("NOW".equals(selectedAction)) {
+			archivalInstitutionOaiPmh.setNewHarvesting(new Date());
+			archivalInstitutionOaiPmhDAO.update(archivalInstitutionOaiPmh);
+
+			ThreadFactory namedThreadFactory = new ThreadFactoryBuilder()
+					.setNameFormat("hervester-thread-%d").build();
+			ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1, namedThreadFactory);
+			Duration DAILY_HARVESTING_DURATION = new Duration(4, 0, 0);
+			HarvesterTask harvesterTask = new HarvesterTask(scheduler, DAILY_HARVESTING_DURATION);
+			harvesterTask.setArchivalInstitutionOaiPmh(archivalInstitutionOaiPmh);
+			scheduler.schedule(harvesterTask, 0, TimeUnit.SECONDS);
+			try {
+				Thread.sleep(1000);
+				HarvesterDaemon.setHarvesterProcessing(false);
+				scheduler.shutdownNow();
+				scheduler = null;
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		} else if ("NOW_TODAY".equals(selectedAction)) {
+			archivalInstitutionOaiPmh.setNewHarvesting(new Date());
+			archivalInstitutionOaiPmhDAO.update(archivalInstitutionOaiPmh);
+		}else if ("METHOD".equals(selectedAction)){
     		archivalInstitutionOaiPmh.setHarvestMethodListByIdentifiers(!archivalInstitutionOaiPmh.isHarvestMethodListByIdentifiers());
     		archivalInstitutionOaiPmhDAO.update(archivalInstitutionOaiPmh);
     	}else if ("DISABLE".equals(selectedAction)){

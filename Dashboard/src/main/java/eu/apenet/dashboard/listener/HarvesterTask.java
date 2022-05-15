@@ -26,6 +26,8 @@ public class HarvesterTask implements Runnable {
 	private static final long INTERVAL = 40000;
 	private final ScheduledExecutorService scheduler;
 
+	private ArchivalInstitutionOaiPmh archivalInstitutionOaiPmh;
+
 	public HarvesterTask(ScheduledExecutorService scheduler, Duration maxDuration, Duration delay) {
 		this.duration = maxDuration;
 		this.scheduler = scheduler;
@@ -95,6 +97,11 @@ public class HarvesterTask implements Runnable {
 		ArchivalInstitutionOaiPmhDAO archivalInstitutionOaiPmhDAO = DAOFactory.instance()
 				.getArchivalInstitutionOaiPmhDAO();
 		List<ArchivalInstitutionOaiPmh> archivalInstitutionOaiPmhList = archivalInstitutionOaiPmhDAO.getReadyItems();
+
+		if (getArchivalInstitutionOaiPmh() != null){
+			archivalInstitutionOaiPmhList.clear();
+			archivalInstitutionOaiPmhList.add(archivalInstitutionOaiPmhDAO.findById(getArchivalInstitutionOaiPmh().getId()));
+		}
 		// Check for each if the interval is right and which one should be done
 		// right now
 		for (ArchivalInstitutionOaiPmh archivalInstitutionOaiPmh : archivalInstitutionOaiPmhList) {
@@ -119,5 +126,13 @@ public class HarvesterTask implements Runnable {
 		}
 
 		return false;
+	}
+
+	public void setArchivalInstitutionOaiPmh(ArchivalInstitutionOaiPmh archivalInstitutionOaiPmh) {
+		this.archivalInstitutionOaiPmh = archivalInstitutionOaiPmh;
+	}
+
+	public ArchivalInstitutionOaiPmh getArchivalInstitutionOaiPmh() {
+		return archivalInstitutionOaiPmh;
 	}
 }
