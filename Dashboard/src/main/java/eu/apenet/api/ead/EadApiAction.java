@@ -8,6 +8,7 @@ import eu.apenet.commons.utils.APEnetUtilities;
 import eu.apenet.commons.xslt.eac.EacXslt;
 import eu.apenet.commons.xslt.ead.EadXslt;
 import eu.apenet.persistence.dao.ArchivalInstitutionDAO;
+import eu.apenet.persistence.dao.CLevelDAO;
 import eu.apenet.persistence.dao.EacCpfDAO;
 import eu.apenet.persistence.dao.EadDAO;
 import eu.apenet.persistence.factory.DAOFactory;
@@ -26,6 +27,7 @@ import java.util.Map;
 
 public class EadApiAction {
     private String html = "";
+    private String childHtml = "";
 
     private static final List<SolrField> DEFAULT_HIGHLIGHT_FIELDS = SolrField.getDefaults();
     public static final String CDETAILS_CHILD_XSLT = "cdetails-child";
@@ -47,6 +49,12 @@ public class EadApiAction {
     private String aiRepositoryCode;
 
     String eadid;
+    String clevelid;
+    String clevelunitid;
+
+    private String max = "10";
+    private String page;
+    private Long totalNumberOfChildren;
 
     private final static Map<String, String> xsltUrls = new HashMap<String,String>();
     static {
@@ -82,10 +90,47 @@ public class EadApiAction {
         XmlType xmlType = XmlType.getTypeByResourceName(getXmlType());
 
         EadDAO eadDAO = DAOFactory.instance().getEadDAO();
-        Ead ead = eadDAO.getEadByEadid(xmlType.getEadClazz(), Integer.parseInt(aiId), eadid);
-        EadContent eadContent =  ead.getEadContent();
+        CLevelDAO cLevelDAO = DAOFactory.instance().getCLevelDAO();
 
-        Source xmlSource = new StreamSource(new StringReader(eadContent.getXml()));
+        String xml = null;
+        String xmlchildren = null;
+
+        if (clevelunitid != null){
+            List<CLevel> cLevels = cLevelDAO.getCLevel(aiRepositoryCode, xmlType.getEadClazz(), eadid, clevelunitid);
+            if (cLevels != null && cLevels.size()>0) {
+                clevelid = ""+cLevels.get(0).getId();
+            }
+        }
+
+        if (clevelid != null){
+            CLevel cLevel = cLevelDAO.getCLevel(aiRepositoryCode, xmlType.getEadClazz(), eadid, Long.parseLong(clevelid));
+            xml = cLevel.getXml();
+
+            Integer pageNumberInt = 1;
+            if (page != null) {
+                pageNumberInt = Integer.parseInt(page);
+            }
+            int orderId = (pageNumberInt - 1) * Integer.parseInt(max);
+            List<CLevel> children = cLevelDAO.findChildCLevels(cLevel.getId(), orderId, Integer.parseInt(max));
+            totalNumberOfChildren = cLevelDAO.countChildCLevels(cLevel.getId());
+            if (totalNumberOfChildren>0) {
+                StringBuilder builder = new StringBuilder();
+                builder.append("<c xmlns=\"urn:isbn:1-931666-22-9\">");
+                for (CLevel child : children) {
+                    builder.append(child.getXml());
+                }
+                builder.append("</c>");
+                xmlchildren = builder.toString();
+            }
+        }
+        else {
+            Ead ead = eadDAO.getEadByEadid(xmlType.getEadClazz(), Integer.parseInt(aiId), eadid);
+            EadContent eadContent = ead.getEadContent();
+            xml = eadContent.getXml();
+        }
+
+        Source xmlSource = new StreamSource(new StringReader(xml));
+        Source xmlSourceChildren = xmlchildren!=null ? new StreamSource(new StringReader(xmlchildren)) : null;
         List<SolrField> highlightFields = SolrField.getSolrFieldsByIdString(element);
         if (highlightFields.size() == 0) {
             highlightFields = DEFAULT_HIGHLIGHT_FIELDS;
@@ -109,9 +154,18 @@ public class EadApiAction {
                 StringWriter stringWriter = new StringWriter();
                 EadXslt.convertEadToHtml(xslLocation, stringWriter, xmlSource, term,
                         highlightFields, new StrutsResourceBundleSource(), secondDisplayUrl, aiIdInt,
-                        "true".equalsIgnoreCase(getDashboardPreview()), APEnetUtilities.getApePortalConfig().getSolrStopwordsUrl(),
+                        "true".equalsIgnoreCase(getDashboardPreview()), /*APEnetUtilities.getApePortalConfig().getSolrStopwordsUrl()*/null,
                         typeOfDisplay, xmlType, this.getEacUrlBase());
                 this.html = stringWriter.toString();
+
+                if (xmlSourceChildren != null){
+                    stringWriter = new StringWriter();
+                    EadXslt.convertEadToHtml(xsltUrls.get(CDETAILS_CHILD_XSLT), stringWriter, xmlSourceChildren, term,
+                            highlightFields, new StrutsResourceBundleSource(), secondDisplayUrl, aiIdInt,
+                            "true".equalsIgnoreCase(getDashboardPreview()), /*APEnetUtilities.getApePortalConfig().getSolrStopwordsUrl()*/null,
+                            typeOfDisplay, xmlType, this.getEacUrlBase());
+                    this.childHtml = stringWriter.toString();
+                }
             }
         } catch (Exception e) {
 //            LOG.error(e.getMessage(), e);
@@ -238,5 +292,53 @@ public class EadApiAction {
 
     public String getEadid() {
         return eadid;
+    }
+
+    public void setClevelid(String clevelid) {
+        this.clevelid = clevelid;
+    }
+
+    public String getClevelid() {
+        return clevelid;
+    }
+
+    public void setMax(String max) {
+        this.max = max;
+    }
+
+    public void setPage(String page) {
+        this.page = page;
+    }
+
+    public String getMax() {
+        return max;
+    }
+
+    public String getPage() {
+        return page;
+    }
+
+    public void setChildHtml(String childHtml) {
+        this.childHtml = childHtml;
+    }
+
+    public String getChildHtml() {
+        return childHtml;
+    }
+
+    public void setTotalNumberOfChildren(Long totalNumberOfChildren) {
+        this.totalNumberOfChildren = totalNumberOfChildren;
+    }
+
+    public Long getTotalNumberOfChildren() {
+        return totalNumberOfChildren;
+    }
+
+    public void setClevelunitid(String clevelunitid) {
+        this.clevelunitid = clevelunitid;
+    }
+
+    public String getClevelunitid() {
+        return clevelunitid;
     }
 }
