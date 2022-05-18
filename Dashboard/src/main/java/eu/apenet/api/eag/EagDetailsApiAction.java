@@ -16,7 +16,9 @@ import net.sf.saxon.s9api.Processor;
 import net.sf.saxon.s9api.SaxonApiException;
 import net.sf.saxon.s9api.XsltCompiler;
 import net.sf.saxon.s9api.XsltExecutable;
+import org.apache.struts2.ServletActionContext;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.xml.transform.Source;
 import javax.xml.transform.stream.StreamSource;
 import java.io.File;
@@ -47,6 +49,7 @@ public class EagDetailsApiAction {
     }
 
     public String execute() {
+        HttpServletResponse response = ServletActionContext.getResponse();
 
         ArchivalInstitutionDAO archivalInstitutionDAO = DAOFactory.instance().getArchivalInstitutionDAO();
         EadDAO eadDAO = DAOFactory.instance().getEadDAO();
@@ -102,6 +105,8 @@ public class EagDetailsApiAction {
                 }
             }
         }
+
+        response.setHeader("Access-Control-Allow-Origin","*");
         return Action.SUCCESS;
     }
 

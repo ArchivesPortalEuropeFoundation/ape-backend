@@ -15,7 +15,9 @@ import eu.apenet.persistence.dao.EadDAO;
 import eu.apenet.persistence.factory.DAOFactory;
 import eu.apenet.persistence.vo.*;
 import net.sf.saxon.s9api.*;
+import org.apache.struts2.ServletActionContext;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.xml.transform.Source;
 import javax.xml.transform.stream.StreamSource;
 import java.io.ByteArrayInputStream;
@@ -43,6 +45,7 @@ public class EagApiAction {
     }
 
     public String execute() {
+        HttpServletResponse response = ServletActionContext.getResponse();
 
         ArchivalInstitutionDAO archivalInstitutionDAO = DAOFactory.instance().getArchivalInstitutionDAO();
         EadDAO eadDAO = DAOFactory.instance().getEadDAO();
@@ -106,6 +109,7 @@ public class EagApiAction {
         eadSearchOptions.setContentClass(EacCpf.class);
         this.hasEacCpfs = eacCpfDAO.existEacCpfs(eadSearchOptions);
 
+        response.setHeader("Access-Control-Allow-Origin","*");
         return Action.SUCCESS;
     }
 
