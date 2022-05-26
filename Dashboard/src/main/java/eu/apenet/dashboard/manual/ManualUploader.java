@@ -14,6 +14,7 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
+import eu.apenet.dashboard.manual.eag.Eag2012GeoCoordinatesAction;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOCase;
 import org.apache.commons.io.filefilter.SuffixFileFilter;
@@ -370,7 +371,8 @@ public abstract class ManualUploader {
                     DocumentBuilderFactory dbfac = null;
                     if (eag.validate()) {
                         // Check if any of the "<autform>" values is the same as the institution name.
-                        String institutionName = DAOFactory.instance().getArchivalInstitutionDAO().getArchivalInstitution(archivalInstitutionId).getAiname();
+                        ArchivalInstitution archivalInstitution = DAOFactory.instance().getArchivalInstitutionDAO().getArchivalInstitution(archivalInstitutionId);
+                        String institutionName = archivalInstitution.getAiname();
                         List<String> autformValueList = eag.lookingForwardAllElementContent("/eag/archguide/identity/autform");
                         //Check if there are "<autform>" values with special characters
                         boolean specialCharacters = checkSpecialCharacter(autformValueList);
@@ -486,7 +488,6 @@ public abstract class ManualUploader {
                                 result = "success";
 
                                 // Try to remove the previous temp file.
-                                ArchivalInstitution archivalInstitution = DAOFactory.instance().getArchivalInstitutionDAO().getArchivalInstitution(archivalInstitutionId);
                                 if (archivalInstitution != null) {
                                     String eagPath = archivalInstitution.getEagPath();
                                     String tempEagPath = APEnetUtilities.getConfig().getRepoDirPath();
@@ -500,6 +501,9 @@ public abstract class ManualUploader {
                                         }
                                     }
                                 }
+
+                                Eag2012GeoCoordinatesAction eag2012GeoCoordinatesAction = new Eag2012GeoCoordinatesAction();
+                                eag2012GeoCoordinatesAction.insertCoordinates(archivalInstitution);
                             }
 
                         }
