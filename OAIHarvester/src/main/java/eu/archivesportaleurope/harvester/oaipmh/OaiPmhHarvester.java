@@ -51,6 +51,9 @@ public class OaiPmhHarvester {
 					if (record.isDeleted()){
 						harvestObject.addDeletedRecord(record);
 					}
+					if (record.isDropped()){
+						harvestObject.addDroppedRecord(record);
+					}
 				}
 				records.remove(0);
 			}
@@ -119,6 +122,9 @@ public class OaiPmhHarvester {
 						harvestObject.increaseNumberOfGetRecords();
 						if (record.isDeleted()){
 							harvestObject.addDeletedRecord(record);
+						}
+						if (record.isDropped()){
+							harvestObject.addDroppedRecord(record);
 						}
 					}else {
 

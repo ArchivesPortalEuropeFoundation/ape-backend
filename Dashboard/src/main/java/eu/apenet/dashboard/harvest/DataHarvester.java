@@ -136,20 +136,24 @@ public class DataHarvester {
 
             Ingestionprofile ingestionprofile = archivalInstitutionOaiPmh.getIngestionprofile();
             Properties properties = retrieveProperties(ingestionprofile);
-            LOGGER.info("Start adding files to queue");
             File[] harvestedFiles = outputDirectory.listFiles();
-            LOGGER.info("Number of records are " + harvestObject.getNumberOfRecords() + " found files: " + harvestedFiles.length);
-            UpFileDAO upFileDAO = DAOFactory.instance().getUpFileDAO();
+            LOGGER.info("Number of harvested records: " + harvestObject.getNumberOfRecords() + ", Records to be added: " + harvestedFiles.length + ", Deleted records: " + harvestObject.getDeletedRecords().size() + ", Dropped records: " + harvestObject.getDroppedRecords().size());
 
-            JpaUtil.beginDatabaseTransaction();
-            for (File file : harvestedFiles) {
-                UpFile upFile = createUpFile(subdirectory, file.getName(), UploadMethod.OAI_PMH,
-                        archivalInstitution.getAiId(), FileType.XML);
-                upFile = upFileDAO.insertSimple(upFile);
-                EadService.useProfileActionForHarvester(upFile, properties);
+            if (harvestedFiles.length > 0) {
+                LOGGER.info("Start adding files to queue");
+                UpFileDAO upFileDAO = DAOFactory.instance().getUpFileDAO();
+
+                JpaUtil.beginDatabaseTransaction();
+                for (File file : harvestedFiles) {
+                    UpFile upFile = createUpFile(subdirectory, file.getName(), UploadMethod.OAI_PMH,
+                            archivalInstitution.getAiId(), FileType.XML);
+                    upFile = upFileDAO.insertSimple(upFile);
+                    EadService.useProfileActionForHarvester(upFile, properties);
+                }
+                JpaUtil.commitDatabaseTransaction();
+                LOGGER.info("Files are added to queue");
             }
-            JpaUtil.commitDatabaseTransaction();
-            LOGGER.info("Files are added to queue");
+
             if (harvestObject.getDeletedRecords().size() > 0) {
                 XmlType xmlType = XmlType.getType(ingestionprofile.getFileType());
                 String path = CreateEadTask.getPath(xmlType, archivalInstitution);
@@ -176,6 +180,13 @@ public class DataHarvester {
                     }
                 }
             }
+            if (harvestObject.getDroppedRecords().size() > 0) {
+                for (OaiPmhRecord droppedRecord : harvestObject.getDroppedRecords()) {
+                    String log = "Record " + droppedRecord + " is dropped because its timestamp is not within the requested time period";
+                    LOGGER.warn(log);
+                    harvestObject.addWarnings(log);
+                }
+            }
             archivalInstitutionOaiPmh.setNewHarvesting(newHarvestingDate);
             archivalInstitutionOaiPmh.setHarvestingDetails(harvestObject.getHarvestingDetails());
             archivalInstitutionOaiPmh.setErrorsResponsePath(harvestObject.getNotParsableResponses());
@@ -188,7 +199,7 @@ public class DataHarvester {
             }
             archivalInstitutionOaiPmhDAO.store(archivalInstitutionOaiPmh);
 
-            LOGGER.info("Harvest completed: harvested " + harvestObject.getNumberOfRecords() + " EAD files from \nID:"
+            LOGGER.info("Harvest completed: harvested records: " + harvestObject.getNumberOfRecords() + " (deleted: "+harvestObject.getDeletedRecords().size()+" , dropped: "+harvestObject.getDroppedRecords().size()+") from \nID:"
                     + archivalInstitutionOaiPmh.getId() + "\n" + harvesterProfileLog + "\n --- Oldest file harvested: "
                     + harvestObject.getOldestFileHarvested() + " --- Newest file harvested: "
                     + harvestObject.getNewestFileHarvested());

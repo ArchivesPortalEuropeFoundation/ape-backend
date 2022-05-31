@@ -25,6 +25,7 @@ public class HarvestObject {
     private Integer maxNumberOfRecords = null;
     private List<OaiPmhRecord> records = new ArrayList<OaiPmhRecord>();
     private List<OaiPmhRecord> deletedRecords = new ArrayList<OaiPmhRecord>();
+	private List<OaiPmhRecord> droppeddRecords = new ArrayList<OaiPmhRecord>();
     
     public HarvestObject(){
     }
@@ -194,6 +195,17 @@ public class HarvestObject {
 	public List<OaiPmhRecord> getDeletedRecords() {
 		return deletedRecords;
 	}
+
+	public void addDroppedRecord(OaiPmhRecord record){
+		if (record != null){
+			this.droppeddRecords.add(record);
+		}
+	}
+
+	public List<OaiPmhRecord> getDroppedRecords() {
+		return droppeddRecords;
+	}
+
 	public void addInfo(String info) {
 		if (this.harvestingDetails == null){
 			this.harvestingDetails = info + "\n";
