@@ -71,6 +71,10 @@
             <result type="json" />
         </action>
 
+        <action name="geoApi" class="eu.apenet.api.eag.GeoApiAction">
+            <result type="json" />
+        </action>
+
         <!-- Content Provider Information -->
         <action name="dashboardHome" class="eu.apenet.dashboard.DashboardHomeAction">
             <interceptor-ref name="changeLanguageStack"/>
