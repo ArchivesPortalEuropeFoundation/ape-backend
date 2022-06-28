@@ -75,6 +75,10 @@
             <result type="json" />
         </action>
 
+        <action name="eagTreeApi" class="eu.apenet.api.eag.EagTreeApiAction">
+            <result type="json" />
+        </action>
+
         <!-- Content Provider Information -->
         <action name="dashboardHome" class="eu.apenet.dashboard.DashboardHomeAction">
             <interceptor-ref name="changeLanguageStack"/>
