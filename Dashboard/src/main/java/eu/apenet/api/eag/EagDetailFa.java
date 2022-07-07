@@ -6,6 +6,10 @@ public class EagDetailFa {
     private String title;
     private String eadid;
 
+    public EagDetailFa(){
+
+    }
+
     public EagDetailFa(FindingAid findingAid){
         this.title = findingAid.getTitle();
         this.eadid = findingAid.getEadid();

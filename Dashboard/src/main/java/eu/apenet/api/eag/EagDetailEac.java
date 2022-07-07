@@ -6,6 +6,10 @@ public class EagDetailEac {
     private String title;
     private String id;
 
+    public EagDetailEac(){
+
+    }
+
     public EagDetailEac(EacCpf eacCpf){
         this.title = eacCpf.getTitle();
         this.id = eacCpf.getIdentifier();

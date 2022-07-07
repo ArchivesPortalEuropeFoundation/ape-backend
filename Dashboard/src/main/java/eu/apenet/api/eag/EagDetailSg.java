@@ -7,6 +7,10 @@ public class EagDetailSg {
     private String title;
     private String eadid;
 
+    public EagDetailSg(){
+
+    }
+
     public EagDetailSg(SourceGuide sourceGuide){
         this.title = sourceGuide.getTitle();
         this.eadid = sourceGuide.getEadid();

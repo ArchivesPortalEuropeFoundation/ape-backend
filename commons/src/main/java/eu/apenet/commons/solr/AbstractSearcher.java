@@ -54,7 +54,7 @@ public abstract class AbstractSearcher {
         return solrClient;
     }
 
-    protected final String getSolrSearchUrl() {
+    protected String getSolrSearchUrl() {
         return APEnetUtilities.getApePortalConfig().getBaseSolrSearchUrl() + "/" + getCore();
     }
 
@@ -90,6 +90,11 @@ public abstract class AbstractSearcher {
         return getListViewResults(solrQueryParameters, 0, rows, facetSettings, null, null, null, true, true, false);
     }
 
+    public QueryResponse performNewSearchForListView(SolrQueryParameters solrQueryParameters, int start, int rows,
+                                                     List<ListFacetSettings> facetSettings) throws SolrServerException, ParseException, IOException {
+        return getListViewResults(solrQueryParameters, start, rows, facetSettings, null, null, null, true, true, false);
+    }
+
     public QueryResponse updateListView(SolrQueryParameters solrQueryParameters, int start, int rows,
             List<ListFacetSettings> facetSettings, String orderByField, String startDate, String endDate)
             throws SolrServerException, ParseException, IOException {
@@ -111,9 +116,9 @@ public abstract class AbstractSearcher {
             }
         }
         
-        if (rows > 50) {
-            rows = 10;
-        }
+//        if (rows > 50) {
+//            rows = 10;
+//        }
         query.setRows(rows);
         return executeQuery(query, solrQueryParameters, QUERY_TYPE_LIST, needSuggestions, update);
     }

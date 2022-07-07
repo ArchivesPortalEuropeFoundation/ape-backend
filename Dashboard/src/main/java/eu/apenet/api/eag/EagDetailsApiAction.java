@@ -2,6 +2,8 @@ package eu.apenet.api.eag;
 
 import com.opensymphony.xwork2.Action;
 import eu.apenet.commons.StrutsResourceBundleSource;
+import eu.apenet.commons.solr.AbstractSearcher;
+import eu.apenet.commons.solr.SolrQueryParameters;
 import eu.apenet.commons.types.XmlType;
 import eu.apenet.commons.utils.APEnetUtilities;
 import eu.apenet.commons.xslt.ClasspathURIResolver;
@@ -16,14 +18,23 @@ import net.sf.saxon.s9api.Processor;
 import net.sf.saxon.s9api.SaxonApiException;
 import net.sf.saxon.s9api.XsltCompiler;
 import net.sf.saxon.s9api.XsltExecutable;
+import org.apache.commons.lang.StringUtils;
+import org.apache.solr.client.solrj.SolrQuery;
+import org.apache.solr.client.solrj.SolrServerException;
+import org.apache.solr.client.solrj.response.QueryResponse;
+import org.apache.solr.common.SolrDocument;
+import org.apache.solr.common.SolrDocumentList;
 import org.apache.struts2.ServletActionContext;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.xml.transform.Source;
 import javax.xml.transform.stream.StreamSource;
 import java.io.File;
+import java.io.IOException;
 import java.io.StringWriter;
+import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class EagDetailsApiAction {
@@ -43,6 +54,9 @@ public class EagDetailsApiAction {
     private String max = "100";
     private String page;
     private String type;
+
+    private String q;
+    private String qdb;
 
     public EagDetailsApiAction() {
 
@@ -72,42 +86,143 @@ public class EagDetailsApiAction {
             aiName = archivalInstitution.getAiname();
         }
 
-        ContentSearchOptions eadSearchOptions = new ContentSearchOptions();
-        eadSearchOptions.setArchivalInstitionId(archivalInstitution.getAiId());
-        eadSearchOptions.setContentClass(XmlType.getTypeByResourceName(type).getClazz());
-        eadSearchOptions.setPublished(true);
-        eadSearchOptions.setPageSize(Integer.parseInt(max));
-        eadSearchOptions.setOrderByField("title");
-        eadSearchOptions.setPageNumber(Integer.parseInt(page));
+        boolean isEad = false;
+        boolean isEacCpf = false;
+        if (EacCpf.class.equals(XmlType.getTypeByResourceName(type).getClazz())) {
+            isEacCpf = true;
+        }
+        else {
+            isEad = true;
+        }
 
-        if (EacCpf.class.equals(eadSearchOptions.getContentClass())){
-            List<EacCpf> eacCpfList = eacCpfDAO.getEacCpfs(eadSearchOptions);
-            eacCpfTotalCount = eacCpfDAO.countEacCpfs(eadSearchOptions);
-            for (EacCpf eacCpf : eacCpfList){
-                EagDetailEac eagDetailEac = new EagDetailEac(eacCpf);
-                ec.add(eagDetailEac);
+        if (q == null || q.trim().length()==0) {
+            ContentSearchOptions eadSearchOptions = new ContentSearchOptions();
+            eadSearchOptions.setArchivalInstitionId(archivalInstitution.getAiId());
+            eadSearchOptions.setContentClass(XmlType.getTypeByResourceName(type).getClazz());
+            eadSearchOptions.setPublished(true);
+            eadSearchOptions.setPageSize(Integer.parseInt(max));
+            eadSearchOptions.setOrderByField("title");
+            eadSearchOptions.setPageNumber(Integer.parseInt(page));
+
+            if (qdb != null && qdb.trim().length()>0) {
+                eadSearchOptions.setSearchTerms(qdb);
+                eadSearchOptions.setSearchTermsField("title");
             }
-        }else {
-            eadTotalCount = eadDAO.countEads(eadSearchOptions);
-            List<Ead> eadList = eadDAO.getEads(eadSearchOptions);
-            for (Ead ead : eadList){
-                if (FindingAid.class.equals(eadSearchOptions.getContentClass())){
-                    EagDetailFa eagDetailFa = new EagDetailFa((FindingAid)ead);
-                    fa.add(eagDetailFa);
+
+            if (EacCpf.class.equals(eadSearchOptions.getContentClass())) {
+                List<EacCpf> eacCpfList = eacCpfDAO.getEacCpfs(eadSearchOptions);
+                eacCpfTotalCount = eacCpfDAO.countEacCpfs(eadSearchOptions);
+                for (EacCpf eacCpf : eacCpfList) {
+                    EagDetailEac eagDetailEac = new EagDetailEac(eacCpf);
+                    ec.add(eagDetailEac);
                 }
-                else if (SourceGuide.class.equals(eadSearchOptions.getContentClass())){
-                    EagDetailSg eagDetailSg = new EagDetailSg((SourceGuide)ead);
-                    sg.add(eagDetailSg);
+            } else {
+                eadTotalCount = eadDAO.countEads(eadSearchOptions);
+                List<Ead> eadList = eadDAO.getEads(eadSearchOptions);
+                for (Ead ead : eadList) {
+                    if (FindingAid.class.equals(eadSearchOptions.getContentClass())) {
+                        EagDetailFa eagDetailFa = new EagDetailFa((FindingAid) ead);
+                        fa.add(eagDetailFa);
+                    } else if (SourceGuide.class.equals(eadSearchOptions.getContentClass())) {
+                        EagDetailSg eagDetailSg = new EagDetailSg((SourceGuide) ead);
+                        sg.add(eagDetailSg);
+                    } else if (HoldingsGuide.class.equals(eadSearchOptions.getContentClass())) {
+                        EagDetailHg eagDetailHg = new EagDetailHg((HoldingsGuide) ead);
+                        hg.add(eagDetailHg);
+                    }
                 }
-                else if (HoldingsGuide.class.equals(eadSearchOptions.getContentClass())){
-                    EagDetailHg eagDetailHg = new EagDetailHg((HoldingsGuide)ead);
-                    hg.add(eagDetailHg);
+            }
+        }
+        else {
+            SolrQueryParameters solrQueryParameters = new SolrQueryParameters();
+            solrQueryParameters.setTerm(q);
+            solrQueryParameters.setMatchAllWords(true);
+            solrQueryParameters.setTimeAllowed(true);
+
+            if (isEad) {
+                List<String> andParams = new ArrayList<>();
+                andParams.add("archdesc");
+                solrQueryParameters.getAndParameters().put("levelName", andParams);
+            }
+
+            List<String> orParams = new ArrayList<>();
+            orParams.add(aiRepositoryCode);
+            solrQueryParameters.getOrParameters().put("repositoryCode",orParams);
+
+//            SolrQuery solrQuery = new SolrQuery();
+//            solrQuery.setQuery(escapeSolrCharacters(q));
+//            solrQuery.addFilterQuery("levelName:archdesc");
+//            solrQuery.addFilterQuery("repositoryCode:aiRepositoryCode");
+
+            AbstractSearcher abstractSearcher = new AbstractSearcher() {
+                @Override
+                protected String getCore() {
+                    if (EacCpf.class.equals(XmlType.getTypeByResourceName(type).getClazz())) {
+                        return "eac-cpfs";
+                    }
+                    else {
+                        return "ead3s";
+                    }
                 }
+
+                protected String getSolrSearchUrl() {
+                    return APEnetUtilities.getDashboardConfig().getBaseSolrIndexUrl() + "/" + this.getCore();
+                }
+            };
+            try {
+                QueryResponse queryResponse = abstractSearcher.performNewSearchForListView(solrQueryParameters,(Integer.parseInt(page)-1) * Integer.parseInt(max), Integer.parseInt(max), null);
+                SolrDocumentList solrDocumentList = queryResponse.getResults();
+                Iterator<SolrDocument> iterator = solrDocumentList.iterator();
+                while (iterator.hasNext()){
+                    SolrDocument solrDocument = iterator.next();
+
+                    if (isEacCpf){
+                        EagDetailEac eagDetailEac = new EagDetailEac();
+                        eagDetailEac.setTitle(solrDocument.getFirstValue("names").toString());
+                        eagDetailEac.setId(solrDocument.getFirstValue("id").toString());
+                        ec.add(eagDetailEac);
+                        eacCpfTotalCount = solrDocumentList.getNumFound();
+                    }
+                    else {
+                        eadTotalCount = solrDocumentList.getNumFound();
+                        if (FindingAid.class.equals(XmlType.getTypeByResourceName(type).getClazz())) {
+                            EagDetailFa eagDetailFa = new EagDetailFa();
+                            eagDetailFa.setTitle(solrDocument.getFirstValue("unitTitle").toString());
+                            eagDetailFa.setEadid(solrDocument.getFirstValue("recordId").toString());
+                            fa.add(eagDetailFa);
+                        } else if (SourceGuide.class.equals(XmlType.getTypeByResourceName(type).getClazz())) {
+                            EagDetailSg eagDetailSg = new EagDetailSg();
+                            eagDetailSg.setTitle(solrDocument.getFirstValue("unitTitle").toString());
+                            eagDetailSg.setEadid(solrDocument.getFirstValue("recordId").toString());
+                            sg.add(eagDetailSg);
+                        } else if (HoldingsGuide.class.equals(XmlType.getTypeByResourceName(type).getClazz())) {
+                            EagDetailHg eagDetailHg = new EagDetailHg();
+                            eagDetailHg.setTitle(solrDocument.getFirstValue("unitTitle").toString());
+                            eagDetailHg.setEadid(solrDocument.getFirstValue("recordId").toString());
+                            hg.add(eagDetailHg);
+                        }
+                    }
+                }
+            } catch (SolrServerException e) {
+                e.printStackTrace();
+            } catch (ParseException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         }
 
         response.setHeader("Access-Control-Allow-Origin","*");
         return Action.SUCCESS;
+    }
+
+    public static String escapeSolrCharacters(String term) {
+        if (StringUtils.isNotBlank(term)) {
+            term = term.replaceAll(" - ", " \"-\" ");
+            term = term.replaceAll(" \\+ ", " \"+\" ");
+        }
+
+        return term;
     }
 
     public void setAiId(String aiId) {
@@ -212,5 +327,21 @@ public class EagDetailsApiAction {
 
     public String getType() {
         return type;
+    }
+
+    public void setQ(String q) {
+        this.q = q;
+    }
+
+    public String getQ() {
+        return q;
+    }
+
+    public void setQdb(String qdb) {
+        this.qdb = qdb;
+    }
+
+    public String getQdb() {
+        return qdb;
     }
 }

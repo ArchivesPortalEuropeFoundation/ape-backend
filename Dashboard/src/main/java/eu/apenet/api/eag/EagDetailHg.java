@@ -7,6 +7,10 @@ public class EagDetailHg {
     private String title;
     private String eadid;
 
+    public EagDetailHg(){
+
+    }
+
     public EagDetailHg(HoldingsGuide holdingsGuide){
         this.title = holdingsGuide.getTitle();
         this.eadid = holdingsGuide.getEadid();
