@@ -1,26 +1,7 @@
 package eu.apenet.persistence.factory;
 
 import eu.apenet.persistence.dao.*;
-import eu.apenet.persistence.hibernate.AiAlternativeNameHibernateDAO;
-import eu.apenet.persistence.hibernate.ArchivalInstitutionHibernateDAO;
-import eu.apenet.persistence.hibernate.CLevelHibernateDAO;
-import eu.apenet.persistence.hibernate.CoordinatesHibernateDAO;
-import eu.apenet.persistence.hibernate.CouAlternativeNameHibernateDAO;
-import eu.apenet.persistence.hibernate.CountryHibernateDAO;
-import eu.apenet.persistence.hibernate.DptUpdateHibernateDAO;
-import eu.apenet.persistence.hibernate.EadContentHibernateDAO;
-import eu.apenet.persistence.hibernate.EadHibernateDAO;
-import eu.apenet.persistence.hibernate.EseHibernateDAO;
-import eu.apenet.persistence.hibernate.EseStateHibernateDAO;
-import eu.apenet.persistence.hibernate.FindingAidHibernateDAO;
-import eu.apenet.persistence.hibernate.HoldingsGuideHibernateDAO;
-import eu.apenet.persistence.hibernate.LangHibernateDAO;
-import eu.apenet.persistence.hibernate.ResumptionTokenHibernateDAO;
-import eu.apenet.persistence.hibernate.SentMailRegisterHibernateDAO;
-import eu.apenet.persistence.hibernate.UploadMethodHibernateDAO;
-import eu.apenet.persistence.hibernate.UserHibernateDAO;
-import eu.apenet.persistence.hibernate.UserRoleHibernateDAO;
-import eu.apenet.persistence.hibernate.WarningsHibernateDAO;
+import eu.apenet.persistence.hibernate.*;
 import eu.archivesportaleurope.persistence.jpa.dao.*;
 
 /**
@@ -182,7 +163,7 @@ public class HibernateDAOFactory extends DAOFactory {
 
     @Override
     public ApiKeyDAO getApiKeyDAO() {
-        return (ApiKeyDAO) instantiateDAO(ApiKeyDAO.class);
+        return (ApiKeyDAO) instantiateDAO(ApiKeyHibernateDAO.class);
     }
 
     @Override

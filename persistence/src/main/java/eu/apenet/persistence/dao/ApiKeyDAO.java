@@ -15,4 +15,5 @@ public interface ApiKeyDAO extends GenericDAO<ApiKey, Integer> {
 
     public ApiKey findByLiferayUserId(long liferayUserId);
 
+    public ApiKey findByModxUserId(long modxUserId);
 }

@@ -19,7 +19,8 @@ import org.hibernate.validator.constraints.URL;
 @Table(name = "api_key")
 public class ApiKey extends BaseEntity {
     private long liferayUserId;
-    
+    private long modxUserId;
+
     private String firstName;
     private String lastName;
 
@@ -43,6 +44,14 @@ public class ApiKey extends BaseEntity {
 
     public void setLiferayUserId(long liferayUserId) {
         this.liferayUserId = liferayUserId;
+    }
+
+    public void setModxUserId(long modxUserId) {
+        this.modxUserId = modxUserId;
+    }
+
+    public long getModxUserId() {
+        return modxUserId;
     }
 
     public void setApiKey(String apiKey) {

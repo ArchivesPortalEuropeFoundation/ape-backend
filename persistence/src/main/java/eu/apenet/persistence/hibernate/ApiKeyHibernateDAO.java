@@ -30,4 +30,15 @@ public class ApiKeyHibernateDAO extends AbstractHibernateDAO<ApiKey, Integer> im
         return apiKey;
     }
 
+    @Override
+    public ApiKey findByModxUserId(long modxUserId) {
+        ApiKey apiKey = null;
+        getSession().clear();
+        Criteria criteria = getSession().createCriteria(getPersistentClass(), "apiKey");
+        criteria = criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+        criteria.add(Restrictions.eq("modxUserId", modxUserId));
+        criteria.add(Restrictions.like("status", BaseEntity.STATUS_CREATED, MatchMode.EXACT));
+        apiKey = (ApiKey) criteria.uniqueResult();
+        return apiKey;
+    }
 }
