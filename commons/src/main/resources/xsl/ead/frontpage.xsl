@@ -23,7 +23,7 @@
 					<xsl:apply-templates mode="searchable"/>
 				</div>
 			</xsl:for-each>
-            <div class="subtitle">
+            <div class="subtitle subtitle-date">
                 <xsl:apply-templates  select="/ead:ead/ead:archdesc/ead:did/ead:unitdate" mode="alterdate"/>
             </div>
 			<xsl:for-each select="/ead:ead/ead:eadheader/ead:filedesc/ead:titlestmt/ead:author">
@@ -62,7 +62,7 @@
 					<xsl:apply-templates mode="notsearchable"/>
 				</div>
 			</xsl:for-each>
-			<div class="defaultlayout">
+			<div class="defaultlayout defaultlayout-original-link">
 				<xsl:if test="/ead:ead/ead:eadheader/ead:eadid/@url">
 					<xsl:variable name="seeInContext" select="/ead:ead/ead:eadheader/ead:eadid/@url" />
 					<a href="{$seeInContext}" target="_blank">

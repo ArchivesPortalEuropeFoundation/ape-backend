@@ -4,6 +4,7 @@ import com.google.code.geocoder.Geocoder;
 import com.google.code.geocoder.GeocoderRequestBuilder;
 import com.google.code.geocoder.model.*;
 import com.opensymphony.xwork2.Action;
+import com.opensymphony.xwork2.ActionSupport;
 import eu.apenet.commons.ResourceBundleSource;
 import eu.apenet.commons.StrutsResourceBundleSource;
 import eu.apenet.commons.exceptions.APEnetException;
@@ -28,7 +29,7 @@ import java.io.UnsupportedEncodingException;
 import java.io.Writer;
 import java.util.*;
 
-public class EagTreeApiAction {
+public class EagTreeApiAction extends ActionSupport {
 
     private String nodeId;
     private String countryCode;
@@ -61,10 +62,12 @@ public class EagTreeApiAction {
 
         try {
             resourceBundleSource = new StrutsResourceBundleSource();
-
             if (nodeId == null) {
                 NavigationTree navigationTree = new NavigationTree(resourceBundleSource);
                 List<CountryUnit> countryList = navigationTree.getALCountriesWithArchivalInstitutionsWithEAG();
+                for (CountryUnit countryUnit : countryList){
+                    countryUnit.setLocalizedName(getText(countryUnit.getLocalizedName(),countryUnit.getLocalizedName()));
+                }
 
                 Collections.sort(countryList);
                 writeToResponseAndClose(generateDirectoryJSON(navigationTree, countryList), response);
@@ -145,7 +148,7 @@ public class EagTreeApiAction {
             builder.append(COMMA);
             builder.append(FOLDER_LAZY);
             builder.append(COMMA);
-            addKey(builder, countryUnit.getCountry().getId(), "country");
+            addKey(builder, countryUnit.getCountry().getId(), null, "country");
             addGoogleMapsAddress(builder, countryUnit.getCountry().getCname());
             addCountryCode(builder, countryUnit.getCountry().getIsoname());
             builder.append(END_ITEM);
@@ -181,7 +184,7 @@ public class EagTreeApiAction {
                 buffer.append(COMMA);
                 buffer.append(FOLDER_LAZY);
                 buffer.append(COMMA);
-                addKey(buffer, archivalInstitutionUnit.getAiId(), "archival_institution_group");
+                addKey(buffer, archivalInstitutionUnit.getAiId(), archivalInstitutionUnit.getRepoCode(), "archival_institution_group");
                 addCountryCode(buffer, countryCode);
                 buffer.append(END_ITEM);
             } else if (archivalInstitutionUnit.getIsgroup() && !archivalInstitutionUnit.isHasArchivalInstitutions()) {
@@ -194,7 +197,7 @@ public class EagTreeApiAction {
                 buffer.append(COMMA);
                 buffer.append(NO_LINK);
                 buffer.append(COMMA);
-                addKey(buffer, archivalInstitutionUnit.getAiId(), "archival_institution_group");
+                addKey(buffer, archivalInstitutionUnit.getAiId(), archivalInstitutionUnit.getRepoCode(), "archival_institution_group");
                 addCountryCode(buffer, countryCode);
                 buffer.append(END_ITEM);
             } else if (!archivalInstitutionUnit.getIsgroup()) {
@@ -204,9 +207,9 @@ public class EagTreeApiAction {
                 buffer.append(COMMA);
                 if (archivalInstitutionUnit.getPathEAG() != null && !archivalInstitutionUnit.getPathEAG().equals("")) {
                     // The archival institution has EAG
-                    addKey(buffer, archivalInstitutionUnit.getAiId(), "archival_institution_eag");
+                    addKey(buffer, archivalInstitutionUnit.getAiId(), archivalInstitutionUnit.getRepoCode(), "archival_institution_eag");
                 } else {
-                    addKey(buffer, archivalInstitutionUnit.getAiId(), "archival_institution_no_eag");
+                    addKey(buffer, archivalInstitutionUnit.getAiId(), archivalInstitutionUnit.getRepoCode(), "archival_institution_no_eag");
                     buffer.append(COMMA);
                     buffer.append(NO_LINK);
                 }
@@ -239,13 +242,14 @@ public class EagTreeApiAction {
         buffer.append("\"countryCode\":\"" + countryCode + "\"");
     }
 
-    private static void addKey(StringBuilder buffer, Number key, String nodeType) {
+    private static void addKey(StringBuilder buffer, Number key, String repositoryCode, String nodeType) {
 
         if (nodeType.equals("country")) {
             buffer.append("\"key\":" + "\"country_" + key + "\"");
         } else if (nodeType.equals("archival_institution_group")) {
             buffer.append("\"key\":" + "\"aigroup_" + key + "\"");
         } else if (nodeType.equals("archival_institution_eag")) {
+            buffer.append("\"aiRepositoryCode\":" + "\"" + repositoryCode + "\",");
             buffer.append("\"aiId\":");
             buffer.append(" \"" + key);
             buffer.append("\" ");

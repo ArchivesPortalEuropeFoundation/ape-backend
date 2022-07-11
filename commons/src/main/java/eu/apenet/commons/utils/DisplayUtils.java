@@ -126,4 +126,11 @@ public final class DisplayUtils {
         String defaultValue = lowerCaseCountryName.replaceAll("_", " ");
         return resourceBundleSource.getString(key, defaultValue);
     }
+
+    public static String getLocalizedCountryNameFixed(ResourceBundleSource resourceBundleSource, Country country) {
+        String lowerCaseCountryName = country.getCname().toLowerCase();
+        String key = "country." + lowerCaseCountryName.replaceAll(" ", "_");
+        String defaultValue = key;//lowerCaseCountryName.replaceAll("_", " ");
+        return resourceBundleSource.getString(key, defaultValue);
+    }
 }

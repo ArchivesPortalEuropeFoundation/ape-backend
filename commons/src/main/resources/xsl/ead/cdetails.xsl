@@ -24,12 +24,12 @@
 			</h1>
 		</xsl:for-each>
 
-		<div class="subtitle">
+		<div class="subtitle subtitle-date">
 			<xsl:apply-templates  select="/ead:c/ead:did/ead:unitdate"  mode="alterdate"/>
 		</div>
 
         <xsl:for-each select="/ead:c/ead:did/ead:unitid[@type='call number']/ead:extptr">
-            <div class="defaultlayout">
+            <div class="defaultlayout defaultlayout-original-link">
                 <a target="_blank"><xsl:attribute name="href"><xsl:value-of select="@xlink:href" /></xsl:attribute><xsl:value-of select="ape:resource('eadcontent.frontpage.eadid.url')" /></a>
             </div>
         </xsl:for-each>
