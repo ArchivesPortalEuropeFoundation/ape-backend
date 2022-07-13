@@ -25,14 +25,14 @@
                         <xsl:value-of select="ape:resource('eag2012.portal.other')"/>
                         <!-- Check if occult parts exists -->
                         <xsl:if test="./eag:eag/eag:archguide/eag:identity/eag:nonpreform and ./eag:eag/eag:archguide/eag:identity/eag:nonpreform/text() and ./eag:eag/eag:archguide/eag:identity/eag:nonpreform/eag:useDates and ((eag:eag/eag:archguide/eag:identity/eag:nonpreform/eag:useDates/eag:date and eag:eag/eag:archguide/eag:identity/eag:nonpreform/eag:useDates/eag:date/text()) or (eag:eag/eag:archguide/eag:identity/eag:nonpreform/eag:useDates/eag:dateRange and eag:eag/eag:archguide/eag:identity/eag:nonpreform/eag:useDates/eag:dateRange/eag:fromDate/text() and eag:eag/eag:archguide/eag:identity/eag:nonpreform/eag:useDates/eag:dateRange/eag:toDate/text()) or (eag:eag/eag:archguide/eag:identity/eag:nonpreform/eag:useDates/eag:dateSet/eag:date and eag:eag/eag:archguide/eag:identity/eag:nonpreform/eag:useDates/eag:dateSet/eag:date/text()) or (eag:eag/eag:archguide/eag:identity/eag:nonpreform/eag:useDates/eag:dateSet/eag:dateRange and eag:eag/eag:archguide/eag:identity/eag:nonpreform/eag:useDates/eag:dateSet/eag:dateRange/eag:fromDate/text() and eag:eag/eag:archguide/eag:identity/eag:nonpreform/eag:useDates/eag:dateSet/eag:dateRange/eag:toDate/text()))">
-                            <xsl:text> (</xsl:text>
+                            <xsl:text> </xsl:text>
                             <a class="displayLinkSeeMore" href="javascript:seeMore('otherDisplay');">
-                                <xsl:value-of select="ape:resource('eag2012.portal.seemore')"/>
+                                (<xsl:value-of select="ape:resource('eag2012.portal.seemore')"/>)
                             </a>
                             <a class="displayLinkSeeLess" href="javascript:seeLess('otherDisplay');">
-                                <xsl:value-of select="ape:resource('eag2012.portal.seeless')"/>
+                                (<xsl:value-of select="ape:resource('eag2012.portal.seeless')"/>)
                             </a>
-                            <xsl:text>)</xsl:text>
+<!--                            <xsl:text>)</xsl:text>-->
                         </xsl:if>
                     </th>
                 </tr>

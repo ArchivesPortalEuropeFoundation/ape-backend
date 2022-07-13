@@ -28,14 +28,14 @@
                 <tr>
                     <th colspan="2">
                         <xsl:value-of select="ape:resource('eag2012.portal.accessandserviceinfo')"/>
-                        <xsl:text> (</xsl:text>
+                        <xsl:text> </xsl:text>
                         <a class="displayLinkSeeMore" href="javascript:seeMore('accessDisplay','{$id}');">
-                            <xsl:value-of select="ape:resource('eag2012.portal.seemore')"/>
+                            (<xsl:value-of select="ape:resource('eag2012.portal.seemore')"/>)
                         </a>
                         <a class="displayLinkSeeLess" href="javascript:seeLess('accessDisplay','{$id}');">
-                            <xsl:value-of select="ape:resource('eag2012.portal.seeless')"/>
+                            (<xsl:value-of select="ape:resource('eag2012.portal.seeless')"/>)
                         </a>
-                        <xsl:text>)</xsl:text>
+<!--                        <xsl:text>)</xsl:text>-->
                     </th>
                 </tr>
             </thead>

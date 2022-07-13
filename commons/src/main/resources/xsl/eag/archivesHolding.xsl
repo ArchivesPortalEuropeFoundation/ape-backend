@@ -29,14 +29,14 @@
                         <xsl:value-of select="ape:resource('eag2012.portal.archivesandholdings')"/>
                         <!-- Check if occult parts exists -->
                         <xsl:if test="eag:holdings/eag:descriptiveNote/eag:p/text() or eag:repositorhist/eag:descriptiveNote/eag:p/text() or eag:repositorfound/eag:date/text() or eag:repositorfound/eag:rule/text() or eag:repositorsup/eag:date/text() or eag:repositorsup/eag:rule/text() or eag:adminhierarchy/eag:adminunit/text() or eag:buildinginfo/eag:building/eag:descriptiveNote/eag:p/text() or eag:buildinginfo/eag:repositorarea/eag:num/text() or eag:buildinginfo/eag:lengthshelf/eag:num/text()">
-                            <xsl:text> (</xsl:text>
+                            <xsl:text> </xsl:text>
                             <a class="displayLinkSeeMore" href="javascript:seeMore('archivesDisplay','{$id}');">
-                                <xsl:value-of select="ape:resource('eag2012.portal.seemore')"/>
+                                (<xsl:value-of select="ape:resource('eag2012.portal.seemore')"/>)
                             </a>
                             <a class="displayLinkSeeLess" href="javascript:seeLess('archivesDisplay','{$id}');">
-                                <xsl:value-of select="ape:resource('eag2012.portal.seeless')"/>
+                                (<xsl:value-of select="ape:resource('eag2012.portal.seeless')"/>)
                             </a>
-                            <xsl:text>)</xsl:text>
+<!--                            <xsl:text>)</xsl:text>-->
                         </xsl:if>
                     </th>
                 </tr>

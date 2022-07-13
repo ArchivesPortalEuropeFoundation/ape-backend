@@ -33,14 +33,14 @@
                         <xsl:value-of select="ape:resource('eag2012.portal.contact')"/>
                         <!-- Check if occult parts exists -->
                         <xsl:if test="eag:location[not(@localType) or @localType='visitors address']/eag:localentity/text() or eag:location[not(@localType) or @localType='visitors address']/eag:secondem/text() or eag:location/eag:firstdem/text() or eag:location[@localType='postal address'] or eag:fax and eag:fax/text() != ''">
-                            <xsl:text> (</xsl:text>
+                            <xsl:text> </xsl:text>
                             <a class="displayLinkSeeMore" href="javascript:seeMore('contactDisplay','{$id}');">
-                                <xsl:value-of select="ape:resource('eag2012.portal.seemore')"/>
+                                (<xsl:value-of select="ape:resource('eag2012.portal.seemore')"/>)
                             </a>
                             <a class="displayLinkSeeLess" href="javascript:seeLess('contactDisplay','{$id}');">
-                                <xsl:value-of select="ape:resource('eag2012.portal.seeless')"/>
+                               (<xsl:value-of select="ape:resource('eag2012.portal.seeless')"/>)
                             </a>
-                            <xsl:text>)</xsl:text>
+<!--                            <xsl:text>)</xsl:text>-->
                         </xsl:if>
                     </th>
                 </tr>
