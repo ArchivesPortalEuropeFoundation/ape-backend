@@ -34,6 +34,9 @@ public class EagTreeApiAction extends ActionSupport {
     private String nodeId;
     private String countryCode;
 
+    private String all = "false";
+    private String sortType = "1";
+
     private ResourceBundleSource resourceBundleSource;
 
     protected static final String FOLDER_LAZY = "\"isFolder\": true, \"isLazy\": true";
@@ -80,7 +83,15 @@ public class EagTreeApiAction extends ActionSupport {
 //                    writeToResponseAndClose(builder, response);
 //                } else {
                     NavigationTree navigationTree = new NavigationTree(resourceBundleSource);
-                    List<ArchivalInstitutionUnit> archivalInstitutionList = navigationTree.getArchivalInstitutionsByParentAiId(nodeId);
+
+                List<ArchivalInstitutionUnit> archivalInstitutionList;
+
+                if (Boolean.parseBoolean(all)){
+                    archivalInstitutionList = getAllArchivalInstitutions(nodeId, resourceBundleSource.getLocale().getLanguage(),0);
+                }
+                else {
+                    archivalInstitutionList = navigationTree.getArchivalInstitutionsByParentAiId(nodeId);
+                }
 
                     // This filter has been added to display only those final
                     // archival institutions or groups which have eag files uploaded
@@ -89,9 +100,34 @@ public class EagTreeApiAction extends ActionSupport {
                     // institutions even if they doesn't eag files uploaded
                     archivalInstitutionList = navigationTree.filterArchivalInstitutionsWithEAG(archivalInstitutionList);
 
+                if (Boolean.parseBoolean(all)){
+                    if (sortType.equals("1")) {
+                        Collections.sort(archivalInstitutionList, new Comparator<ArchivalInstitutionUnit>() {
+                            @Override
+                            public int compare(ArchivalInstitutionUnit o1, ArchivalInstitutionUnit o2) {
+                                return o1.getAiname().compareTo(o2.getAiname());
+                            }
+                        });
+                    }
+                    else {
+//                        Collections.sort(archivalInstitutionList, new Comparator<ArchivalInstitutionUnit>() {
+//                            @Override
+//                            public int compare(ArchivalInstitutionUnit o1, ArchivalInstitutionUnit o2) {
+//                                int comp = o1.getTreeLevel().compareTo(o2.getTreeLevel());
+//                                if (comp == 0) {
+//                                    return o1.getAlorder().compareTo(o2.getAlorder());
+//                                } else {
+//                                    return comp;
+//                                }
+//                            }
+//                        });
+                    }
+                }
+                else {
                     Collections.sort(archivalInstitutionList);
-                    writeToResponseAndClose(generateArchivalInstitutionsTreeJSON(navigationTree, archivalInstitutionList, countryCode),response);
-//                }
+                }
+
+                writeToResponseAndClose(generateArchivalInstitutionsTreeJSON(navigationTree, archivalInstitutionList, countryCode),response);
             }
 
 
@@ -102,6 +138,67 @@ public class EagTreeApiAction extends ActionSupport {
 
         response.setHeader("Access-Control-Allow-Origin","*");
         return Action.SUCCESS;
+    }
+
+    private List<ArchivalInstitutionUnit> getAllArchivalInstitutions(String nodeId, String locale, int level){
+        List<ArchivalInstitutionUnit> archivalInstitutionUnitList = new ArrayList<ArchivalInstitutionUnit>();
+
+        if (nodeId.startsWith("country_")) {
+            Integer couId = Integer.parseInt(nodeId.substring(nodeId.lastIndexOf('_') + 1));
+            ArchivalInstitutionDAO archivalInstitutionDao = DAOFactory.instance().getArchivalInstitutionDAO();
+            List<ArchivalInstitution> archivalInstitutionList = archivalInstitutionDao.getRootArchivalInstitutionsByCountryId(couId);
+            Collections.sort(archivalInstitutionList, new Comparator<ArchivalInstitution>() {
+                @Override
+                public int compare(ArchivalInstitution o1, ArchivalInstitution o2) {
+                    return (new Integer(o1.getAlorder())).compareTo((new Integer(o2.getAlorder())));
+                }
+            });
+            for (ArchivalInstitution anArchivalInstitutionList : archivalInstitutionList) {
+                Integer numberOfArchivalInstitutions = 0;
+                if (anArchivalInstitutionList.isGroup()) {
+                    numberOfArchivalInstitutions = archivalInstitutionDao.countArchivalInstitutionsByParentAiId(anArchivalInstitutionList.getAiId());
+                }
+                if (anArchivalInstitutionList.isGroup()) {
+                    archivalInstitutionUnitList.addAll(getAllArchivalInstitutions("aigroup_"+anArchivalInstitutionList.getAiId(), locale, level++));
+                }
+                else {
+                    ArchivalInstitutionUnit archivalInstitutionUnit = new ArchivalInstitutionUnit(anArchivalInstitutionList.getAiId(), anArchivalInstitutionList.getAiname(), null, anArchivalInstitutionList.getEncodedRepositorycode(), anArchivalInstitutionList.getEagPath(), anArchivalInstitutionList.isGroup(), numberOfArchivalInstitutions, locale, anArchivalInstitutionList.getAlorder());
+                    archivalInstitutionUnit.setTreeLevel(level++);
+                    archivalInstitutionUnitList.add(archivalInstitutionUnit);
+                }
+            }
+        }
+        else if (nodeId.startsWith("aicontent_") || nodeId.startsWith("ainocontent_") || nodeId.startsWith("aigroup_")){
+            Integer pId = Integer.parseInt(nodeId.substring(nodeId.lastIndexOf('_') + 1));
+
+            ArchivalInstitutionDAO archivalInstitutionDao = DAOFactory.instance().getArchivalInstitutionDAO();
+            List<ArchivalInstitution> archivalInstitutionList = archivalInstitutionDao.getArchivalInstitutionsByParentAiId(pId, false);
+
+            Collections.sort(archivalInstitutionList, new Comparator<ArchivalInstitution>() {
+                @Override
+                public int compare(ArchivalInstitution o1, ArchivalInstitution o2) {
+                    return (new Integer(o1.getAlorder())).compareTo((new Integer(o2.getAlorder())));
+                }
+            });
+
+            for (ArchivalInstitution anArchivalInstitutionList : archivalInstitutionList) {
+                Integer numberOfArchivalInstitutions = 0;
+                if (anArchivalInstitutionList.isGroup()) {
+                    numberOfArchivalInstitutions = archivalInstitutionDao.countArchivalInstitutionsByParentAiId(anArchivalInstitutionList.getAiId());
+                }
+                if (anArchivalInstitutionList.isGroup()) {
+                    archivalInstitutionUnitList.addAll(getAllArchivalInstitutions("aigroup_"+anArchivalInstitutionList.getAiId(), locale, level++));
+                }
+                else {
+                    ArchivalInstitutionUnit archivalInstitutionUnit = new ArchivalInstitutionUnit(anArchivalInstitutionList.getAiId(), anArchivalInstitutionList.getAiname(), null, anArchivalInstitutionList.getEncodedRepositorycode(), anArchivalInstitutionList.getEagPath(), anArchivalInstitutionList.isGroup(), numberOfArchivalInstitutions, locale, anArchivalInstitutionList.getAlorder());
+                    archivalInstitutionUnit.setTreeLevel(level++);
+                    archivalInstitutionUnitList.add(archivalInstitutionUnit);
+                }
+
+            }
+        }
+
+        return archivalInstitutionUnitList;
     }
 
     private void writeToResponseAndClose(StringBuilder stringBuilder, HttpServletResponse resourceResponse)
@@ -184,6 +281,8 @@ public class EagTreeApiAction extends ActionSupport {
                 buffer.append(COMMA);
                 buffer.append(FOLDER_LAZY);
                 buffer.append(COMMA);
+//                buffer.append("\"numberOfChildren\":"+archivalInstitutionUnit.getNumberOfArchivalInstitutions());
+//                buffer.append(COMMA);
                 addKey(buffer, archivalInstitutionUnit.getAiId(), archivalInstitutionUnit.getRepoCode(), "archival_institution_group");
                 addCountryCode(buffer, countryCode);
                 buffer.append(END_ITEM);
@@ -197,6 +296,8 @@ public class EagTreeApiAction extends ActionSupport {
                 buffer.append(COMMA);
                 buffer.append(NO_LINK);
                 buffer.append(COMMA);
+//                buffer.append("\"numberOfChildren\":0");
+//                buffer.append(COMMA);
                 addKey(buffer, archivalInstitutionUnit.getAiId(), archivalInstitutionUnit.getRepoCode(), "archival_institution_group");
                 addCountryCode(buffer, countryCode);
                 buffer.append(END_ITEM);
@@ -220,7 +321,6 @@ public class EagTreeApiAction extends ActionSupport {
                 buffer.append(COMMA);
             }
         }
-
         buffer.append(END_ARRAY);
         archivalInstitutionUnit = null;
         this.log.debug("End method: \"generateArchivalInstitutionsTreeJSON\"");
@@ -332,5 +432,21 @@ public class EagTreeApiAction extends ActionSupport {
 
     public String getCountryCode() {
         return countryCode;
+    }
+
+    public void setAll(String all) {
+        this.all = all;
+    }
+
+    public void setSortType(String sortType) {
+        this.sortType = sortType;
+    }
+
+    public String getAll() {
+        return all;
+    }
+
+    public String getSortType() {
+        return sortType;
     }
 }

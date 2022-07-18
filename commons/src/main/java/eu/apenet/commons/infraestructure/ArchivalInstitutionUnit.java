@@ -37,6 +37,15 @@ public class ArchivalInstitutionUnit implements Comparable<ArchivalInstitutionUn
     private String language;
     private Integer alorder; //The order of the archival institution within the Archival Landscape	
     private String repoCode;
+    private Integer treeLevel;
+
+    public void setTreeLevel(Integer treeLevel) {
+        this.treeLevel = treeLevel;
+    }
+
+    public Integer getTreeLevel() {
+        return treeLevel;
+    }
 
     //Getters and Setters
     public void setAiId(Integer aiId) {
