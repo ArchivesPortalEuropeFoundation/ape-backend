@@ -923,7 +923,7 @@
         <xsl:variable name="allDaos" select='ead:dao[(@xlink:title != "thumbnail" and @xlink:title != "manifest" and @xlink:title != "service") or not(@xlink:title)]'/>
         <xsl:variable name="numberOfAllDaos" select="count($allDaos)"/>
         <xsl:if test="$numberOfAllDaos &gt; 0">
-            <h2>
+            <h2 class="dao-list">
                 <xsl:value-of select="ape:resource('eadcontent.dao')"/>
             </h2>
             <div class="ead-content">
