@@ -427,6 +427,8 @@ public class GeoApiAction {
         if(ai!=null){
             builder.append(COMMA);
             builder.append("\"aiId\":\""+ai.getAiId()+"\"");
+            builder.append(COMMA);
+            builder.append("\"hasSearchableContent\":"+ai.isContainSearchableItems());
         }
         //Parse street, postalCity and country
         builder.append(COMMA);
