@@ -195,6 +195,12 @@ public class EadTreeJSONWriter extends AbstractJSONWriter {
         buffer.append(START_ARRAY);
         buffer.append(START_ITEM);
         addTitle(buffer, eadContent.getTitleproper(), locale);
+        buffer.append(COMMA);
+        buffer.append("\"id\":"+(eadContent.getHgId()!=null?eadContent.getHgId():(eadContent.getSgId()!=null?eadContent.getSgId():(eadContent.getFaId()!=null?eadContent.getFaId():""))));
+        buffer.append(COMMA);
+        buffer.append("\"eadid\":\""+(eadContent.getHgId()!=null?eadContent.getHoldingsGuide().getEadid():(eadContent.getSgId()!=null?eadContent.getSourceGuide().getEadid():(eadContent.getFaId()!=null?eadContent.getFindingAid().getEadid():"")))+"\"");
+        buffer.append(COMMA);
+        buffer.append("\"ead_type\":\""+(eadContent.getHgId()!=null?"hg":(eadContent.getSgId()!=null?"sg":(eadContent.getFaId()!=null?"fa":"")))+"\"");
         if (selected) {
             buffer.append(COMMA);
             buffer.append("\"selected\":true, \"activate\": true");
@@ -217,8 +223,8 @@ public class EadTreeJSONWriter extends AbstractJSONWriter {
         if (!clevel.isLeaf()) {
             buffer.append(COMMA);
             buffer.append(FOLDER_LAZY);
-            buffer.append(COMMA);
-            addId(buffer, clevel.getId());
+//            buffer.append(COMMA);
+//            addId(buffer, clevel.getId());
         }
     }
 
