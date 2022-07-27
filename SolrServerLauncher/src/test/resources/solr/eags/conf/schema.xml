@@ -98,7 +98,7 @@
         <field name="spell" type="textSpell" indexed="true" stored="true" multiValued="true" termVectors="true" termPositions="true" termOffsets="true" />
         <field name="openData" type="boolean" indexed="true" stored="true" required="false" default="false"/>
         <field name="openDataSpell" type="textSpell" indexed="true" stored="true" multiValued="true" termVectors="true" termPositions="true" termOffsets="true" required="false"/>
-
+        <field name="hasSearchableContent" type="boolean" indexed="true" stored="true" required="false" default="false"/>
     </fields>
     <uniqueKey>id</uniqueKey> 
     <!--<defaultSearchField>name</defaultSearchField>--> 

@@ -415,6 +415,11 @@ public class ContentUtils {
 					DAOFactory.instance().getArchivalInstitutionDAO().insertSimple(ai);
 				}
 			}
+			try {
+				EagService.publish(ai);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		} else {
 			ai.setContentLastModifiedDate(new Date());
 			DAOFactory.instance().getArchivalInstitutionDAO().insertSimple(ai);

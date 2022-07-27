@@ -52,6 +52,7 @@ public class EagSolrPublisher extends AbstractSolrPublisher {
 
         ArchivalInstitutionDAO archivalInstitutionDao = DAOFactory.instance().getArchivalInstitutionDAO();
         doc.addField(Ead3SolrFields.OPEN_DATA, archivalInstitutionDao.findById(archivalInstitution.getAiId()).isOpenDataEnabled());
+        doc.addField(SolrFields.HAS_SEARCHABLE_CONTENT, archivalInstitution.isContainSearchableItems());
 
         addSolrDocument(doc);
     }

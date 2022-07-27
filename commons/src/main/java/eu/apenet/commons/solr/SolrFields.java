@@ -94,4 +94,5 @@ public final class SolrFields {
     public final static String EAG_ADDRESS = "address";
     public final static String EAG_COUNTRIES = "countries";
     public final static String EAG_PLACES = "places";
+    public final static String HAS_SEARCHABLE_CONTENT = "hasSearchableContent";
 }
