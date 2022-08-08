@@ -386,6 +386,7 @@ public class RedirectService {
             }
 
             String term = null;
+            String termType = null;
             String cid = null;
             if (temp.startsWith(id+"/unitid/")) {
                 temp = temp.replace(id + "/unitid/", "");
@@ -400,6 +401,8 @@ public class RedirectService {
                 if (temp.startsWith(unitid + "/search/")){
                     temp = temp.replace(unitid + "/search/", "");
                     term = temp.substring(0, temp.length());
+                    termType = term.substring(0, term.indexOf("/"));
+                    term = term.substring(term.indexOf("/")+1, term.length());
                 }
                 unitid = decodeString(unitid);
                 try {
@@ -432,6 +435,8 @@ public class RedirectService {
                 if (temp.startsWith(cid + "/search/")){
                     temp = temp.replace(cid + "/search/", "");
                     term = temp.substring(0, temp.length());
+                    termType = term.substring(0, term.indexOf("/"));
+                    term = term.substring(term.indexOf("/")+1, term.length());
                 }
                 cid = decodeString(cid);
 
@@ -444,7 +449,7 @@ public class RedirectService {
                 }
             }
 
-            String newUrl = "/advanced-search/search-in-archives/results-(archives)/?&repositoryCode="+aiRepositoryCode+(term != null ? ("&term="+term) : "")+"&levelName=clevel&t="+type+"&recordId="+id+"&c="+cid;
+            String newUrl = "/advanced-search/search-in-archives/results-(archives)/?&repositoryCode="+aiRepositoryCode+(term != null ? ("&term="+term+"&using="+getEadSearchType(termType)) : "")+"&levelName=clevel&t="+type+"&recordId="+id+"&c="+cid;
             redirection.setNewUrl(baseUrl + newUrl);
         }
         else if (matchesPattern("\\/ead-display\\/-\\/ead\\/pl\\/aicode\\/.+\\/type\\/(fa|hg|sg)\\/id\\/.+(\\/search\\/.+)?", path)) {
@@ -469,10 +474,12 @@ public class RedirectService {
             }
 
             String term = null;
-
+            String termType = null;
             if (temp.startsWith(id + "/search/")){
                 temp = temp.replace(id + "/search/", "");
                 term = temp.substring(0, temp.length());
+                termType = term.substring(0, term.indexOf("/"));
+                term = term.substring(term.indexOf("/")+1, term.length());
             }
             id = decodeString(id);
             try {
@@ -481,7 +488,7 @@ public class RedirectService {
                 e.printStackTrace();
             }
 
-            String newUrl = "/advanced-search/search-in-archives/results-(archives)/?&repositoryCode="+aiRepositoryCode+(term != null ? ("&term="+term) : "")+"&levelName=archdesc&t="+type+"&recordId="+id;
+            String newUrl = "/advanced-search/search-in-archives/results-(archives)/?&repositoryCode="+aiRepositoryCode+(term != null ? ("&term="+term+"&using="+getEadSearchType(termType)) : "")+"&levelName=archdesc&t="+type+"&recordId="+id;
             redirection.setNewUrl(baseUrl + newUrl);
         }
         else {
@@ -513,10 +520,13 @@ public class RedirectService {
             }
 
             String term = null;
+            String termType = null;
 
             if (temp.startsWith(id + "/search/")){
                 temp = temp.replace(id + "/search/", "");
                 term = temp.substring(0, temp.length());
+                termType = term.substring(0, term.indexOf("/"));
+                term = term.substring(term.indexOf("/")+1, term.length());
             }
             id = decodeString(id);
             try {
@@ -525,7 +535,7 @@ public class RedirectService {
                 e.printStackTrace();
             }
 
-            String newUrl = "/advanced-search/search-in-names/results-(names)/?&repositoryCode="+aiRepositoryCode+(term != null ? ("&term="+term) : "")+"&recordId="+id;
+            String newUrl = "/advanced-search/search-in-names/results-(names)/?&repositoryCode="+aiRepositoryCode+(term != null ? ("&term="+term+"&using="+getEacSearchType(termType)) : "")+"&recordId="+id;
             redirection.setNewUrl(baseUrl + newUrl);
         }
         else {
@@ -924,5 +934,25 @@ public class RedirectService {
         response.put("/coming-up","/blog");
 
         return response;
+    }
+
+    private String getEadSearchType(String type){
+        if (type.equals("0")){
+            return "all";
+        }
+        else if (type.equals("1")){
+            return "title";
+        }
+        else if (type.equals("2")){
+            return "content_summary";
+        }
+        else if (type.equals("3")){
+            return "reference_code";
+        }
+        return "all";
+    }
+
+    private String getEacSearchType(String type){
+        return type;
     }
 }
