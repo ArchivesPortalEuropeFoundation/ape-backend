@@ -190,7 +190,7 @@
         <module>PortugalHarvesterConverter</module>
         <module>files</module>
         <module>ApeApi</module>
-        <module>redirects</module>
+        <module>redirect</module>
     </modules>
     <dependencyManagement>
         <dependencies>

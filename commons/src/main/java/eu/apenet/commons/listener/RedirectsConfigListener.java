@@ -10,7 +10,7 @@ import java.util.Locale;
 
 public class RedirectsConfigListener extends ApePortalAndDashboardConfigListener {
 
-    private static final String CONFIG_PROPERTIES_PATH = "CONFIG_PROPERTIES_PATH";
+    private static final String REDIRECT_CONFIG_PROPERTIES_PATH = "REDIRECT_CONFIG_PROPERTIES_PATH";
 
     @Override
     public void contextInitializedInternal(ServletContext servletContext) {
@@ -28,9 +28,9 @@ public class RedirectsConfigListener extends ApePortalAndDashboardConfigListener
 
     protected void init(ServletContext servletContext, RedirectsConfig config) {
 
-        String configProperties = servletContext.getInitParameter(CONFIG_PROPERTIES_PATH);
+        String configProperties = servletContext.getInitParameter(REDIRECT_CONFIG_PROPERTIES_PATH);
         if (StringUtils.isBlank(configProperties)) {
-            config.setConfigPropertiesPath("/ape/liferay/tomcat-base/conf/dashboard.properties");
+            config.setConfigPropertiesPath("/ape/liferay/tomcat-base/conf/redirect.properties");
         } else {
             config.setConfigPropertiesPath(configProperties);
         }
