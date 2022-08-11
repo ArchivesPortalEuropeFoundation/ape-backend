@@ -1108,7 +1108,7 @@ public class EadService extends AbstractService {
         config.setEdmIdentifier(oaiIdentifier);
         //prefixUrl, repositoryCode and xmlTypeName used for EDM element id generation;
         //repositoryCode is taken from the tool while the other two have fixed values.
-        config.setHost(PropertiesUtil.get(PropertiesKeys.APE_PORTAL_DOMAIN));
+        config.setHost(PropertiesUtil.get(PropertiesKeys.APE_PORTAL_DOMAIN_MODX));
         config.setRepositoryCode(ead.getArchivalInstitution().getRepositorycode());
         config.setXmlTypeName("fa");
         config.setOutputBaseDirectory(EdmFileUtils.getOutputEDMDirPath(APEnetUtilities.getConfig().getRepoDirPath(),

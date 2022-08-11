@@ -71,7 +71,7 @@ public class ConvertToEseEdmTask extends AbstractEadTask {
                     EdmConfig edmConfig = new EdmConfig(properties);
                     edmConfig.setEdmIdentifier(europeanaSetName);
                     edmConfig.setRepositoryCode(findingAid.getArchivalInstitution().getRepositorycode());
-                    edmConfig.setHost(PropertiesUtil.get(PropertiesKeys.APE_PORTAL_DOMAIN));
+                    edmConfig.setHost(PropertiesUtil.get(PropertiesKeys.APE_PORTAL_DOMAIN_MODX));
                     edmConfig.setXmlTypeName(FA_XML_TYPE);
                     edmConfig.setOutputBaseDirectory(EdmFileUtils.getOutputEDMDirPath(APEnetUtilities.getConfig().getRepoDirPath(),
                             findingAid.getArchivalInstitution().getCountry().getIsoname(), findingAid

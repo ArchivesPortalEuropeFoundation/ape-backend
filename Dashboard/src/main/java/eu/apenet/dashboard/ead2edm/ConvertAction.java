@@ -345,7 +345,7 @@ public class ConvertAction extends AbstractInstitutionAction {
                     ead.getArchivalInstitution().getCountry().getIsoname(), ead
                     .getArchivalInstitution().getAiId()));
         }
-        config.setHost(PropertiesUtil.get(PropertiesKeys.APE_PORTAL_DOMAIN));
+        config.setHost(PropertiesUtil.get(PropertiesKeys.APE_PORTAL_DOMAIN_MODX));
         config.setXmlTypeName("fa");
 
         return config;

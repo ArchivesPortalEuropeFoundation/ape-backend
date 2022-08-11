@@ -523,7 +523,7 @@ public final class UserService {
 	    	}
 	    	emailComposer.setProperty("archivalInstitution", archivalInstitution.getAiname());
 	        emailComposer.setProperty("name",name);
-	        emailComposer.setProperty("dashboardBase", PropertiesUtil.get(PropertiesKeys.APE_PORTAL_DOMAIN));
+	        emailComposer.setProperty("dashboardBase", PropertiesUtil.get(PropertiesKeys.APE_DASHBOARD_DOMAIN));
 	        emailComposer.setProperty("numberEadHarvested", numberEadHarvested+"");
 	        emailComposer.setProperty("infoHarvestedServer",infoHarvestedServer.replaceAll("\n", "<br/>"));
 	        if (oldestFileHarvested != null){
@@ -588,7 +588,7 @@ public final class UserService {
 	        EmailComposer emailComposer = new EmailComposer(file, title, true, true);
 	        emailComposer.setProperty("archivalInstitution", archivalInstitution.getAiname());
 	        emailComposer.setProperty("name", name);
-	        emailComposer.setProperty("dashboardBase", PropertiesUtil.get(PropertiesKeys.APE_PORTAL_DOMAIN));
+	        emailComposer.setProperty("dashboardBase", PropertiesUtil.get(PropertiesKeys.APE_DASHBOARD_DOMAIN));
 	        emailComposer.setProperty("infoHarvestedServer", infoHarvestedServer.replaceAll("\n", "<br/>"));
 	        emailComposer.setProperty("harvestingDetails",errors);
 	        if (errorsResponsePath != null){
