@@ -166,6 +166,9 @@ function performContentAction(action, id, type) {
 	} else {
 		var parameters = "id=" + id + "&xmlTypeId=" + type;
 		var actionUrl = actionOrUrl;
+		if (actionOrUrl == 'preview-modx.action'){
+			actionUrl = "preview.action?modx=true";
+		}
 		if (actionUrl.indexOf("?") > 0) {
 			actionUrl = actionUrl + "&" + parameters;
 		} else {

@@ -7,7 +7,8 @@
 </head>
 <body>
 <script >
-window.location = '${url}?p_p_id=eaccpfdisplay_WAR_Portal&p_p_lifecycle=0&p_p_state=pop_up&p_p_mode=view&repositoryCode=${repoCode}&eaccpfIdentifier=${identifier}&preview=true';
+<%--window.location = '${url}?p_p_id=eaccpfdisplay_WAR_Portal&p_p_lifecycle=0&p_p_state=pop_up&p_p_mode=view&repositoryCode=${repoCode}&eaccpfIdentifier=${identifier}&preview=true';--%>
+window.location = '${url}';
 </script>
 </body>
 </html>

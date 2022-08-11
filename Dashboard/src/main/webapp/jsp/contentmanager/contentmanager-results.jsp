@@ -327,6 +327,9 @@
                                             <option value="_blank|preview.action">
                                                 <s:text name="content.message.preview" />
                                             </option>
+                                            <option value="_blank|preview.action">
+                                                <s:text name="content.message.preview.modx" />
+                                            </option>
                                             <c:if test="${not eadResult.dynamic}">
                                                 <option value="_self|download.action">
                                                     <s:text name="content.message.download" />
