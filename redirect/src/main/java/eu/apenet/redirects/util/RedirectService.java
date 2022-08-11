@@ -265,7 +265,7 @@ public class RedirectService {
         redirection.setPath(path);
         redirection.setQueryString(queryString);
         redirection.setReferer(referer);
-        redirection.setType(Redirection.REDIRECTION_TYPE_APEF);
+        redirection.setType(Redirection.REDIRECTION_TYPE_XSD);
 
         if (path == null || path.length()==0 || path.equals("/")){
             redirection.setHandled(false);
@@ -273,12 +273,21 @@ public class RedirectService {
             return redirection;
         }
 
-        String oldBaseUrl = RedirectsPropertiesUtil.get("ape.portal.old.domain");
-        String newUrl = oldBaseUrl+ path;
-        redirection.setPassThrough(true); // do not show landing page
-        redirection.setNewUrl(newUrl);
+        String schemasURL = RedirectsPropertiesUtil.get("ape.portal.schemas.domain");
+        Map<String, String> mapping = getXsdMapping();
 
-        return redirection;
+        if (mapping.containsKey(path)){
+            String newUrl = schemasURL + mapping.get(path);
+            redirection.setPassThrough(true); // do not show landing page
+            redirection.setNewUrl(newUrl);
+
+            return redirection;
+        }
+        else {
+            redirection.setHandled(false);
+            redirection.setNewUrl(baseUrl);
+            return redirection;
+        }
     }
 
     private boolean matchesPattern(String pattern, String text){
@@ -950,6 +959,23 @@ public class RedirectService {
             return "reference_code";
         }
         return "all";
+    }
+
+    private Map<String, String> getXsdMapping(){
+
+        Map<String, String> response = new HashMap<>();
+
+        response.put("/Portal/profiles/apeEAD.xsd","/ead/apeEAD.xsd");
+        response.put("/Portal/profiles/ead_2002.xsd","/ead/ead_2002.xsd");
+        response.put("/Portal/profiles/ead3.xsd","/ead/ead3.xsd");
+        response.put("/Portal/profiles/apeEAC-CPF.xsd","/eac-cpf/apeEAC-CPF.xsd");
+        response.put("/Portal/profiles/cpf.xsd","/eac-cpf/cpf.xsd");
+        response.put("/Portal/profiles/eag_2012.xsd","/eag/eag_2012.xsd");
+        response.put("/Portal/profiles/apeMETS.xsd","/mets/apeMETS.xsd");
+        response.put("/Portal/profiles/apeMETSxlink.xsd","/mets/apeMETSxlink.xsd");
+        response.put("/Portal/profiles/apeMETSRights.xsd","/mets/apeMETSRights.xsd");
+
+        return response;
     }
 
     private String getEacSearchType(String type){
