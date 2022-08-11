@@ -75,7 +75,7 @@ public class EacApiAction {
             aiName = archivalInstitution.getAiname();
         }
 
-        EacCpf eaccpf = eacCpfDAO.getEacCpfByIdentifier(aiRepositoryCode, eaccpfId,!preview);
+        EacCpf eaccpf = eacCpfDAO.getEacCpfByIdentifier(aiRepositoryCode, eaccpfId,false);
         ArchivalInstitution archivalInstitution = eaccpf.getArchivalInstitution();
 
         File file= new File(APEnetUtilities.getApePortalAndDashboardConfig().getRepoDirPath() + eaccpf.getPath());
