@@ -84,7 +84,7 @@ public class PreviewSecondDisplayAction extends AbstractInstitutionAction {
 //                        getServletRequest().setAttribute("url", url);
 
                         if ("true".equals(modx)){
-                            String url = "https://" + PropertiesUtil.get(PropertiesKeys.APE_PORTAL_DOMAIN_MODX) + "/";
+                            String url = "http://" + PropertiesUtil.get(PropertiesKeys.APE_PORTAL_DOMAIN_MODX) + "/";
                             url += "advanced-search/search-in-names/results-(names)/?repositoryCode="+eacCpf.getArchivalInstitution().getEncodedRepositorycode()+"&recordId="+eacCpf.getIdentifier();
                             getServletRequest().setAttribute("url", url);
                         }
@@ -124,7 +124,7 @@ public class PreviewSecondDisplayAction extends AbstractInstitutionAction {
 //                        getServletRequest().setAttribute("url", url);
 
                         if ("true".equals(modx)){
-                            String url = "https://" + PropertiesUtil.get(PropertiesKeys.APE_PORTAL_DOMAIN_MODX) + "/";
+                            String url = "http://" + PropertiesUtil.get(PropertiesKeys.APE_PORTAL_DOMAIN_MODX) + "/";
                             url += "advanced-search/search-in-archives/results-(archives)/?&repositoryCode="+ead.getArchivalInstitution().getRepositorycode()+"&levelName=archdesc&t="+xmlType.getResourceName()+"&recordId="+ead.getIdentifier();
                             getServletRequest().setAttribute("url", url);
                         }
