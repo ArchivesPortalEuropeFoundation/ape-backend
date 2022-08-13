@@ -54,9 +54,11 @@ public class EacCpfSolrPublisher extends AbstractSolrPublisher {
         doc.addField(SolrFields.EAC_CPF_NUMBER_OF_NAME_RELATIONS, eacCpfPublishData.getNumberOfNameRelations());
         doc.addField(SolrFields.EAC_CPF_NUMBER_OF_INSTITUTIONS_RELATIONS, eacCpfPublishData.getNumberOfInstitutionsRelations());
 
-        doc.addField(SolrFields.EAG_LICENCE_NAME, eacCpf.getRightsInformation().getRightsName());
-        doc.addField(SolrFields.EAG_LICENCE_ABBREVIATION, eacCpf.getRightsInformation().getAbbreviation());
-        doc.addField(SolrFields.EAG_LICENCE_SHAREABLE, getLicenceShareableType(eacCpf.getRightsInformation()));
+        if (eacCpf.getRightsInformation() != null) {
+            doc.addField(SolrFields.EAG_LICENCE_NAME, eacCpf.getRightsInformation().getRightsName());
+            doc.addField(SolrFields.EAG_LICENCE_ABBREVIATION, eacCpf.getRightsInformation().getAbbreviation());
+            doc.addField(SolrFields.EAG_LICENCE_SHAREABLE, getLicenceShareableType(eacCpf.getRightsInformation()));
+        }
 
         doc.addField(Ead3SolrFields.OPEN_DATA, archivalInstitution.isOpenDataEnabled());
         addSolrDocument(doc);
