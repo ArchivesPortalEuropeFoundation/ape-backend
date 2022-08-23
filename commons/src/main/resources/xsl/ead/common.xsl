@@ -1233,24 +1233,28 @@
         <h2>
             <xsl:value-of select="ape:resource('eadcontent.userestrict')"/>
         </h2>
-        <div class="ead-content">
+        <div class="ead-content userestrict">
             <xsl:if test="ead:userestrict[@type = 'dao']">
-                <br>
-                    <b>
-                        <xsl:value-of select="ape:resource('eadcontent.userestrict.dao')"/>:</b>
-                </br>
-                <xsl:for-each select="ead:userestrict[@type = 'dao']">
-                    <xsl:apply-templates mode="other"/>
-                </xsl:for-each>
+                <div class="userestrict-dao">
+                    <br>
+                        <b>
+                            <xsl:value-of select="ape:resource('eadcontent.userestrict.dao')"/>:</b>
+                    </br>
+                    <xsl:for-each select="ead:userestrict[@type = 'dao']">
+                        <xsl:apply-templates mode="other"/>
+                    </xsl:for-each>
+                </div>
             </xsl:if>
             <xsl:if test="ead:userestrict[@type = 'ead']">
-                <br>
-                    <b>
-                        <xsl:value-of select="ape:resource('eadcontent.userestrict.ead')"/>:</b>
-                </br>
-                <xsl:for-each select="ead:userestrict[@type = 'ead']">
-                    <xsl:apply-templates mode="other"/>
-                </xsl:for-each>
+                <div class="userestrict-ead">
+                    <br>
+                        <b>
+                            <xsl:value-of select="ape:resource('eadcontent.userestrict.ead')"/>:</b>
+                    </br>
+                    <xsl:for-each select="ead:userestrict[@type = 'ead']">
+                        <xsl:apply-templates mode="other"/>
+                    </xsl:for-each>
+                </div>
             </xsl:if>
             <xsl:if test="ead:userestrict[(@type != 'ead' and @type != 'dao') or not(@type)]">
                 <xsl:if test="ead:userestrict[@type = 'ead' or @type = 'dao']">
