@@ -5,6 +5,8 @@ import eu.apenet.commons.StrutsResourceBundleSource;
 import eu.apenet.commons.solr.SolrField;
 import eu.apenet.commons.utils.APEnetUtilities;
 import eu.apenet.commons.xslt.eac.EacXslt;
+import eu.apenet.dashboard.utils.PropertiesKeys;
+import eu.apenet.dashboard.utils.PropertiesUtil;
 import eu.apenet.persistence.dao.ArchivalInstitutionDAO;
 import eu.apenet.persistence.dao.EacCpfDAO;
 import eu.apenet.persistence.factory.DAOFactory;
@@ -38,11 +40,13 @@ public class EacApiAction {
     private String term;
     private String translationLanguage = "default";
     private String langNavigator = "en";
-    private String aiCodeUrl = "http://localhost:8080/web/guest/directory/-/dir/ai/code";
-    private String eacUrlBase = "http://localhost:8080/web/guest/eac-display/-/eac/pl";
-    private String eadUrl = "http://localhost:8080/web/guest/ead-display/-/ead/pl";
+    private String aiCodeUrl = "/advanced-search/search-in-institutions/results-(institutions)";
+    private String eacUrlBase = "/advanced-search/search-in-names/results-(names)";
+    private String eadUrl = "/advanced-search/search-in-archives/results-(archives)";
     private String secondDisplayUrl = null;
 
+//    advanced-search/search-in-institutions/results-(institutions)/?repositoryCode=FI-007&term=archive
+    ///advanced-search/search-in-archives/results-(archives)/?&repositoryCode=GB-2856&term=london&levelName=clevel&t=fa&recordId=gb2856-%28new%29lt000223&c=C499754185
     private final static Map<String, String> xsltUrls = new HashMap<String,String>();
     static {
         xsltUrls.put(EACCPFDETAILS_XSLT, "xsl/eaccpf/eaccpfdetails.xsl");
@@ -201,15 +205,15 @@ public class EacApiAction {
     }
 
     public String getAiCodeUrl() {
-        return aiCodeUrl;
+        return "http://"+PropertiesUtil.get(PropertiesKeys.APE_PORTAL_DOMAIN_MODX) + aiCodeUrl;
     }
 
     public String getEacUrlBase() {
-        return eacUrlBase;
+        return "http://"+PropertiesUtil.get(PropertiesKeys.APE_PORTAL_DOMAIN_MODX) + eacUrlBase;
     }
 
     public String getEadUrl() {
-        return eadUrl;
+        return "http://"+PropertiesUtil.get(PropertiesKeys.APE_PORTAL_DOMAIN_MODX) + eadUrl;
     }
 
     public void setSecondDisplayUrl(String secondDisplayUrl) {

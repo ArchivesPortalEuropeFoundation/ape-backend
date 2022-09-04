@@ -1611,9 +1611,9 @@
         <xsl:param name="element"/>
         <xsl:variable name="aiCode" select="ape:aiFromEac($element/@authfilenumber, '')"/>
         <xsl:variable name="encodedAiCode" select="ape:encodeSpecialCharacters($aiCode)"/>
-        <xsl:variable name="encodedRecordid"
-                      select="ape:encodeSpecialCharacters($element/@authfilenumber)"/>
-        <a href="{$eacUrl}/aicode/{$encodedAiCode}/type/ec/id/{$encodedRecordid}" target="_blank">
+        <xsl:variable name="encodedRecordid" select="ape:encodeSpecialCharacters($element/@authfilenumber)"/>
+<!--        <a href="{$eacUrl}/aicode/{$encodedAiCode}/type/ec/id/{$encodedRecordid}" target="_blank">-->
+        <a href="{$eacUrl}?repositoryCode={$aiCode}&amp;recordId={$element/@authfilenumber}" target="_blank">
             <xsl:value-of select="$element/text()"/>
         </a>
         <br/>

@@ -7,6 +7,8 @@ import eu.apenet.commons.types.XmlType;
 import eu.apenet.commons.utils.APEnetUtilities;
 import eu.apenet.commons.xslt.eac.EacXslt;
 import eu.apenet.commons.xslt.ead.EadXslt;
+import eu.apenet.dashboard.utils.PropertiesKeys;
+import eu.apenet.dashboard.utils.PropertiesUtil;
 import eu.apenet.persistence.dao.ArchivalInstitutionDAO;
 import eu.apenet.persistence.dao.CLevelDAO;
 import eu.apenet.persistence.dao.EacCpfDAO;
@@ -41,7 +43,7 @@ public class EadApiAction {
     private String xmlType;
     private String preview = "false";
     private String dashboardPreview = "false";
-    private String eacUrlBase = "http://localhost:8080/web/guest/eac-display/-/eac/pl";
+    private String eacUrlBase = "/advanced-search/search-in-names/results-(names)";
     private String secondDisplayUrl = null;
 
     private String aiId;
@@ -223,7 +225,7 @@ public class EadApiAction {
     }
 
     public String getEacUrlBase() {
-        return eacUrlBase;
+        return "http://"+ PropertiesUtil.get(PropertiesKeys.APE_PORTAL_DOMAIN_MODX) + eacUrlBase;
     }
 
     public void setSecondDisplayUrl(String secondDisplayUrl) {

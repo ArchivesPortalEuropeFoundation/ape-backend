@@ -72,7 +72,7 @@
 						   		</xsl:call-template>
 					   		</xsl:when>
 					   		<xsl:when test="./eac:relationEntry[not(@localType)]">
-					   			<xsl:call-template name="multilanguageRelations">
+								<xsl:call-template name="multilanguageRelations">
 						   			 	<xsl:with-param name="list" select="./eac:relationEntry[not(@localType)]"/>
 						   		</xsl:call-template>
 					   		</xsl:when>
@@ -96,7 +96,8 @@
 												<xsl:when test="$aiCode != 'ERROR' and $aiCode != ''">
 													<xsl:variable name="encodedAiCode" select="ape:encodeSpecialCharacters($aiCode)" />
 													<xsl:variable name="encodedlink" select="ape:encodeSpecialCharacters($link)" />
-													<a href="{$eacUrlBase}/aicode/{$encodedAiCode}/type/ec/id/{$encodedlink}" target="_blank">
+<!--													<a href="{$eacUrlBase}/aicode/{$encodedAiCode}/type/ec/id/{$encodedlink}" target="_blank">-->
+													<a href="{$eacUrlBase}?repositoryCode={$aiCode}&amp;recordId={$link}" target="_blank">
 														<xsl:value-of select="ape:resource('eaccpf.portal.goToRelatedName')"/>
 													</a>
 												</xsl:when>
@@ -117,7 +118,8 @@
 												<xsl:when test="$aiCode != 'ERROR' and $aiCode != ''">
 													<xsl:variable name="encodedAiCode" select="ape:encodeSpecialCharacters($aiCode)" />
 													<xsl:variable name="encodedlink" select="ape:encodeSpecialCharacters($link)" />
-													<a href="{$eacUrlBase}/aicode/{$encodedAiCode}/type/ec/id/{$encodedlink}" target="_blank">
+<!--													<a href="{$eacUrlBase}/aicode/{$encodedAiCode}/type/ec/id/{$encodedlink}" target="_blank">-->
+													<a href="{$eacUrlBase}?repositoryCode={$aiCode}&amp;recordId={$link}" target="_blank">
 														<xsl:value-of select="ape:resource('eaccpf.portal.goToRelatedName')"/>
 													</a>
 												</xsl:when>

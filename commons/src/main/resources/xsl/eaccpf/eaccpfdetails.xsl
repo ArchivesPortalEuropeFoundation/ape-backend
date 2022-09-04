@@ -4513,7 +4513,8 @@
 				<xsl:when test="$aiCodeEac != 'ERROR' and $aiCodeEac != ''">
 					<xsl:variable name="encodedAiCode" select="ape:encodeSpecialCharacters($aiCodeEac)" />
 					<xsl:variable name="encodedlink" select="ape:encodeSpecialCharacters($link)" />
-					<a href="{$eacUrlBase}/aicode/{$encodedAiCode}/type/ec/id/{$encodedlink}" target="_blank">
+<!--					<a href="{$eacUrlBase}/aicode/{$encodedAiCode}/type/ec/id/{$encodedlink}" target="_blank">-->
+					<a href="{$eacUrlBase}?repositoryCode={$aiCodeEac}&amp;recordId={$link}" target="_blank">
 						<xsl:apply-templates select="$node" mode="other"/>
 					</a>
 				</xsl:when>
@@ -4524,7 +4525,8 @@
 				</xsl:when>
 				<xsl:when test="$aiCodeEag != 'ERROR' and $aiCodeEag != ''">
 					<xsl:variable name="encodedAiCode" select="ape:encodeSpecialCharacters($aiCodeEag)" />
-					<a href="{$aiCodeUrl}/{$encodedAiCode}" target="_blank">
+<!--					<a href="{$aiCodeUrl}/{$encodedAiCode}" target="_blank">-->
+					<a href="{$aiCodeUrl}?repositoryCode={$aiCodeEag}" target="_blank">
 						<xsl:apply-templates select="$node" mode="other"/>
 					</a>
 				</xsl:when>
@@ -5026,7 +5028,8 @@
 					<xsl:when test="$aiCodeEac != 'ERROR' and $aiCodeEac != ''">
 						<xsl:variable name="encodedAiCode" select="ape:encodeSpecialCharacters($aiCodeEac)" />
 						<xsl:variable name="encodedlink" select="ape:encodeSpecialCharacters($link)" />
-						<a href="{$eacUrlBase}/aicode/{$encodedAiCode}/type/ec/id/{$encodedlink}" target="_blank">
+<!--						<a href="{$eacUrlBase}/aicode/{$encodedAiCode}/type/ec/id/{$encodedlink}" target="_blank">-->
+						<a href="{$eacUrlBase}?repositoryCode={$aiCodeEac}&amp;recordId={$link}" target="_blank">
 							<xsl:call-template name="citationHrefTitle">
 								<xsl:with-param name="content" select="$content" />
 								<xsl:with-param name="section" select="$section" />
@@ -5045,7 +5048,8 @@
 					</xsl:when>
 					<xsl:when test="$aiCodeEag != 'ERROR' and $aiCodeEag != ''">
 						<xsl:variable name="encodedAiCode" select="ape:encodeSpecialCharacters($aiCodeEag)" />
-						<a href="{$aiCodeUrl}/{$encodedAiCode}" target="_blank">
+<!--						<a href="{$aiCodeUrl}/{$encodedAiCode}" target="_blank">-->
+						<a href="{$aiCodeUrl}?repositoryCode={$aiCodeEag}" target="_blank">
 							<xsl:call-template name="citationHrefTitle">
 								<xsl:with-param name="content" select="$content" />
 								<xsl:with-param name="section" select="$section" />

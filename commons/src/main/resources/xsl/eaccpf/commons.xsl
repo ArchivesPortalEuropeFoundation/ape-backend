@@ -20,6 +20,7 @@
 		</xd:detail>
 		<xd:param name="list">The parameter "list" is an array of <code>&lt;relationEntry&gt;</code> elements with the attribute <code>@localType</code>.</xd:param>
 	</xd:doc>
+
 	<xsl:template name="multilanguageRelationsTitle">
 		<xsl:param name="list"/>
 		<xsl:choose>
@@ -120,7 +121,8 @@
 									<xsl:when test="$aiCodeEac != 'ERROR' and $aiCodeEac != ''">
 										<xsl:variable name="encodedAiCode" select="ape:encodeSpecialCharacters($aiCodeEac)" />
 										<xsl:variable name="encodedlink" select="ape:encodeSpecialCharacters($link)" />
-										<a href="{$eacUrlBase}/aicode/{$encodedAiCode}/type/ec/id/{$encodedlink}" target="_blank">
+<!--										<a href="{$eacUrlBase}/aicode/{$encodedAiCode}/type/ec/id/{$encodedlink}" target="_blank">-->
+										<a href="{$eacUrlBase}?repositoryCode={$aiCodeEac}&amp;recordId={$link}" target="_blank">
 											<xsl:call-template name="multilanguageRelationTitleLanguageSelectedAList">
 												<xsl:with-param name="list" select="$list"></xsl:with-param>
 												<xsl:with-param name="paramLanguage" select="$paramLanguage"></xsl:with-param>
@@ -142,7 +144,8 @@
 									<xsl:variable name="aiCodeEac" select="ape:aiFromEac($link, '')"/>
 									<xsl:variable name="encodedAiCode" select="ape:encodeSpecialCharacters($aiCodeEac)" />
 									<xsl:variable name="encodedlink" select="ape:encodeSpecialCharacters($link)" />
-									<a href="{$eacUrlBase}/aicode/{$encodedAiCode}/type/ec/id/{$encodedlink}" target="_blank">
+<!--									<a href="{$eacUrlBase}/aicode/{$encodedAiCode}/type/ec/id/{$encodedlink}" target="_blank">-->
+									<a href="{$eacUrlBase}?repositoryCode={$aiCodeEac}&amp;recordId={$link}" target="_blank">
 										<xsl:call-template name="multilanguageRelationTitleLanguageSelectedAList">
 											<xsl:with-param name="list" select="$list"></xsl:with-param>
 											<xsl:with-param name="paramLanguage" select="$paramLanguage"></xsl:with-param>
@@ -774,7 +777,8 @@
 					  		<xsl:if test="not(starts-with($href, 'http')) and not(starts-with($href, 'https')) and not(starts-with($href, 'ftp')) and not(starts-with($href, 'www'))">
 								<xsl:variable name="encodedHref" select="ape:encodeSpecialCharacters($href)" />
 								<xsl:variable name="encodedlink" select="ape:encodeSpecialCharacters($link)" />
-								<a href="{$eacUrlBase}/aicode/{$encodedHref}/type/ec/id/{$encodedlink}" target="_blank">
+<!--								<a href="{$eacUrlBase}/aicode/{$encodedHref}/type/ec/id/{$encodedlink}" target="_blank">-->
+								<a href="{$eacUrlBase}?repositoryCode={$href}&amp;recordId={$link}" target="_blank">
 									<xsl:apply-templates select="." mode="other"/>
 								</a>
 							</xsl:if>
@@ -784,7 +788,8 @@
 							<xsl:choose>
 								<xsl:when test="$aiCode != 'ERROR' and $aiCode != ''">
 								<xsl:variable name="encodedlink" select="ape:encodeSpecialCharacters($link)" />
-									<a href="{$eacUrlBase}/aicode/{$aiCode}/type/ec/id/{$encodedlink}" target="_blank">
+<!--									<a href="{$eacUrlBase}/aicode/{$aiCode}/type/ec/id/{$encodedlink}" target="_blank">-->
+									<a href="{$eacUrlBase}?repositoryCode={$aiCode}&amp;recordId={$link}" target="_blank">
 										<xsl:apply-templates select="." mode="other"/>
 									</a>
 								</xsl:when>
@@ -835,7 +840,8 @@
 					  		<xsl:if test="not(starts-with($href, 'http')) and not(starts-with($href, 'https')) and not(starts-with($href, 'ftp')) and not(starts-with($href, 'www'))">
 								<xsl:variable name="encodedHref" select="ape:encodeSpecialCharacters($href)" />
 								<xsl:variable name="encodedlink" select="ape:encodeSpecialCharacters($link)" />
-								<a href="{$eacUrlBase}/aicode/{$encodedHref}/type/ec/id/{$encodedlink}" target="_blank">
+<!--								<a href="{$eacUrlBase}/aicode/{$encodedHref}/type/ec/id/{$encodedlink}" target="_blank">-->
+								<a href="{$eacUrlBase}?repositoryCode={$href}&amp;recordId={$link}" target="_blank">
 									<xsl:apply-templates select="." mode="other"/>
 								</a>
 							</xsl:if>
@@ -845,7 +851,8 @@
 							<xsl:choose>
 								<xsl:when test="$aiCode != 'ERROR' and $aiCode != ''">
 								<xsl:variable name="encodedlink" select="ape:encodeSpecialCharacters($link)" />
-									<a href="{$eacUrlBase}/aicode/{$aiCode}/type/ec/id/{$encodedlink}" target="_blank">
+<!--									<a href="{$eacUrlBase}/aicode/{$aiCode}/type/ec/id/{$encodedlink}" target="_blank">-->
+									<a href="{$eacUrlBase}?repositoryCode={$aiCode}&amp;recordId={$link}" target="_blank">
 										<xsl:apply-templates select="." mode="other"/>
 									</a>
 								</xsl:when>

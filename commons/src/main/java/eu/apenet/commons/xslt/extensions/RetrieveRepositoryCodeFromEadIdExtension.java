@@ -172,7 +172,8 @@ public class RetrieveRepositoryCodeFromEadIdExtension extends ExtensionFunctionD
                         repositoryCode = ead.getArchivalInstitution().getRepositorycode();
                     }
 
-                    value = "aicode/" + repositoryCode + "/type/" + type + "/id/" + ApeUtil.encodeSpecialCharacters(ead.getEadid());
+//                    value = "aicode/" + repositoryCode + "/type/" + type + "/id/" + ApeUtil.encodeSpecialCharacters(ead.getEadid());
+                    value = "?repositoryCode="+repositoryCode+"&levelName=archdesc&t="+type+"&recordId="+ead.getEadid();
                 } else if (ead3 != null) {
                     String repositoryCode = "";
                     if (secondArgValue != null && !secondArgValue.isEmpty()) {
@@ -181,9 +182,11 @@ public class RetrieveRepositoryCodeFromEadIdExtension extends ExtensionFunctionD
                         repositoryCode = ead3.getArchivalInstitution().getRepositorycode();
                     }
 
-                    value = "aicode/" + repositoryCode + "/type/" + type + "/id/" + ApeUtil.encodeSpecialCharacters(ead3.getIdentifier());
+//                    value = "aicode/" + repositoryCode + "/type/" + type + "/id/" + ApeUtil.encodeSpecialCharacters(ead3.getIdentifier());
+                    value = "?repositoryCode="+repositoryCode+"&levelName=archdesc&t="+type+"&recordId="+ead.getEadid();
                     if (clevel != null) {
-                        value = value.concat("/unitid/" + ApeUtil.encodeSpecialCharacters(clevel.getUnitid()));
+//                        value = value.concat("/unitid/" + ApeUtil.encodeSpecialCharacters(clevel.getUnitid()));
+                        value = "?repositoryCode="+repositoryCode+"&levelName=clevel&t="+type+"&recordId="+ead.getEadid()+"&c=C"+clevel.getId();
                     }
                 }
 
