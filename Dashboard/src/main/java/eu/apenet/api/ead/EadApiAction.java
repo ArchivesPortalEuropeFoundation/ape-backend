@@ -53,6 +53,7 @@ public class EadApiAction {
     String eadid;
     String clevelid;
     String clevelunitid;
+    String ecId;
 
     private String max = "10";
     private String page;
@@ -106,6 +107,11 @@ public class EadApiAction {
 
         if (clevelid != null){
             CLevel cLevel = cLevelDAO.getCLevel(aiRepositoryCode, xmlType.getEadClazz(), eadid, Long.parseLong(clevelid));
+
+            if (clevelunitid == null){
+                clevelunitid = cLevel.getUnitid();
+            }
+
             xml = cLevel.getXml();
 
             Integer pageNumberInt = 1;
@@ -127,6 +133,18 @@ public class EadApiAction {
         }
         else {
             Ead ead = eadDAO.getEadByEadid(xmlType.getEadClazz(), Integer.parseInt(aiId), eadid);
+            ecId = ead.getId()+"";
+            clevelid = ead.getId()+"";
+            if (xmlType.equals(XmlType.EAD_FA)){
+                clevelid = "F"+clevelid;
+            }
+            else if (xmlType.equals(XmlType.EAD_HG)){
+                clevelid = "H"+clevelid;
+            }
+            else if (xmlType.equals(XmlType.EAD_SG)){
+                clevelid = "S"+clevelid;
+            }
+
             EadContent eadContent = ead.getEadContent();
             xml = eadContent.getXml();
         }
@@ -342,5 +360,13 @@ public class EadApiAction {
 
     public String getClevelunitid() {
         return clevelunitid;
+    }
+
+    public void setEcId(String ecId) {
+        this.ecId = ecId;
+    }
+
+    public String getEcId() {
+        return ecId;
     }
 }
