@@ -231,7 +231,7 @@ public class RedirectService {
         redirection.setPath(path);
         redirection.setQueryString(queryString);
         redirection.setReferer(referer);
-        redirection.setType(Redirection.REDIRECTION_TYPE_APEF);
+        redirection.setType(Redirection.REDIRECTION_TYPE_BLOG);
 
         Map<String, String> mapping = getBlogMapping();
 
@@ -352,9 +352,33 @@ public class RedirectService {
     }
 
     private void handlePortalWeb(String baseUrl, String path, String queryString, Redirection redirection){
-//        if (path.equals("/web")){
-            redirection.setNewUrl(baseUrl);
+        String newUrl = "";
+        if (path.equals("/web/guest/help")) {
+            newUrl = "?show=help";
+        }
+        else if (path.startsWith("/web/guest/help/searching")) {
+            newUrl = "/tools/research-tools";
+        }
+        else if (path.startsWith("/web/guest/help/search-results")) {
+            newUrl = "/tools/research-tools";
+        }
+        else if (path.startsWith("/web/guest/help/topics")) {
+            newUrl = "/tools/research-tools";
+        }
+        else if (path.startsWith("/web/guest/help/finding-institutions")) {
+            newUrl = "/tools/research-tools";
+        }
+        else if (path.startsWith("/web/guest/help/sign-in")) {
+            newUrl = "/about-us/join-us/?tab=registered-user";
+        }
+        else if (path.startsWith("/web/guest/help/glossary")) {
+            newUrl = "?show=help";
+        }
+//        else {
+//            redirection.setNewUrl(baseUrl);
 //        }
+
+        redirection.setNewUrl(baseUrl+newUrl);
     }
 
     private void handlePortalSearch(String baseUrl, String path, String queryString, Redirection redirection){
@@ -899,23 +923,23 @@ public class RedirectService {
         response.put("/contact","/contact-us");
         response.put("/eag","/tools/for-content-providers/standards/eag");
         response.put("/help_old","?show=help");
-        response.put("/help/searching","/tools/research-tools");
-        response.put("/help/search-results","/tools/research-tools");
-        response.put("/help/topics","/tools/research-tools");
-        response.put("/help/finding-institutions","/tools/research-tools");
-        response.put("/help/sign-in","/about-us/join-us/?tab=registered-user");
-        response.put("/help/glossary","?show=help");
+//        response.put("/help/searching","/tools/research-tools");
+//        response.put("/help/search-results","/tools/research-tools");
+//        response.put("/help/topics","/tools/research-tools");
+//        response.put("/help/finding-institutions","/tools/research-tools");
+//        response.put("/help/sign-in","/about-us/join-us/?tab=registered-user");
+//        response.put("/help/glossary","?show=help");
 
         response.put("/developments/","/tools/for-content-providers");
         response.put("/contact/","/contact-us");
         response.put("/eag/","/tools/for-content-providers/standards/eag");
         response.put("/help_old/","?show=help");
-        response.put("/help/searching/","/tools/research-tools");
-        response.put("/help/search-results/","/tools/research-tools");
-        response.put("/help/topics/","/tools/research-tools");
-        response.put("/help/finding-institutions/","/tools/research-tools");
-        response.put("/help/sign-in/","/about-us/join-us/?tab=registered-user");
-        response.put("/help/glossary/","?show=help");
+//        response.put("/help/searching/","/tools/research-tools");
+//        response.put("/help/search-results/","/tools/research-tools");
+//        response.put("/help/topics/","/tools/research-tools");
+//        response.put("/help/finding-institutions/","/tools/research-tools");
+//        response.put("/help/sign-in/","/about-us/join-us/?tab=registered-user");
+//        response.put("/help/glossary/","?show=help");
 
         return response;
     }
