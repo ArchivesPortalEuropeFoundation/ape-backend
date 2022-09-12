@@ -25,6 +25,7 @@ public abstract class AbstractJSONWriter {
 	protected static final String END_ITEM = "}";
 	protected static final String START_ITEM = "{";
 	protected static final String FOLDER_WITH_CHILDREN = "\"isFolder\": true, \"children\": \n";
+	protected static final String FOLDER_FALSE_WITH_CHILDREN = "\"isFolder\": false, \"children\": \n";
 	protected static final String COMMA = ",";
 	private static final String MORE_CLASS = "more";
 	private static final String MORE_TEXT = "advancedsearch.context.more";

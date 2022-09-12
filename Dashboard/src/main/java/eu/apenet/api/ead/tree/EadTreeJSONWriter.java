@@ -101,7 +101,7 @@ public class EadTreeJSONWriter extends AbstractJSONWriter {
                             eadParams.getMax());
                 }
                 StringBuilder topCLevelsBuffer = generateCLevelJSON(clevels, eadParams, locale);
-                writeToResponseAndClose(generateRootJSON(eadContent, topCLevelsBuffer, false, true, eadParams, locale),
+                writeToResponseAndClose(generateRootJSON(eadContent, topCLevelsBuffer, clevels.size()>0, false, true, eadParams, locale),
                         response);
 
             }
@@ -188,9 +188,12 @@ public class EadTreeJSONWriter extends AbstractJSONWriter {
             return generateRootJSON(eadContent, childBuffer, true, false, eadParams, locale);
         }
     }
-
     private StringBuilder generateRootJSON(EadContent eadContent, StringBuilder childBuffer,
-            boolean expand, boolean selected, EadTreeParams eadParams, Locale locale) {
+                                           boolean expand, boolean selected, EadTreeParams eadParams, Locale locale) {
+        return generateRootJSON(eadContent, childBuffer, true, expand, selected, eadParams, locale);
+    }
+    private StringBuilder generateRootJSON(EadContent eadContent, StringBuilder childBuffer,
+            boolean hasChildren, boolean expand, boolean selected, EadTreeParams eadParams, Locale locale) {
         StringBuilder buffer = new StringBuilder();
         buffer.append(START_ARRAY);
         buffer.append(START_ITEM);
@@ -212,7 +215,7 @@ public class EadTreeJSONWriter extends AbstractJSONWriter {
             addType(buffer, "frontpage");
         }
         buffer.append(COMMA);
-        buffer.append(FOLDER_WITH_CHILDREN);
+        buffer.append(hasChildren? FOLDER_WITH_CHILDREN : FOLDER_FALSE_WITH_CHILDREN);
         buffer.append(childBuffer);
         buffer.append(END_ITEM_WITH_RETURN);
         buffer.append(END_ARRAY);
