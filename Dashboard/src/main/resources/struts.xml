@@ -83,6 +83,10 @@
             <result type="json" />
         </action>
 
+        <action name="searchSuggestApi" class="eu.apenet.api.search.SearchSuggestApiAction">
+            <result type="json" />
+        </action>
+
         <!-- Content Provider Information -->
         <action name="dashboardHome" class="eu.apenet.dashboard.DashboardHomeAction">
             <interceptor-ref name="changeLanguageStack"/>

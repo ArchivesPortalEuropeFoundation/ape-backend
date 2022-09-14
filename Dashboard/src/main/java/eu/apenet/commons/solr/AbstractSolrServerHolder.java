@@ -7,6 +7,7 @@ import org.apache.log4j.Logger;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.impl.HttpSolrClient;
+import org.apache.solr.client.solrj.response.TermsResponse;
 import org.apache.solr.common.SolrInputDocument;
 
 import eu.apenet.dashboard.utils.PropertiesKeys;
@@ -14,6 +15,8 @@ import eu.apenet.dashboard.utils.PropertiesUtil;
 import org.apache.solr.client.solrj.response.QueryResponse;
 
 public abstract class AbstractSolrServerHolder {
+
+    private SolrQueryBuilder queryBuilder = new SolrQueryBuilder();
 
     private static final int INFINITY_TIMEOUT = 0;
     private final static Logger LOGGER = Logger.getLogger(AbstractSolrServerHolder.class);
@@ -135,6 +138,20 @@ public abstract class AbstractSolrServerHolder {
             return System.currentTimeMillis() - startTime;
         } else {
             throw new SolrServerException("Solr server " + getSolrUrl() + " is not available");
+        }
+    }
+
+    public TermsResponse getTerms(String term) throws SolrServerException, IOException {
+        SolrQuery query = this.queryBuilder.getTermQuery(term);
+        long startTime = System.currentTimeMillis();
+
+        try {
+            QueryResponse queryResponse = this.executeQuery(query);
+            TermsResponse response = queryResponse.getTermsResponse();
+
+            return response;
+        } catch (SolrServerException var8) {
+            throw var8;
         }
     }
 
