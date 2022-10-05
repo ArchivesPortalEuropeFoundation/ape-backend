@@ -51,9 +51,11 @@ public class EagSolrPublisher extends AbstractSolrPublisher {
         add(doc, Ead3SolrFields.COUNTRY, archivalInstitution.getCountry().getEncodedCname() + COLON + SolrValues.TYPE_GROUP + COLON + archivalInstitution.getCountry().getId());
         doc.addField(Ead3SolrFields.COUNTRY_ID, archivalInstitution.getCountry().getId());
 
-        doc.addField(SolrFields.EAG_LICENCE_NAME, archivalInstitution.getShareWithWikimedia().getRightsName());
-        doc.addField(SolrFields.EAG_LICENCE_ABBREVIATION, archivalInstitution.getShareWithWikimedia().getAbbreviation());
-        doc.addField(SolrFields.EAG_LICENCE_SHAREABLE, getLicenceShareableType(archivalInstitution.getShareWithWikimedia()));
+        if (archivalInstitution.getShareWithWikimedia()!=null) {
+            doc.addField(SolrFields.EAG_LICENCE_NAME, archivalInstitution.getShareWithWikimedia().getRightsName());
+            doc.addField(SolrFields.EAG_LICENCE_ABBREVIATION, archivalInstitution.getShareWithWikimedia().getAbbreviation());
+            doc.addField(SolrFields.EAG_LICENCE_SHAREABLE, getLicenceShareableType(archivalInstitution.getShareWithWikimedia()));
+        }
 
         ArchivalInstitutionDAO archivalInstitutionDao = DAOFactory.instance().getArchivalInstitutionDAO();
         doc.addField(Ead3SolrFields.OPEN_DATA, archivalInstitutionDao.findById(archivalInstitution.getAiId()).isOpenDataEnabled());
