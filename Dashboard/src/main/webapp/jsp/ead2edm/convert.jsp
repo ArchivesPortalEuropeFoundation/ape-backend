@@ -339,7 +339,7 @@
                 <s:iterator value="licenseSet">
                     <s:radio name="license" id="license" list="top" listKey="value" listValue="content"></s:radio><br/>
                 </s:iterator><s:fielderror fieldName="license"/>
-                (<s:label key="ead2ese.content.license.moreinfo"/>: <s:a target="_blank" href="http://pro.europeana.eu/share-your-data/rights-statement-guidelines/available-rights-statements" ><s:property value="getText('ead2ese.content.license.link')" /></s:a>)
+                (<s:label key="ead2ese.content.license.moreinfo"/>: <s:a target="_blank" href="https://pro.europeana.eu/page/available-rights-statements" ><s:property value="getText('ead2ese.content.license.link')" /></s:a>)
                 </td>
             </tr>
         <s:if test="license==null || license=='cc0' || license=='cpdm' || license=='europeana'">

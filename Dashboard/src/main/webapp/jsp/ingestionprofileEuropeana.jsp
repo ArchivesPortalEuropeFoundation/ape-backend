@@ -240,7 +240,7 @@
                 <s:iterator value="licenseSet">
                     <s:radio name="license" id="license" list="top" listKey="value" listValue="content"></s:radio><br/>
                 </s:iterator>
-                (<s:label key="ead2ese.content.license.moreinfo"/> <s:a target="_blank" href="docs/Europeana%20Rights%20Guidelines.pdf" ><s:property value="getText('ead2ese.content.license.link')" /></s:a>)
+                (<s:label key="ead2ese.content.license.moreinfo"/> <s:a target="_blank" href="https://pro.europeana.eu/page/available-rights-statements" ><s:property value="getText('ead2ese.content.license.link')" /></s:a>)
                 </td>
             </tr>
         <s:if test="license=='cc0' || license=='cpdm' || license=='europeana'">
