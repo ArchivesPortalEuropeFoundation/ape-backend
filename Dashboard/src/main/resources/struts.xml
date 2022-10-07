@@ -1157,9 +1157,11 @@
             <result name="input" type="tiles">createCountryManager</result>
         </action>
         <action name="displayCreateInstitutionManager" class="eu.apenet.dashboard.security.actions.CreateUserAction" method="input">
+            <interceptor-ref name="changeLanguageStack"/>
             <result name="input" type="tiles">createInstitutionManager</result>
         </action>
         <action name="createInstitutionManager" class="eu.apenet.dashboard.security.actions.CreateUserAction">
+            <interceptor-ref name="changeLanguageStack"/>
             <result name="success" type="redirectAction">
                 <param name="actionName">institutionManagerManagement</param>
                 <param name="countryId">${countryId}</param>
