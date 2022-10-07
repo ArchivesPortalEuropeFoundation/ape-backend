@@ -65,7 +65,7 @@ public class EadTreeApiAction {
         eadTreeJSONWriter.writeJSON(eadTreeParams, request, response);
 
         response.setHeader("Access-Control-Allow-Origin","*");
-        return Action.SUCCESS;
+        return Action.NONE;
     }
 
     public void setParentId(Long parentId) {

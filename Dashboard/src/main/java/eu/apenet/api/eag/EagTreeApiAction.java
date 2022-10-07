@@ -137,7 +137,7 @@ public class EagTreeApiAction extends ActionSupport {
 
 
         response.setHeader("Access-Control-Allow-Origin","*");
-        return Action.SUCCESS;
+        return Action.NONE;
     }
 
     private List<ArchivalInstitutionUnit> getAllArchivalInstitutions(String nodeId, String locale, int level){

@@ -155,7 +155,7 @@ public class GeoApiAction {
         }
 
         response.setHeader("Access-Control-Allow-Origin","*");
-        return Action.SUCCESS;
+        return Action.NONE;
     }
 
 

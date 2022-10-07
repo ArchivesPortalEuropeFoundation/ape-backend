@@ -55,7 +55,7 @@ public class SearchSuggestApiAction {
 
         writeJSON(getSourceType(), getTerm(), response);
 
-        return Action.SUCCESS;
+        return Action.NONE;
     }
 
     public void writeJSON(String sourceType, String term, HttpServletResponse response) {

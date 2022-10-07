@@ -115,7 +115,7 @@ public class EadApiAction {
             xml = cLevel.getXml();
 
             Integer pageNumberInt = 1;
-            if (page != null) {
+            if (page != null && page.trim().length()>0) {
                 pageNumberInt = Integer.parseInt(page);
             }
             int orderId = (pageNumberInt - 1) * Integer.parseInt(max);
