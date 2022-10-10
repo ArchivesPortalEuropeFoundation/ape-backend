@@ -78,7 +78,7 @@
         </dependency>
         <dependency>
             <groupId>net.sf.saxon</groupId>
-            <artifactId>Saxon-HE</artifactId>
+            <artifactId>saxon-HE</artifactId>
         </dependency>
         <dependency>
             <groupId>xalan</groupId>

@@ -300,7 +300,7 @@
             </dependency>
             <dependency>
                 <groupId>net.sf.saxon</groupId>
-                <artifactId>Saxon-HE</artifactId>
+                <artifactId>saxon-HE</artifactId>
                 <version>9.5.1-8</version>
             </dependency>
             <dependency>
@@ -379,10 +379,14 @@
                 <version>1.13</version>
             </dependency>
             <dependency>
-                <groupId>org.exist-db.thirdparty.xerces</groupId>
-                <artifactId>xercesImpl</artifactId>
-                <version>2.12.0</version>
-                <classifier>xml-schema-1.1</classifier>
+                <groupId>xerces</groupId>
+                <artifactId>xercesImpl-schema</artifactId>
+                <version>2.10.0</version>
+            </dependency>
+            <dependency>
+                <groupId>xerces</groupId>
+                <artifactId>xercesImpl-schema</artifactId>
+                <version>2.10.0</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -390,12 +394,4 @@
         <url>www.archivesportaleurope.net</url>
         <name>Archives Portal Europe</name>
     </organization>
-
-    <repositories>
-    <repository>
-        <id>maven-restlet</id>
-        <name>Public online Restlet repository</name>
-        <url>https://maven.restlet.com</url>
-    </repository>
-    </repositories>
 </project>
