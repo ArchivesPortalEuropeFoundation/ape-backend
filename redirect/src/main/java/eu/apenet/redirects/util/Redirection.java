@@ -7,6 +7,7 @@ public class Redirection {
     public static final String REDIRECTION_TYPE_APEF = "REDIRECTION_TYPE_APEF";
     public static final String REDIRECTION_TYPE_WIKI = "REDIRECTION_TYPE_WIKI";
     public static final String REDIRECTION_TYPE_XSD = "REDIRECTION_TYPE_XSD";
+    public static final String REDIRECTION_TYPE_DPT = "REDIRECTION_TYPE_DPT";
 
     private String type;
     private String newUrl;

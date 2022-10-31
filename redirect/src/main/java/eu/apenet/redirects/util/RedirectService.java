@@ -63,6 +63,9 @@ public class RedirectService {
         else if (type.equals(Redirection.REDIRECTION_TYPE_XSD)) {
             redirection = handleXsdQueryString(httpServletRequest.getPathInfo(), httpServletRequest.getQueryString(), httpServletRequest.getHeader("Referer"));
         }
+        else if (type.equals(Redirection.REDIRECTION_TYPE_DPT)) {
+            redirection = handleDptQueryString(httpServletRequest.getPathInfo(), httpServletRequest.getQueryString(), httpServletRequest.getHeader("Referer"));
+        }
 
         loggerRequests.info(redirection.getPath()+"|"+redirection.getQueryString()+"|"+redirection.getNewUrl()+"|"+redirection.isHandled()+"|"+redirection.isIdNotFound()+"|"+redirection.getReferer()+"|"+redirection.getLocale()+"|"+redirection.getType());
 
@@ -288,6 +291,40 @@ public class RedirectService {
             redirection.setNewUrl(baseUrl);
             return redirection;
         }
+    }
+
+    private Redirection handleDptQueryString(String path, String queryString, String referer) {
+
+//        http://www.archivesportaleurope.net/Portal/dptupdate/version?versionNb=
+//        http://dpt.archivesportaleurope.net/APE_data_preparation_tool_
+
+        Redirection redirection = new Redirection();
+        redirection.setPath(path);
+        redirection.setQueryString(queryString);
+        redirection.setReferer(referer);
+        redirection.setType(Redirection.REDIRECTION_TYPE_DPT);
+
+        if (path.startsWith("/Portal/dptupdate")){
+            String versionNb = queryString.replace("versionNb=", "");
+
+            String baseUrl = RedirectsPropertiesUtil.get("ape.portal.domain");
+            redirection.setPassThrough(true); // do not show landing page
+            redirection.setNewUrl(baseUrl+"/Dashboard/dptVersionApi.action?versionNb="+versionNb);
+        }
+        else if (path.startsWith("/APE_data_preparation_tool_")) {
+                String versionNb = path.replace("/APE_data_preparation_tool_", "");
+
+            redirection.setPassThrough(true); // do not show landing page
+            redirection.setNewUrl("https://github.com/ArchivesPortalEuropeFoundation/ape-dpt/releases/tag/DPT-project-" + versionNb);
+        }
+        else{
+            String baseUrl = RedirectsPropertiesUtil.get("ape.portal.domain");
+            redirection.setHandled(false);
+            redirection.setNewUrl(baseUrl);
+            return redirection;
+        }
+
+        return redirection;
     }
 
     private boolean matchesPattern(String pattern, String text){

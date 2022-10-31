@@ -63,6 +63,14 @@
     <servlet-name>redirect-xsd</servlet-name>
     <url-pattern>/redirect-xsd/*</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <servlet-name>redirect-dpt</servlet-name>
+    <servlet-class>eu.apenet.redirects.RedirectDptServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>redirect-dpt</servlet-name>
+    <url-pattern>/redirect-dpt/*</url-pattern>
+  </servlet-mapping>
   <listener>
     <listener-class>eu.archivesportaleurope.persistence.jpa.web.JpaListener</listener-class>
   </listener>
