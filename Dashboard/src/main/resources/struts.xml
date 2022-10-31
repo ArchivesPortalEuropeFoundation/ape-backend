@@ -87,6 +87,10 @@
             <result type="json" />
         </action>
 
+        <action name="dptVersionApi" class="eu.apenet.api.other.DptVersionApiAction">
+            <result type="plainText" />
+        </action>
+
         <!-- Content Provider Information -->
         <action name="dashboardHome" class="eu.apenet.dashboard.DashboardHomeAction">
             <interceptor-ref name="changeLanguageStack"/>
