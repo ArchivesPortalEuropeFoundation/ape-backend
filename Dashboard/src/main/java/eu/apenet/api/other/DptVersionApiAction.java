@@ -41,6 +41,7 @@ public class DptVersionApiAction {
         List<DptUpdate> dptUpdate = DAOFactory.instance().getDptUpdateDAO().findAll();
         if(StringUtils.isEmpty(versionNb) || dptUpdate.size() == 0 || dptUpdate.get(0).getNewVersion().equals(versionNb)) {
             response.sendError(404);
+            return Action.NONE;
         } else {
             response.setHeader("Content-Type", "text/plain");
             response.setHeader("success", "yes");
@@ -48,20 +49,9 @@ public class DptVersionApiAction {
             writer.write(dptUpdate.get(0).getNewVersion());
             writer.flush();
             writer.close();
+            response.setHeader("Access-Control-Allow-Origin","*");
+            return Action.NONE;
         }
-//        response.setCharacterEncoding("UTF-8");
-//        response.setContentType("text/plain");
-//        try {
-//            Writer writer =  new OutputStreamWriter(response.getOutputStream(), "UTF-8");
-//            writer.write("skata");
-//            writer.flush();
-//            writer.close();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-
-        response.setHeader("Access-Control-Allow-Origin","*");
-        return Action.SUCCESS;
     }
 
     public void setVersionNb(String versionNb) {
