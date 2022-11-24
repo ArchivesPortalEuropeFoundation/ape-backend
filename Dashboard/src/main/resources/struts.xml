@@ -91,6 +91,13 @@
             <result type="plainText" />
         </action>
 
+        <action name="sitemap" class="eu.apenet.api.other.SitemapAction">
+            <result name="xml" type="stream">
+                <param name="contentType">application/xml</param>
+                <param name="inputName">xmlInputStream</param>
+            </result>
+        </action>
+
         <!-- Content Provider Information -->
         <action name="dashboardHome" class="eu.apenet.dashboard.DashboardHomeAction">
             <interceptor-ref name="changeLanguageStack"/>

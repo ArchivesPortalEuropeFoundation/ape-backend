@@ -267,6 +267,22 @@ public class CLevelHibernateDAO extends AbstractHibernateDAO<CLevel, Long> imple
         return query.getResultList();
     }
 
+    @Override
+    public List<CLevel> getCLevels(int pageNumber, int pageSize) {
+        TypedQuery<CLevel> query = getEntityManager().createQuery(
+                "SELECT clevel FROM CLevel clevel", CLevel.class);
+        query.setMaxResults(pageSize);
+        query.setFirstResult(pageSize * (pageNumber - 1));
+        return query.getResultList();
+    }
+
+    @Override
+    public Long countAllCLevels(){
+        TypedQuery<Long> query = getEntityManager().createQuery(
+                "SELECT COUNT(clevel) FROM CLevel clevel", Long.class);
+        return query.getSingleResult();
+    }
+
     public List<CLevel> getTopClevelsByFileId(Integer fileId, Class<? extends AbstractContent> clazz, int firstResult, int maxResult) {
         String propertyName = "faId";
         if (clazz.equals(HoldingsGuide.class)) {

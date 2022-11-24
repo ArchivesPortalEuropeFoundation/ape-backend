@@ -381,6 +381,24 @@ public class ArchivalInstitutionHibernateDAO extends AbstractHibernateDAO<Archiv
         return results;
     }
 
+    @Override
+    public List<ArchivalInstitution> getArchivalInstitutionsWithoutGroups() {
+        long startTime = System.currentTimeMillis();
+        CriteriaBuilder criteriaBuilder = getEntityManager().getCriteriaBuilder();
+        CriteriaQuery<ArchivalInstitution> cq = criteriaBuilder.createQuery(ArchivalInstitution.class);
+        Root<ArchivalInstitution> from = cq.from(ArchivalInstitution.class);
+        List<Predicate> whereClause = new ArrayList<Predicate>();
+        whereClause.add(criteriaBuilder.equal(from.get("group"), false));
+        whereClause.add(criteriaBuilder.isNotNull(from.get("eagPath")));
+        cq.where(criteriaBuilder.and(whereClause.toArray(new Predicate[0])));
+        List<ArchivalInstitution> results = getEntityManager().createQuery(cq).getResultList();
+        long endTime = System.currentTimeMillis();
+        if (log.isDebugEnabled()) {
+            log.debug("query took " + (endTime - startTime) + " ms to read " + results.size() + " objects");
+        }
+        return results;
+    }
+
     private Criteria createArchivalInstitutionByParentAiIdCriteria(Integer parentAiId, boolean order) {
         Criteria criteria = getSession().createCriteria(getPersistentClass(), "archivalInstitution");
         criteria = criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);

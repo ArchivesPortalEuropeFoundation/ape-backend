@@ -13,6 +13,7 @@ import eu.apenet.persistence.vo.ArchivalInstitution;
 public interface ArchivalInstitutionDAO extends GenericDAO<ArchivalInstitution, Integer> {
 	public List<ArchivalInstitution> getArchivalInstitutionsWithSearchableItems(Integer countryId, Integer parentAiId);
 	public List<ArchivalInstitution> getArchivalInstitutionsWithoutGroupsWithSearchableItems();
+	public List<ArchivalInstitution> getArchivalInstitutionsWithoutGroups();
 	public List<ArchivalInstitution> getRootArchivalInstitutionsByCountryId(Integer countryId);
 	public List<ArchivalInstitution> getArchivalInstitutionsByParentAiId(Integer parentAiId, boolean order);
 	public Integer countArchivalInstitutionsByCountryId(Integer countryId);
