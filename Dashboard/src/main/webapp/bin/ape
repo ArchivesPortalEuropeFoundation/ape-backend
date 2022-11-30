@@ -1,0 +1,49 @@
+#!/bin/sh
+
+# 'ape' script
+# This is a Unix shell script for running a command-line DSpace tool.
+# It sets the CLASSPATH appropriately before invoking Java.
+
+BINDIR=`dirname $0`
+APEDIR=`cd "$BINDIR/.." ; pwd`
+
+CLASSES=$APEDIR/WEB-INF/classes/
+
+# Get the JARs in $DSPACEDIR/jsp/WEB-INF/lib, separated by ':'
+JARS=`echo $APEDIR/WEB-INF/lib/*.jar | sed 's/ /\:/g'`
+
+# Class path for DSpace will be:
+#   Any existing classpath
+#   The JARs (WEB-INF/lib/*.jar)
+#   The WEB-INF/classes directory
+if [ "$CLASSPATH" = "" ]; then
+    FULLPATH=$CLASSES:$JARS
+else
+    FULLPATH=$CLASSPATH:$CLASSES:$JARS
+fi
+
+
+# If the user only wants the CLASSPATH, just give it now.
+if [ "$1" = "classpath" ]; then
+  echo $FULLPATH
+  exit 0
+fi
+
+
+
+#Allow user to specify java options through JAVA_OPTS variable
+if [ "$JAVA_OPTS" = "" ]; then
+  #Default Java to use 256MB of memory
+  JAVA_OPTS="-Xmx256m -Dfile.encoding=UTF-8"
+fi
+
+ENVS=`echo -Dcatalina.base=/usr/local/tomcat -Dscript.properties=/usr/local/tomcat/webapps/script.properties`
+#ENVS=`echo -Dcatalina.base=/usr/local/Cellar/tomcat@7/7.0.109_1/libexec -Dscript.properties=/usr/local/Cellar/tomcat@7/7.0.109_1/libexec/conf/script.properties`
+
+#echo $ENVS
+#echo $FULLPATH
+
+export JAVA_OPTS="$JAVA_OPTS -agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=5005"
+
+# Now invoke Java
+java $JAVA_OPTS $ENVS -classpath $FULLPATH eu.apenet.scripts.ScriptLauncher "$@"

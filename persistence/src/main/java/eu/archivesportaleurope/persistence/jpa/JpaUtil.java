@@ -56,6 +56,9 @@ public class JpaUtil {
 			if (LOGGER.isDebugEnabled()) {
 				LOGGER.debug("Opening new Session for this thread.");
 			}
+			if (entityManagerFactory == null){
+				entityManagerFactory = Persistence.createEntityManagerFactory("ape-database");
+			}
 			entityManager = entityManagerFactory.createEntityManager();
 			threadEntityManager.set(entityManager);
 		}
