@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<commands>
+    <command>
+        <name>eag-export</name>
+        <description>Statistics about EAG locations and coordinates table</description>
+        <step>
+            <class>eu.apenet.scripts.EagLocationStatistics</class>
+        </step>
+    </command>
+</commands>
