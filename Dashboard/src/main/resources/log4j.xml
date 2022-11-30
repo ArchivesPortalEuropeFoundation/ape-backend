@@ -12,7 +12,7 @@
         <param name="File" value="${catalina.base}/logs/dashboard.log" />
         <param name="Threshold" value="INFO" />
         <layout class="org.apache.log4j.EnhancedPatternLayout">
-            <param name="ConversionPattern" value="%d{ABSOLUT}{UTC} %-5p %C{1}:%L - %m%n" />
+            <param name="ConversionPattern" value="%d{ABSOLUTE}{UTC} %-5p %C{1}:%L - %m%n" />
         </layout>
     </appender>
     <appender name="all" class="eu.archivesportaleurope.commons.logging.DailyRollingFileAppender">
