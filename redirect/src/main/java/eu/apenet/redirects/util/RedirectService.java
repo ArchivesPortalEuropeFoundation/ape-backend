@@ -126,6 +126,12 @@ public class RedirectService {
         else  if (path.startsWith("/web")){
             handlePortalWeb(baseUrl, path, queryString, redirection);
         }
+        else  if (path.startsWith("/group")){
+            handlePortalGroup(baseUrl, path, queryString, redirection);
+        }
+        else  if (path.startsWith("/widget")){
+            handlePortalWidget(baseUrl, path, queryString, redirection);
+        }
         else  if (path.startsWith("/home")){
             handlePortalHome(baseUrl, path, queryString, redirection);
         }
@@ -411,11 +417,38 @@ public class RedirectService {
         else if (path.startsWith("/web/guest/help/glossary")) {
             newUrl = "?show=help";
         }
-//        else {
-//            redirection.setNewUrl(baseUrl);
-//        }
+        else {
+            //handle my-pages, saved-searches, saved-collections, saved-bookmarks, administration
+            String oldBaseUrl = RedirectsPropertiesUtil.get("ape.portal.old.domain");
+            newUrl = oldBaseUrl+ path;
+            redirection.setPassThrough(true);
+            redirection.setNewUrl(newUrl);
+            return;
+        }
 
         redirection.setNewUrl(baseUrl+newUrl);
+    }
+
+    private void handlePortalGroup(String baseUrl, String path, String queryString, Redirection redirection){
+        String newUrl = baseUrl+path;
+        if (path.startsWith("/group/")) {
+            String oldBaseUrl = RedirectsPropertiesUtil.get("ape.portal.old.domain");
+            newUrl = oldBaseUrl+ path;
+        }
+
+        redirection.setPassThrough(true);
+        redirection.setNewUrl(newUrl);
+    }
+
+    private void handlePortalWidget(String baseUrl, String path, String queryString, Redirection redirection){
+        String newUrl = baseUrl+path;
+        if (path.startsWith("/widget/")) {
+            String oldBaseUrl = RedirectsPropertiesUtil.get("ape.portal.old.domain");
+            newUrl = oldBaseUrl+ path;
+        }
+
+        redirection.setPassThrough(true);
+        redirection.setNewUrl(newUrl);
     }
 
     private void handlePortalSearch(String baseUrl, String path, String queryString, Redirection redirection){
