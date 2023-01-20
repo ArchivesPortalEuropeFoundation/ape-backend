@@ -98,6 +98,10 @@
             </result>
         </action>
 
+        <action name="contactFinderApi" class="eu.apenet.api.other.ContactFinderApiAction">
+            <result type="json" />
+        </action>
+
         <!-- Content Provider Information -->
         <action name="dashboardHome" class="eu.apenet.dashboard.DashboardHomeAction">
             <interceptor-ref name="changeLanguageStack"/>
