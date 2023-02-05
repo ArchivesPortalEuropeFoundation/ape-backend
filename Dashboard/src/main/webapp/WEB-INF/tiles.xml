@@ -1118,8 +1118,17 @@
         </put-list-attribute>
     </definition>
     <definition name="institutionManagerManagement" extends="DefaultLayout" >
-        <put-attribute name="title" value="usermanagement.institution.title" />
+        <put-attribute name="title" value="usermanagement.institutDefaultLayoution.title" />
         <put-attribute name="body" value="/jsp/security/im-management.jsp" />
+        <put-list-attribute name="jsfilesInternal">
+
+
+
+        </put-list-attribute>
+    </definition>
+    <definition name="contactFormsCCManagement" extends="ArchivalLandscapeLayout" >
+        <put-attribute name="title" value="al.menu.contactfomrs.cc" />
+        <put-attribute name="body" value="/jsp/security/contactforms-cc-management.jsp" />
         <put-list-attribute name="jsfilesInternal">
 
 

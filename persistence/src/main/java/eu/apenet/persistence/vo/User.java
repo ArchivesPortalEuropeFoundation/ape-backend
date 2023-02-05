@@ -49,6 +49,8 @@ public class User implements java.io.Serializable {
 	private String lastName;
 	@OneToMany(mappedBy="partner")
 	private Set<ArchivalInstitution> archivalInstitutions = new HashSet<ArchivalInstitution>(0);
+	@Column(name = "contact_forms_as_cm")
+	private boolean contactFormsAsCC;
 
 	public User() {
 	}
@@ -197,5 +199,13 @@ public class User implements java.io.Serializable {
 
 	public boolean isActive() {
 		return this.isActive;
+	}
+
+	public void setContactFormsAsCC(boolean contactFormsAsCC) {
+		this.contactFormsAsCC = contactFormsAsCC;
+	}
+
+	public boolean isContactFormsAsCC() {
+		return contactFormsAsCC;
 	}
 }
