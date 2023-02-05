@@ -1162,6 +1162,13 @@
         <action name="institutionManagerManagement" class="eu.apenet.dashboard.security.actions.InstitutionManagerManagementAction">
             <result name="success" type="tiles">institutionManagerManagement</result>
         </action>
+        <action name="contactFormsCCManagement" class="eu.apenet.dashboard.security.actions.ContactFormsCCManagementAction" method="execute">
+            <result name="success" type="tiles">contactFormsCCManagement</result>
+        </action>
+        <action name="contactFormsSaveSetting" class="eu.apenet.dashboard.security.actions.ContactFormsCCManagementAction" method="changeSetting">
+            <result name="success" type="tiles">contactFormsCCManagement</result>
+        </action>
+
         <action name="displayCreateCountryManager" class="eu.apenet.dashboard.security.actions.CreateUserAction" method="input">
             <result name="input" type="tiles">createCountryManager</result>
         </action>

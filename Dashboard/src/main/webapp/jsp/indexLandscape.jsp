@@ -25,6 +25,7 @@
                      
                 <c:if test="${securityContext.countryManager}">   
                      <li><s:a action="institutionManagerManagement"> - <s:text name="usermanagement.institution.title"/> </s:a></li>
+                     <li><s:a action="contactFormsCCManagement"> - <s:text name="al.menu.contactfomrs.cc"/> </s:a></li>
                      <li><s:a action="downloadInstitutionsStatistics"> -   <s:text name="al.menu.statistics.institutions" /></s:a></li>      
                     </c:if>
 
