@@ -2,7 +2,8 @@
           <br/>
           The last automatic harvest of the data from '${archivalInstitution}' is finished on '${dashboardBase}'.<br/>
           <br/>
-          <b>The harvesting process is finished, but with errors or warnings. ${numberEadHarvested} records are processed.</b><br/>
+          <span style="color:red"><b>The harvesting process is finished, but with errors or warnings. ${numberEadHarvested} records are processed.</b></span><br/>
+          <span style="color:#000"><b>Please note, that this only refers to the transfer of data from your servers to the ones of Archives Portal Europe. For checking the progress of ingest and publication, please log into your Dashboard account.</b></span><br/>
           <br/>
           Please see the following information on the harvest:<br/>
           <br/>
