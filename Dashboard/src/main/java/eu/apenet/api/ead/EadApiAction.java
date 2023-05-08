@@ -97,65 +97,65 @@ public class EadApiAction {
 
         String xml = null;
         String xmlchildren = null;
-
-        if (clevelunitid != null){
-            List<CLevel> cLevels = cLevelDAO.getCLevel(aiRepositoryCode, xmlType.getEadClazz(), eadid, clevelunitid);
-            if (cLevels != null && cLevels.size()>0) {
-                clevelid = ""+cLevels.get(0).getId();
-            }
-        }
-
-        if (clevelid != null){
-            CLevel cLevel = cLevelDAO.getCLevel(aiRepositoryCode, xmlType.getEadClazz(), eadid, Long.parseLong(clevelid));
-
-            if (clevelunitid == null){
-                clevelunitid = cLevel.getUnitid();
-            }
-
-            xml = cLevel.getXml();
-
-            Integer pageNumberInt = 1;
-            if (page != null && page.trim().length()>0) {
-                pageNumberInt = Integer.parseInt(page);
-            }
-            int orderId = (pageNumberInt - 1) * Integer.parseInt(max);
-            List<CLevel> children = cLevelDAO.findChildCLevels(cLevel.getId(), orderId, Integer.parseInt(max));
-            totalNumberOfChildren = cLevelDAO.countChildCLevels(cLevel.getId());
-            if (totalNumberOfChildren>0) {
-                StringBuilder builder = new StringBuilder();
-                builder.append("<c xmlns=\"urn:isbn:1-931666-22-9\">");
-                for (CLevel child : children) {
-                    builder.append(child.getXml());
-                }
-                builder.append("</c>");
-                xmlchildren = builder.toString();
-            }
-        }
-        else {
-            Ead ead = eadDAO.getEadByEadid(xmlType.getEadClazz(), Integer.parseInt(aiId), eadid);
-            ecId = ead.getId()+"";
-            clevelid = ead.getId()+"";
-            if (xmlType.equals(XmlType.EAD_FA)){
-                clevelid = "F"+clevelid;
-            }
-            else if (xmlType.equals(XmlType.EAD_HG)){
-                clevelid = "H"+clevelid;
-            }
-            else if (xmlType.equals(XmlType.EAD_SG)){
-                clevelid = "S"+clevelid;
-            }
-
-            EadContent eadContent = ead.getEadContent();
-            xml = eadContent.getXml();
-        }
-
-        Source xmlSource = new StreamSource(new StringReader(xml));
-        Source xmlSourceChildren = xmlchildren!=null ? new StreamSource(new StringReader(xmlchildren)) : null;
-        List<SolrField> highlightFields = SolrField.getSolrFieldsByIdString(element);
-        if (highlightFields.size() == 0) {
-            highlightFields = DEFAULT_HIGHLIGHT_FIELDS;
-        }
         try {
+            if (clevelunitid != null){
+                List<CLevel> cLevels = cLevelDAO.getCLevel(aiRepositoryCode, xmlType.getEadClazz(), eadid, clevelunitid);
+                if (cLevels != null && cLevels.size()>0) {
+                    clevelid = ""+cLevels.get(0).getId();
+                }
+            }
+
+            if (clevelid != null){
+                CLevel cLevel = cLevelDAO.getCLevel(aiRepositoryCode, xmlType.getEadClazz(), eadid, Long.parseLong(clevelid));
+
+                if (clevelunitid == null){
+                    clevelunitid = cLevel.getUnitid();
+                }
+
+                xml = cLevel.getXml();
+
+                Integer pageNumberInt = 1;
+                if (page != null && page.trim().length()>0) {
+                    pageNumberInt = Integer.parseInt(page);
+                }
+                int orderId = (pageNumberInt - 1) * Integer.parseInt(max);
+                List<CLevel> children = cLevelDAO.findChildCLevels(cLevel.getId(), orderId, Integer.parseInt(max));
+                totalNumberOfChildren = cLevelDAO.countChildCLevels(cLevel.getId());
+                if (totalNumberOfChildren>0) {
+                    StringBuilder builder = new StringBuilder();
+                    builder.append("<c xmlns=\"urn:isbn:1-931666-22-9\">");
+                    for (CLevel child : children) {
+                        builder.append(child.getXml());
+                    }
+                    builder.append("</c>");
+                    xmlchildren = builder.toString();
+                }
+            }
+            else {
+                Ead ead = eadDAO.getEadByEadid(xmlType.getEadClazz(), Integer.parseInt(aiId), eadid);
+                ecId = ead.getId()+"";
+                clevelid = ead.getId()+"";
+                if (xmlType.equals(XmlType.EAD_FA)){
+                    clevelid = "F"+clevelid;
+                }
+                else if (xmlType.equals(XmlType.EAD_HG)){
+                    clevelid = "H"+clevelid;
+                }
+                else if (xmlType.equals(XmlType.EAD_SG)){
+                    clevelid = "S"+clevelid;
+                }
+
+                EadContent eadContent = ead.getEadContent();
+                xml = eadContent.getXml();
+            }
+
+            Source xmlSource = new StreamSource(new StringReader(xml));
+            Source xmlSourceChildren = xmlchildren!=null ? new StreamSource(new StringReader(xmlchildren)) : null;
+            List<SolrField> highlightFields = SolrField.getSolrFieldsByIdString(element);
+            if (highlightFields.size() == 0) {
+                highlightFields = DEFAULT_HIGHLIGHT_FIELDS;
+            }
+
             Integer aiIdInt = null;
             if (StringUtils.isNotBlank(aiId)) {
                 aiIdInt = Integer.parseInt(aiId);
