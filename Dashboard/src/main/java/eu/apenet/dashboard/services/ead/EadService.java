@@ -4,10 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Properties;
+import java.util.*;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -654,8 +651,9 @@ public class EadService extends AbstractService {
             } else {
                 newEad = new CreateEadTask().execute(xmlType, upFile, upFile.getAiId());
                 queueItem.setUpFile(null);
-                queueItemDAO.store(queueItem);
-                DAOFactory.instance().getUpFileDAO().delete(upFile);
+//                queueItemDAO.store(queueItem);
+//                DAOFactory.instance().getUpFileDAO().delete(upFile);
+                queueItemDAO.storeAndDeleteBatch(Arrays.asList(new Object[]{queueItem}),Arrays.asList(new Object[]{upFile}));
             }
 
             if (continueTask) {
