@@ -30,6 +30,8 @@ public abstract class AbstractTypeActions extends AbstractInstitutionAction {
     protected static final String DELETE_FROM_EUROPEANA = "deleteFromEuropeana";
     protected static final String DELIVER_TO_EUROPEANA = "deliverToEuropeana";
     protected static final String VALIDATE_PUBLISH = "validate_publish";
+    protected static final String REINDEX_SOCIAL = "reindexsocial";
+
     /**
      *
      */

@@ -42,6 +42,8 @@ public class SourceGuide extends Ead {
     private Date uploadDate;
     @Column(name = "publish_date")
     private Date publishDate;
+    @Column(columnDefinition="TEXT")
+    private String metaContent;
     /*
      * states
      */
@@ -179,6 +181,16 @@ public class SourceGuide extends Ead {
 
     public void setWarningses(Set<Warnings> warningses) {
         this.warningses = warningses;
+    }
+
+    @Override
+    public String getMetaContent() {
+        return this.metaContent;
+    }
+
+    @Override
+    public void setMetaContent(String metaContent) {
+        this.metaContent = metaContent;
     }
 
     public Set<EadContent> getEadContents() {

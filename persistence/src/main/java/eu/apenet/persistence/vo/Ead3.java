@@ -35,7 +35,9 @@ public class Ead3 extends AbstractContent {
     @Column(name = "upload_date")
     @Temporal(TemporalType.TIMESTAMP)
     private Date uploadDate;
-    
+    @Column(columnDefinition="TEXT")
+    private String metaContent;
+
     private String path;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "um_id", foreignKey = @ForeignKey(name = "ead3_um_id_fkey"))
@@ -286,4 +288,13 @@ public class Ead3 extends AbstractContent {
         return this.getClass().getSimpleName() + " - (" + getIdentifier() + "," + getId() + ") ";
     }
 
+    @Override
+    public String getMetaContent() {
+        return this.metaContent;
+    }
+
+    @Override
+    public void setMetaContent(String metaContent) {
+        this.metaContent = metaContent;
+    }
 }

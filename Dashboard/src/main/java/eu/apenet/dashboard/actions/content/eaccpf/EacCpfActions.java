@@ -9,8 +9,13 @@ import static com.opensymphony.xwork2.Action.ERROR;
 import static com.opensymphony.xwork2.Action.SUCCESS;
 import com.opensymphony.xwork2.ActionContext;
 import eu.apenet.commons.types.XmlType;
+import eu.apenet.commons.utils.analyzers.eaccpf.SocialInfoExtractor;
 import eu.apenet.dashboard.services.eaccpf.EacCpfService;
 import eu.apenet.dashboard.utils.ContentUtils;
+import eu.apenet.persistence.dao.EacCpfDAO;
+import eu.apenet.persistence.factory.DAOFactory;
+import eu.apenet.persistence.vo.EacCpf;
+
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Map;
@@ -45,6 +50,18 @@ public class EacCpfActions extends AbstractEacCpfActions {
             logger.error(e.getMessage(), e);
             return ERROR;
         }
+    }
+
+    @Override
+    public String reindexSocial() {
+        EacCpfDAO eacCpfDAO = DAOFactory.instance().getEacCpfDAO();
+        EacCpf eacCpf = eacCpfDAO.findById(id, XmlType.EAC_CPF.getClazz());
+
+        SocialInfoExtractor socialInfoExtractor = new SocialInfoExtractor();
+        String content = socialInfoExtractor.extractStringInfo(eacCpf);
+        eacCpf.setMetaContent(content);
+        eacCpfDAO.update(eacCpf);
+        return SUCCESS;
     }
 
     @Override

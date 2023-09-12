@@ -377,6 +377,11 @@
                                                 <s:text name="content.message.unpublish" />
                                             </option>
                                         </c:if>
+                                        <c:if test="${eadResult.published}">
+                                            <option value="action|reindexsocial">
+                                                <s:text name="content.message.indexsocial" />
+                                            </option>
+                                        </c:if>
                                         <c:if test="${results.holdingsGuide or results.sourceGuide}">
                                             <c:if test="${eadResult.findingAidsLinkedAndPublished != eadResult.possibleFindingAidsLinked}">
                                                 <option value="_self|downloadHgSgStatistics.action">

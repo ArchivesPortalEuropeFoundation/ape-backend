@@ -38,12 +38,13 @@ public class ContentSearchOptions implements Serializable{
 	private List<EuropeanaState> europeana = new ArrayList<EuropeanaState>();
 	private List<QueuingState> queuing = new ArrayList<QueuingState>();
 	private List<Integer> ids = new ArrayList<Integer>();
+	private int hasMetaContent = 0; //0: do not care, 1: true, 2: false
 
         public ContentSearchOptions(){
 
 	}
 
-        public ContentSearchOptions(ContentSearchOptions contentSearchOptions){
+	public ContentSearchOptions(ContentSearchOptions contentSearchOptions){
 		this.pageNumber = contentSearchOptions.getPageNumber();
 		this.pageSize = contentSearchOptions.getPageSize();
 		this.firstResult = contentSearchOptions.getFirstResult();
@@ -73,6 +74,7 @@ public class ContentSearchOptions implements Serializable{
 		for (Integer id: contentSearchOptions.getIds()){
 			ids.add(id);
 		}
+		this.hasMetaContent = contentSearchOptions.getHasMetaContent();
 	}
 
 
@@ -251,4 +253,11 @@ public class ContentSearchOptions implements Serializable{
 		this.eadid = eadid;
 	}
 
+	public void setHasMetaContent(int hasMetaContent) {
+		this.hasMetaContent = hasMetaContent;
+	}
+
+	public int getHasMetaContent() {
+		return hasMetaContent;
+	}
 }

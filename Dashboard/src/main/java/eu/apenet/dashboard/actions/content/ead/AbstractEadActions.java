@@ -40,6 +40,8 @@ public abstract class AbstractEadActions extends AbstractTypeActions {
             return changeToDynamic();
         } else if (STATIC.equals(action)) {
             return changeToStatic();
+        } else if (REINDEX_SOCIAL.equals(action)) {
+            return reindexSocial();
         }
         return ERROR;
     }
@@ -61,6 +63,8 @@ public abstract class AbstractEadActions extends AbstractTypeActions {
     public abstract String changeToDynamic();
 
     public abstract String changeToStatic();
+
+    public abstract String reindexSocial();
 
     @Override
     protected Properties getConversionParameters() {

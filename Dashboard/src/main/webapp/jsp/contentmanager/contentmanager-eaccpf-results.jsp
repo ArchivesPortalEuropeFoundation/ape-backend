@@ -287,6 +287,11 @@
                                                 <s:text name="content.message.unpublish" />
                                             </option>
                                         </c:if>
+                                        <c:if test="${eacCpfResult.published}">
+                                            <option value="action|reindexsocial">
+                                                <s:text name="content.message.indexsocial" />
+                                            </option>
+                                        </c:if>
                                         <%--<c:if
                                             test="${eacCpfResult.validated and not eacCpfResult.convertedToEseEdm and not eacCpfResult.deliveredToEuropeana}">
                                             <option value="_self|displayEdmConvert.action">
