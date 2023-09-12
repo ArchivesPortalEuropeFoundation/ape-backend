@@ -75,6 +75,11 @@ public class BatchEadActions extends AbstractEadActions {
 		return addBatchToQueue(QueueAction.CHANGE_TO_STATIC);
 	}
 
+	@Override
+	public String reindexSocial() {
+		return SUCCESS;
+	}
+
 	@SuppressWarnings("unchecked")
 	@Override
 	public String deleteFromQueue() {

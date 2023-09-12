@@ -286,6 +286,16 @@ public class EadHibernateDAO extends AbstractHibernateDAO<Ead, Integer> implemen
             }
         }
 
+        //for metacontent
+        if (eadSearchOptions.getHasMetaContent() > 0 ) {
+            if (eadSearchOptions.getHasMetaContent() == 1) {
+                whereClause.add(criteriaBuilder.isNotNull(from.get("metaContent")));
+            }
+            else {
+                whereClause.add(criteriaBuilder.isNull(from.get("metaContent")));
+            }
+        }
+
         return criteriaBuilder.and(whereClause.toArray(new Predicate[0]));
     }
 

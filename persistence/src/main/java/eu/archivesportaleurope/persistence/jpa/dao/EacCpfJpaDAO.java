@@ -228,6 +228,16 @@ public class EacCpfJpaDAO extends AbstractHibernateDAO<EacCpf, Integer> implemen
             }
         }
 
+        //for metacontent
+        if (contentSearchOptions.getHasMetaContent() > 0 ) {
+            if (contentSearchOptions.getHasMetaContent() == 1) {
+                whereClause.add(criteriaBuilder.isNotNull(from.get("metaContent")));
+            }
+            else {
+                whereClause.add(criteriaBuilder.isNull(from.get("metaContent")));
+            }
+        }
+
         return criteriaBuilder.and(whereClause.toArray(new Predicate[0]));
     }
 

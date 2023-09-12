@@ -52,4 +52,6 @@ public abstract class AbstractContent  implements Serializable {
 	public String getEncodedIdentifier(){
 		return ApeUtil.encodeSpecialCharacters(getIdentifier());
 	}
+	public abstract String getMetaContent();
+	public abstract void setMetaContent(String metaContent);
 }

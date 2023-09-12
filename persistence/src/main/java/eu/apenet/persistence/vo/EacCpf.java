@@ -58,6 +58,8 @@ public class EacCpf extends AbstractContent {
     private Date publishDate;
     @Column(nullable = false)
     private String identifier;
+    @Column(columnDefinition="TEXT")
+    private String metaContent;
 
     @OneToMany(mappedBy = "eacCpf")
     private Set<QueueItem> queueItems = new HashSet<QueueItem>(0);
@@ -248,6 +250,16 @@ public class EacCpf extends AbstractContent {
     @Override
     public void setWarningses(Set<Warnings> warningses) {
         this.warningses = warningses;
+    }
+
+    @Override
+    public String getMetaContent() {
+        return metaContent;
+    }
+
+    @Override
+    public void setMetaContent(String metaContent) {
+        this.metaContent = metaContent;
     }
 
     public Ead3 getEad3() {

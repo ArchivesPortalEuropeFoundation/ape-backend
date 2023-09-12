@@ -29,6 +29,8 @@ public abstract class AbstractEacCpfActions extends AbstractTypeActions {
 
     public abstract String convertValidatePublishEacCpf(Properties properties);
 
+    public abstract String reindexSocial();
+
     @Override
     public abstract String deleteEseEdm();
 
@@ -65,6 +67,9 @@ public abstract class AbstractEacCpfActions extends AbstractTypeActions {
             return deliverToEuropeana();
         } else if (DELETE_FROM_QUEUE.equals(action)) {
             return deleteFromQueue();
+        }
+        else if (REINDEX_SOCIAL.equals(action)) {
+            return reindexSocial();
         }
         return ERROR;
     }
