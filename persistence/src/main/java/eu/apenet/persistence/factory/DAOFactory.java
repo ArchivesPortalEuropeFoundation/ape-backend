@@ -83,6 +83,12 @@ public abstract class DAOFactory {
 
     public abstract SentMailRegisterDAO getSentMailRegisterDAO();
 
+    public abstract SavedBookmarksDAO getSavedBookmarksDAO();
+
+    public abstract CollectionDAO getCollectionDAO();
+
+    public abstract CollectionContentDAO getCollectionContentDAO();
+
     public abstract FindingAidDAO getFindingAidDAO();
 
     public abstract UpFileDAO getUpFileDAO();

@@ -102,6 +102,23 @@
             <result type="json" />
         </action>
 
+        <action name="bookmarksApi" class="eu.apenet.api.accounts.BookmarksAction">
+            <result type="json" />
+        </action>
+
+        <action name="storeBookmarksApi" class="eu.apenet.api.accounts.BookmarksAction" method="storeBookmark">
+            <result type="json" />
+        </action>
+
+        <action name="collectionsApi" class="eu.apenet.api.accounts.CollectionsAction">
+            <result type="json" />
+        </action>
+
+        <action name="collectionDetailsApi" class="eu.apenet.api.accounts.CollectionsAction" method="collectionDetails">
+            <result type="json" />
+        </action>
+
+
         <!-- Content Provider Information -->
         <action name="dashboardHome" class="eu.apenet.dashboard.DashboardHomeAction">
             <interceptor-ref name="changeLanguageStack"/>

@@ -30,8 +30,10 @@ public class Collection implements java.io.Serializable {
 	private long id;
 	@Column(name = "title", length = 200)
 	private String title;
-	@Column(name = "liferay_user_id", nullable = false)
+	@Column(name = "liferay_user_id", nullable = true)
 	private long liferayUserId;
+	@Column(name = "modx_user_id", nullable = true)
+	private long modxUserId;
 	@Column(name = "public_collection", nullable = false)
 	private boolean public_collection;
 	@Column(name = "edit", nullable = false)
@@ -150,4 +152,11 @@ public class Collection implements java.io.Serializable {
 		this.modified_date = timeZone;
 	}
 
+	public void setModxUserId(long modxUserId) {
+		this.modxUserId = modxUserId;
+	}
+
+	public long getModxUserId() {
+		return modxUserId;
+	}
 }

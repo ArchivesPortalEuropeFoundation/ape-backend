@@ -17,6 +17,21 @@ public class HibernateDAOFactory extends DAOFactory {
     }
 
     @Override
+    public SavedBookmarksDAO getSavedBookmarksDAO() {
+        return (SavedBookmarksDAO) instantiateDAO(SavedBookmarksJpaDAO.class);
+    }
+
+    @Override
+    public CollectionDAO getCollectionDAO() {
+        return (CollectionDAO) instantiateDAO(CollectionHibernateDAO.class);
+    }
+
+    @Override
+    public CollectionContentDAO getCollectionContentDAO() {
+        return (CollectionContentDAO) instantiateDAO(CollectionContentHibernateDAO.class);
+    }
+
+    @Override
     public FindingAidDAO getFindingAidDAO() {
         return (FindingAidDAO) instantiateDAO(FindingAidHibernateDAO.class);
     }

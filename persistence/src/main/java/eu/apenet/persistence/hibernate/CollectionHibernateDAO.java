@@ -72,7 +72,47 @@ public class CollectionHibernateDAO extends AbstractHibernateDAO<Collection, Lon
 		
 		return null;
 	}
-	
+
+	@Override
+	public List<Collection> getCollectionsByModxUserId(Long modxUserId, Integer pageNumber, Integer pagesize, String field, boolean showDesc) {
+		if (LOGGER.isDebugEnabled())
+			LOGGER.debug("Enter \"getCollectionsByModxUserId\"");
+
+		if(modxUserId!=null && modxUserId>0){
+			Criteria criteria = getSession().createCriteria(getPersistentClass(), "collection");
+			criteria = criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+			if(modxUserId!=null && modxUserId>0){
+				criteria.add(Restrictions. eq("collection.modxUserId", modxUserId));
+
+				if (field != null && !field.equalsIgnoreCase("none")) {
+					if (showDesc) {
+						criteria.addOrder(Order.asc(field));
+					} else {
+						criteria.addOrder(Order.desc(field));
+					}
+				} else {
+					// By default order descendant by date.
+					criteria.addOrder(Order.desc("modified_date"));
+				}
+
+			}
+			if(pageNumber!=null && pageNumber>0){
+				criteria.setFirstResult((pageNumber-1)*pagesize);
+			}
+			if(pagesize!=null && pagesize>0){
+				criteria.setMaxResults(pagesize);
+			}
+			if (LOGGER.isDebugEnabled())
+				LOGGER.debug("Exit \"getCollectionsByModxUserId\"");
+
+			return criteria.list();
+		}
+		if (LOGGER.isDebugEnabled())
+			LOGGER.debug("Exit \"getCollectionsByModxUserId\"");
+
+		return null;
+	}
+
 	/***
 	 * Function that gets a bookmarks or searches list by user id and element id
 	 * 
@@ -110,6 +150,34 @@ public class CollectionHibernateDAO extends AbstractHibernateDAO<Collection, Lon
 		return null;
 	}
 
+	@Override
+	public List<Collection> getCollectionsByIdAndModxUserId(Long modxUserId, String table, String elemetId) {
+		if (LOGGER.isDebugEnabled())
+			LOGGER.debug("Enter \"getCollectionsByIdAndModxUserId\"");
+
+		if(modxUserId!=null && modxUserId>0){
+			Criteria criteria = getSession().createCriteria(getPersistentClass(), "collection"); //collection
+			criteria = criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+			if(modxUserId!=null && modxUserId>0){
+				criteria.add(Restrictions. eq("collection.modxUserId", modxUserId));
+
+				if (table.equals("Bookmark"))
+					criteria.add(Restrictions.not(Restrictions.eq("collection.collectionContents.id_bookmarks.id", elemetId)));
+				else
+					criteria.add(Restrictions.not(Restrictions.eq("collection.collectionContents.id_search.id", elemetId)));
+
+			}
+			if (LOGGER.isDebugEnabled())
+				LOGGER.debug("Exit \"getCollectionsByIdAndModxUserId\"");
+
+			return criteria.list();
+		}
+		if (LOGGER.isDebugEnabled())
+			LOGGER.debug("Exit \"getCollectionsByIdAndModxUserId\"");
+
+		return null;
+	}
+
 	/***
 	 * Function counts the number of the collections by user
 	 * 
@@ -133,6 +201,25 @@ public class CollectionHibernateDAO extends AbstractHibernateDAO<Collection, Lon
 		if (LOGGER.isDebugEnabled()) 
 			LOGGER.debug("Exit \"countCollectionsByUserId\"");
 		
+		return results;
+	}
+
+	@Override
+	public Long countCollectionsByModxUserId(Long modxUserId) {
+		if (LOGGER.isDebugEnabled())
+			LOGGER.debug("Enter \"countCollectionsByModxUserId\"");
+
+		long results = 0;
+		if(modxUserId!=null && modxUserId>0){
+			Criteria criteria = getSession().createCriteria(getPersistentClass(), "collection");
+			criteria = criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+			criteria.setProjection(Projections.count("collection.id"));
+			criteria.add(Restrictions.eq("collection.modxUserId", modxUserId));
+			results = (Long)criteria.uniqueResult();
+		}
+		if (LOGGER.isDebugEnabled())
+			LOGGER.debug("Exit \"countCollectionsByModxUserId\"");
+
 		return results;
 	}
 
@@ -162,6 +249,27 @@ public class CollectionHibernateDAO extends AbstractHibernateDAO<Collection, Lon
 		if (LOGGER.isDebugEnabled()) 
 			LOGGER.debug("Exit \"getCollectionByIdAndUserId\"");
 		
+		return collection;
+	}
+
+	@Override
+	public Collection getCollectionByIdAndModxUserId(Long id, Long modxUserId) {
+		if (LOGGER.isDebugEnabled())
+			LOGGER.debug("Enter \"getCollectionByIdAndModxUserId\"");
+
+		Collection collection = null;
+		Criteria criteria = getSession().createCriteria(getPersistentClass(), "collection");
+		criteria = criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		if(modxUserId!=null && modxUserId>0){
+			criteria.add(Restrictions.eq("collection.modxUserId", modxUserId));
+			if(id!=null && id>0){
+				criteria.add(Restrictions.eq("collection.id", id));
+				collection = (Collection)criteria.uniqueResult();
+			}
+		}
+		if (LOGGER.isDebugEnabled())
+			LOGGER.debug("Exit \"getCollectionByIdAndModxUserId\"");
+
 		return collection;
 	}
 
@@ -223,7 +331,32 @@ public class CollectionHibernateDAO extends AbstractHibernateDAO<Collection, Lon
 		
 		return null;
 	}
-	
+
+	@Override
+	public List<Collection> getCollectionByModxUserIdAndName(Long modxUserId, String name, int pageSize) {
+		if (LOGGER.isDebugEnabled())
+			LOGGER.debug("Enter \"getCollectionByModxUserIdAndName\"");
+
+		if(modxUserId!=null && modxUserId>0){
+			Criteria criteria = getSession().createCriteria(getPersistentClass(), "collection");
+			criteria = criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+			if(modxUserId!=null && modxUserId>0){
+				criteria.add(Restrictions.eq("collection.modxUserId", modxUserId));
+				criteria.addOrder(Order.desc("modified_date"));
+				criteria.setMaxResults(pageSize);
+				criteria.add(Restrictions.ilike("collection.title",name, MatchMode.ANYWHERE));
+			}
+			if (LOGGER.isDebugEnabled())
+				LOGGER.debug("Exit \"getCollectionByModxUserIdAndName\"");
+
+			return criteria.list();
+		}
+		if (LOGGER.isDebugEnabled())
+			LOGGER.debug("Exit \"getCollectionByModxUserIdAndName\" with no results");
+
+		return null;
+	}
+
 	/***
 	 * Function returns a list of user collections that NOT contains the elements of the list
 	 * 
@@ -265,7 +398,40 @@ public class CollectionHibernateDAO extends AbstractHibernateDAO<Collection, Lon
 		
 		return null;
 	}
-	
+
+	@Override
+	public List<Collection> getUserCollectionsForModxUserWithoutIds(Long modxUserId, List<Long> ids, Integer pageNumber, Integer pageSize) {
+		if (LOGGER.isDebugEnabled())
+			LOGGER.debug("Enter \"getUserCollectionsForModxUserWithoutIds\"");
+
+		if(modxUserId!=null && modxUserId>0){
+			Criteria criteria = getSession().createCriteria(getPersistentClass(), "collection");
+			criteria = criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+			criteria.add(Restrictions.eq("collection.modxUserId", modxUserId));
+			criteria.addOrder(Order.desc("modified_date"));
+			Iterator<Long> itcontents = ids.iterator();
+			while(itcontents.hasNext()){
+				Long collectionId = itcontents.next();
+				criteria.add(Restrictions.not(Restrictions.eq("collection.id", collectionId)));
+			}
+
+			if(pageNumber!=null && pageNumber>0){
+				criteria.setFirstResult((pageNumber-1)*pageSize);
+			}
+			if(pageSize!=null && pageSize>0){
+				criteria.setMaxResults(pageSize);
+			}
+			if (LOGGER.isDebugEnabled())
+				LOGGER.debug("Exit \"getUserCollectionsForModxUserWithoutIds\"");
+
+			return criteria.list();
+		}
+		if (LOGGER.isDebugEnabled())
+			LOGGER.debug("Exit \"getUserCollectionsForModxUserWithoutIds\" with no results");
+
+		return null;
+	}
+
 	/***
 	 * Function returns the number of user collections that NOT contains the elements of the list
 	 * 
@@ -296,6 +462,32 @@ public class CollectionHibernateDAO extends AbstractHibernateDAO<Collection, Lon
 		if (LOGGER.isDebugEnabled()) 
 			LOGGER.debug("Exit \"countUserCollectionsWithoutIds\" with no results");
 		
+		return null;
+	}
+
+	@Override
+	public Long countUserCollectionsForModxUserWithoutIds(Long modxUserId, List<Long> ids) {
+		if (LOGGER.isDebugEnabled())
+			LOGGER.debug("Enter \"countUserCollectionsForModxUserWithoutIds\"");
+
+		if(modxUserId!=null && modxUserId>0){
+			Criteria criteria = getSession().createCriteria(getPersistentClass(), "collection");
+			criteria = criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+			criteria.add(Restrictions.eq("collection.modxUserId", modxUserId));
+			Iterator<Long> itcontents = ids.iterator();
+			while(itcontents.hasNext()){
+				Long collectionId = itcontents.next();
+				criteria.add(Restrictions.not(Restrictions.eq("collection.id", collectionId)));
+			}
+			criteria.setProjection(Projections.rowCount());
+			if (LOGGER.isDebugEnabled())
+				LOGGER.debug("Exit \"countUserCollectionsForModxUserWithoutIds\"");
+
+			return (Long)criteria.uniqueResult();
+		}
+		if (LOGGER.isDebugEnabled())
+			LOGGER.debug("Exit \"countUserCollectionsForModxUserWithoutIds\" with no results");
+
 		return null;
 	}
 }

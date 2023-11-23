@@ -54,12 +54,35 @@ public class SavedBookmarksJpaDAO extends AbstractHibernateDAO<SavedBookmarks, L
 		}
 	}
 
+	@Override
+	public Long countSavedBookmarksByModxUserId(Long modxUserId) {
+		if (log.isDebugEnabled())
+			log.debug("Enter \"countSavedBookmarks\"");
+
+		try {
+			TypedQuery<Long> query = getEntityManager()
+					.createQuery(
+							"SELECT COUNT (savedBookmarks) FROM SavedBookmarks savedBookmarks WHERE savedBookmarks.modxUserId = :modxUserId",
+							Long.class);
+			query.setParameter("modxUserId", modxUserId);
+			if (log.isDebugEnabled())
+				log.debug("Exit \"countSavedBookmarks\"");
+
+			return query.getSingleResult();
+		} catch (Exception e) {
+			if (log.isDebugEnabled())
+				log.debug("Exit \"countSavedBookmarks\" with error: " + e.toString());
+
+			return null;
+		}
+	}
+
 	/***
 	 * This method gets a number of results for a paginated list with the saved bookmarks the user has.
 	 * 
 	 * @param liferayUserId {@link Long} current user id
 	 * @param pageNumber {@link int} the current number of page in the pagination results
-	 * @param pageSize {@link int} the number of results results per page
+	 * @param pagesize {@link int} the number of results results per page
 	 * 
 	 * @return List {@link SavedBookmarks} a list of the user's saved bookmarks
 	 */
@@ -82,6 +105,29 @@ public class SavedBookmarksJpaDAO extends AbstractHibernateDAO<SavedBookmarks, L
 			if (log.isDebugEnabled()) 
 				log.debug("Exit \"getSavedBookmarks\" with error: " + e.toString());
 			
+			return null;
+		}
+	}
+
+	@Override
+	public List<SavedBookmarks> getSavedBookmarksByModxUserId(Long modxUserId, int pageNumber, int pagesize) {
+		if (log.isDebugEnabled())
+			log.debug("Enter \"getSavedBookmarks\"");
+
+		try {
+			TypedQuery<SavedBookmarks> query = getEntityManager().createQuery(
+					"SELECT savedBookmarks FROM SavedBookmarks savedBookmarks  WHERE savedBookmarks.modxUserId = :modxUserId ORDER BY savedBookmarks.modifiedDate DESC ", SavedBookmarks.class);
+			query.setParameter("modxUserId", modxUserId);
+			query.setMaxResults(pagesize);
+			query.setFirstResult(pagesize * (pageNumber - 1));
+			if (log.isDebugEnabled())
+				log.debug("Exit \"getSavedBookmarks\"");
+
+			return query.getResultList();
+		} catch (Exception e) {
+			if (log.isDebugEnabled())
+				log.debug("Exit \"getSavedBookmarks\" with error: " + e.toString());
+
 			return null;
 		}
 	}
@@ -114,6 +160,26 @@ public class SavedBookmarksJpaDAO extends AbstractHibernateDAO<SavedBookmarks, L
 		return null;
 	}
 
+	@Override
+	public SavedBookmarks getSavedBookmarkByModxUserId(Long modxUserId, long id) {
+		if (log.isDebugEnabled())
+			log.debug("Enter \"getSavedBookmark\"");
+
+		SavedBookmarks bookmark =  findById(id);
+		if (bookmark != null){
+			if (modxUserId != null && modxUserId == bookmark.getModxUserId()){
+				if (log.isDebugEnabled())
+					log.debug("Exit \"getSavedBookmark\"");
+
+				return bookmark;
+			}
+		}
+		if (log.isDebugEnabled())
+			log.debug("Exit \"getSavedBookmark\" with null result");
+
+		return null;
+	}
+
 	/***
 	 * This method gets a list of saved bookmarks that are not included into a selected collection
 	 * 
@@ -137,7 +203,21 @@ public class SavedBookmarksJpaDAO extends AbstractHibernateDAO<SavedBookmarks, L
 		
 		return searches;
 	}
-	
+
+	@Override
+	public List<SavedBookmarks> getSavedBookmarksOutOfCollectionByCollectionIdAndModxUser(Long id, long modxUserId, int pageNumber, int pageSize) {
+		if (log.isDebugEnabled())
+			log.debug("Enter \"getSavedBookmarksOutOfCollectionByCollectionIdAndModxUser\"");
+
+		List<SavedBookmarks> searches = null;
+		Criteria criteria = getCriteriaSavedBookmarksOutOfCollectionByCollectionIdAndModxUser(id,modxUserId,pageNumber,pageSize);
+		searches = criteria.list();
+		if (log.isDebugEnabled())
+			log.debug("Exit \"getSavedBookmarksOutOfCollectiongetSavedBookmarksOutOfCollectionByCollectionIdAndModxUserByCollectionIdAndLiferayUser\"");
+
+		return searches;
+	}
+
 	/***
 	 * This method gets a criteria with the saved bookmarks that are not into a user's collection. </br>
 	 * This method is used in getSavedBookmarksOutOfCollectionByCollectionIdAndLiferayUser method </br>
@@ -178,6 +258,34 @@ public class SavedBookmarksJpaDAO extends AbstractHibernateDAO<SavedBookmarks, L
 		return criteria;
 	}
 
+	private Criteria getCriteriaSavedBookmarksOutOfCollectionByCollectionIdAndModxUser(Long id, long modxUserId, Integer pageNumber, Integer pageSize) {
+		if (log.isDebugEnabled())
+			log.debug("Enter \"getCriteriaSavedBookmarksOutOfCollectionByCollectionIdAndModxUser\"");
+
+		Criteria criteria = getSession().createCriteria(getPersistentClass(), "savedBookmarks");
+		criteria = criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		if(modxUserId>0){
+			criteria.add(Restrictions.eq("savedBookmarks.modxUserId", modxUserId));
+		}
+		if(id!=null && id>0){
+			DetachedCriteria collectionSubquery = DetachedCriteria.forClass(CollectionContent.class, "collectionContent");
+			collectionSubquery.setProjection(Projections.property("collectionContent.savedBookmarks.id"));
+			collectionSubquery.add(Restrictions.eq("collectionContent.collection.id",id));
+			collectionSubquery.add(Restrictions.isNotNull("collectionContent.savedBookmarks.id"));
+			criteria.add(Subqueries.propertyNotIn("savedBookmarks.id",collectionSubquery));
+		}
+		if(pageNumber!=null && pageNumber>0){
+			criteria.setFirstResult((pageNumber-1)*pageSize);
+		}
+		if(pageSize!=null && pageSize>0){
+			criteria.setMaxResults(pageSize);
+		}
+		if (log.isDebugEnabled())
+			log.debug("Exit \"getCriteriaSavedBookmarksOutOfCollectionByCollectionIdAndModxUser\"");
+
+		return criteria;
+	}
+
 	/***
 	 * This method gets the number of saved bookmarks that are not included into a selected collection
 	 * 
@@ -196,6 +304,19 @@ public class SavedBookmarksJpaDAO extends AbstractHibernateDAO<SavedBookmarks, L
 		if (log.isDebugEnabled()) 
 			log.debug("Exit \"countSavedBookmarksOutOfCollectionByCollectionIdAndLiferayUser\"");
 		
+		return (Long)criteria.uniqueResult();
+	}
+
+	@Override
+	public Long countSavedBookmarksOutOfCollectionByCollectionIdAndModxUser(Long id, long modxUserId) {
+		if (log.isDebugEnabled())
+			log.debug("Enter \"countSavedBookmarksOutOfCollectionByCollectionIdAndModxUser\"");
+
+		Criteria criteria = getCriteriaSavedBookmarksOutOfCollectionByCollectionIdAndModxUser(id,modxUserId,null,null);
+		criteria.setProjection(Projections.rowCount());
+		if (log.isDebugEnabled())
+			log.debug("Exit \"countSavedBookmarksOutOfCollectionByCollectionIdAndModxUser\"");
+
 		return (Long)criteria.uniqueResult();
 	}
 
@@ -229,6 +350,31 @@ public class SavedBookmarksJpaDAO extends AbstractHibernateDAO<SavedBookmarks, L
 		if (log.isDebugEnabled()) 
 			log.debug("Exit \"getSavedBookmarksByIdsAndUserid\"");
 		
+		return searches;
+	}
+
+	@Override
+	public List<SavedBookmarks> getSavedBookmarksByIdsAndModxUserid(List<Long> bookmarksOut, Long modxUserId) {
+		if (log.isDebugEnabled())
+			log.debug("Enter \"getSavedBookmarksByIdsAndModxUserid\"");
+
+		List<SavedBookmarks> searches = null;
+		Criteria criteria = getSession().createCriteria(getPersistentClass(), "savedBookmarks");
+		criteria = criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		if(modxUserId>0){
+			criteria.add(Restrictions.eq("savedBookmarks.modxUserId", modxUserId));
+			if(bookmarksOut!=null && bookmarksOut.size()>0){
+				Disjunction restrinction = Restrictions.disjunction();
+				for(long targetId:bookmarksOut){
+					restrinction.add(Restrictions.eq("savedBookmarks.id",targetId));
+				}
+				criteria.add(restrinction);
+			}
+			searches = criteria.list();
+		}
+		if (log.isDebugEnabled())
+			log.debug("Exit \"getSavedBookmarksByIdsAndModxUserid\"");
+
 		return searches;
 	}
 

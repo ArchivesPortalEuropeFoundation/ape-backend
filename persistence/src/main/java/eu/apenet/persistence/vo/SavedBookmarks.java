@@ -27,6 +27,8 @@ public class SavedBookmarks{
 	private long id;
 	@Column(name = "liferay_user_id")
 	private long liferayUserId;
+	@Column(name = "modx_user_id")
+	private long modxUserId;
 	@Column(name = "modified_date")
 	private	Date modifiedDate;
 	@Column(name = "description")
@@ -35,8 +37,14 @@ public class SavedBookmarks{
 	private String name;
 	@Column(name = "persistent_link")
 	private String link;
+	@Column(name = "modx_relative_link")
+	private String modxRelativeLink;
+	@Column(name = "is_valid")
+	private Boolean isValid;
 	@Column(name = "typedocument")
 	private String typedocument;
+	@Column(name = "content_title")
+	private String contentTitle;
 	
 	public long getId() {
 		return id;
@@ -79,5 +87,37 @@ public class SavedBookmarks{
 	}
 	public void setTypedocument(String typedocument) {
 		this.typedocument = typedocument;
+	}
+
+	public void setContentTitle(String contentTitle) {
+		this.contentTitle = contentTitle;
+	}
+
+	public String getContentTitle() {
+		return contentTitle;
+	}
+
+	public void setModxUserId(long modxUserId) {
+		this.modxUserId = modxUserId;
+	}
+
+	public long getModxUserId() {
+		return modxUserId;
+	}
+
+	public void setModxRelativeLink(String modxRelativeLink) {
+		this.modxRelativeLink = modxRelativeLink;
+	}
+
+	public void setValid(Boolean valid) {
+		isValid = valid;
+	}
+
+	public String getModxRelativeLink() {
+		return modxRelativeLink;
+	}
+
+	public Boolean getValid() {
+		return isValid;
 	}
 }
