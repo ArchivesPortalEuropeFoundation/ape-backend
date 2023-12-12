@@ -7,4 +7,11 @@
             <class>eu.apenet.scripts.EagLocationStatistics</class>
         </step>
     </command>
+    <command>
+        <name>ead-xml-stats</name>
+        <description>Statistics about EAD files and their content</description>
+        <step>
+            <class>eu.apenet.scripts.EadXmlFileStatistics</class>
+        </step>
+    </command>
 </commands>

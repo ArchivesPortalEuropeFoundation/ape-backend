@@ -38,7 +38,7 @@ if [ "$JAVA_OPTS" = "" ]; then
 fi
 
 ENVS=`echo -Dcatalina.base=/usr/local/tomcat -Dscript.properties=/usr/local/tomcat/webapps/script.properties`
-#ENVS=`echo -Dcatalina.base=/usr/local/Cellar/tomcat@7/7.0.109_1/libexec -Dscript.properties=/usr/local/Cellar/tomcat@7/7.0.109_1/libexec/conf/script.properties`
+#ENVS=`echo -Dcatalina.base=/opt/homebrew/Cellar/tomcat@7/7.0.109_1/libexec -Dscript.properties=/opt/homebrew/Cellar/tomcat@7/7.0.109_1/libexec/conf/script.properties`
 
 #echo $ENVS
 #echo $FULLPATH
