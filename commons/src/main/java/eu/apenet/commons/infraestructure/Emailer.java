@@ -7,11 +7,7 @@ import java.util.Date;
 
 import javax.activation.DataHandler;
 import javax.activation.DataSource;
-import javax.mail.Message;
-import javax.mail.MessagingException;
-import javax.mail.Part;
-import javax.mail.Session;
-import javax.mail.Transport;
+import javax.mail.*;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
@@ -52,6 +48,12 @@ public class Emailer {
             Context initCtx = new InitialContext();
             Context envCtx = (Context) initCtx.lookup("java:comp/env");
             session = (Session) envCtx.lookup("mail/Session");
+
+            String authEnabled = session.getProperty("mail.smtp.auth");
+            if (authEnabled != null && Boolean.parseBoolean(authEnabled)) {
+                URLName urlName = new URLName("smtp", session.getProperties().getProperty("mail.smtp.host"), -1, null, session.getProperties().getProperty("mail.smtp.user"), (String) null);
+                session.setPasswordAuthentication(urlName, new PasswordAuthentication(session.getProperties().getProperty("mail.smtp.user"), session.getProperties().getProperty("mail.smtp.password")));
+            }
             emailFromAddress = session.getProperty("mail.from");
         } catch (NamingException ne) {
             LOGGER.error(ne.getMessage(), ne);
