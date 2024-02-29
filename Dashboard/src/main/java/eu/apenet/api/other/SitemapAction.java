@@ -1316,10 +1316,10 @@ public class SitemapAction {
 
         private final static Map<String, String> urls = new HashMap<String, String>();
         static {
-            urls.put(EAG_DISPLAY_PERSISTENT, "/advanced-search/search-in-institutions/results-(institutions)/?repositoryCode=");
-            urls.put(EAD_DISPLAY_PERSISTENT_TOP_LEVEL, "/advanced-search/search-in-archives/results-(archives)/?repositoryCode={repo_code}&levelName=archdesc&t={ead_type}&recordId={record_id}");
-            urls.put(EAD_DISPLAY_PERSISTENT_C_LEVEL_UNITID, "/advanced-search/search-in-archives/results-(archives)/?repositoryCode={repo_code}&levelName=clevel&t={ead_type}&recordId={record_id}&unitId={unitid}");
-            urls.put(EAD_DISPLAY_PERSISTENT_C_LEVEL_DBID, "/advanced-search/search-in-archives/results-(archives)/?repositoryCode={repo_code}&levelName=clevel&t={ead_type}&recordId={record_id}&c={dbid}");
+            urls.put(EAG_DISPLAY_PERSISTENT, "/institution/aicode/");
+            urls.put(EAD_DISPLAY_PERSISTENT_TOP_LEVEL, "/archive/aicode/{repo_code}/type/{ead_type}/id/{record_id}");
+            urls.put(EAD_DISPLAY_PERSISTENT_C_LEVEL_UNITID, "/archive/aicode/{repo_code}/type/{ead_type}/id/{record_id}/unitid/{unitid}");
+            urls.put(EAD_DISPLAY_PERSISTENT_C_LEVEL_DBID, "/archive/aicode/{repo_code}/type/{ead_type}/id/{record_id}/dbid/{dbid}");
             urls.put(FEATURED_EXHIBITION, "/featured-document/-/fed/pk");
             urls.put(FEATURED_EXHIBITION_ARTICLE, "/featured-document/-/fed/a");
             urls.put(DIRECTORY_COUNTRY, "/directory/-/dir/co");
@@ -1337,7 +1337,7 @@ public class SitemapAction {
             urls.put(SAVED_SEARCH_OVERVIEW, "/saved-searches/-/sv");
             urls.put(SAVED_BOOKMARKS, "/bookmarks/-/s/d");
             urls.put(SAVED_BOOKMARKS_OVERVIEW, "/saved-bookmarks/-/sb");
-            urls.put(EAC_CPF_DISPLAY, "/advanced-search/search-in-names/results-(names)/?repositoryCode={repo_code}&recordId={record_id}");
+            urls.put(EAC_CPF_DISPLAY, "/name/aicode/{repo_code}/id/{record_id}");
             urls.put(SAVED_COLLECTION_OVERVIEW, "/saved-collections/-/cs");
             urls.put(API_KEY,"/get-api-key");
         }
