@@ -377,7 +377,7 @@ public class RedirectService {
                     return;
                 }
 
-                String newUrl = "/advanced-search/search-in-institutions/results-(institutions)/?repositoryCode=";
+                String newUrl = "/institution/aicode/";
                 redirection.setNewUrl(baseUrl + newUrl + aiRepositoryCode);
             }
             else {
@@ -488,6 +488,7 @@ public class RedirectService {
                 return;
             }
 
+            CLevel myCLevel = null;
             String term = null;
             String termType = null;
             String cid = null;
@@ -518,6 +519,7 @@ public class RedirectService {
                 List<CLevel> clevels = cLevelDAO.getCLevel(aiRepositoryCode, type.equals("fa")?FindingAid.class:(type.equals("hg")? HoldingsGuide.class : SourceGuide.class), id, unitid);
                 if (clevels != null && clevels.size() > 0) {
                     cid = "C" + clevels.get(0).getId();
+                    myCLevel = clevels.get(0);
                 }
                 else {
                     redirection.setIdNotFound(true);
@@ -550,9 +552,14 @@ public class RedirectService {
                     redirection.setNewUrl(baseUrl);
                     return;
                 }
+                else {
+                    myCLevel = cLevel;
+                }
             }
 
-            String newUrl = "/advanced-search/search-in-archives/results-(archives)/?&repositoryCode="+aiRepositoryCode+(term != null ? ("&term="+term+"&using="+getEadSearchType(termType)) : "")+"&levelName=clevel&t="+type+"&recordId="+id+"&c="+cid;
+            String cLevelPart = myCLevel.getUnitid()!=null ? ("unitid/" + myCLevel.getUnitid()) : ("dbid/C" + myCLevel.getId());
+
+            String newUrl = "/archive/aicode/"+aiRepositoryCode+"/type/"+type+"/id/"+id+"/" + cLevelPart +(term != null ? ("?term="+term+"&using="+getEadSearchType(termType)) : "");
             redirection.setNewUrl(baseUrl + newUrl);
         }
         else if (matchesPattern("\\/ead-display\\/-\\/ead\\/pl\\/aicode\\/.+\\/type\\/(fa|hg|sg)\\/id\\/.+(\\/search\\/.+)?", path)) {
@@ -591,7 +598,7 @@ public class RedirectService {
                 e.printStackTrace();
             }
 
-            String newUrl = "/advanced-search/search-in-archives/results-(archives)/?&repositoryCode="+aiRepositoryCode+(term != null ? ("&term="+term+"&using="+getEadSearchType(termType)) : "")+"&levelName=archdesc&t="+type+"&recordId="+id;
+            String newUrl = "/archive/aicode/"+aiRepositoryCode+"/type/"+type+"/id/"+id+(term != null ? ("?term="+term+"&using="+getEadSearchType(termType)) : "");
             redirection.setNewUrl(baseUrl + newUrl);
         }
         else {
@@ -638,7 +645,7 @@ public class RedirectService {
                 e.printStackTrace();
             }
 
-            String newUrl = "/advanced-search/search-in-names/results-(names)/?&repositoryCode="+aiRepositoryCode+(term != null ? ("&term="+term+"&using="+getEacSearchType(termType)) : "")+"&recordId="+id;
+            String newUrl = "/name/aicode/"+aiRepositoryCode+"/id/"+id+(term != null ? ("?term="+term+"&using="+getEacSearchType(termType)) : "");
             redirection.setNewUrl(baseUrl + newUrl);
         }
         else {
