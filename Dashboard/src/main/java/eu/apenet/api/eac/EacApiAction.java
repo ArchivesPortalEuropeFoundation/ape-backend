@@ -40,13 +40,11 @@ public class EacApiAction {
     private String term;
     private String translationLanguage = "default";
     private String langNavigator = "en";
-    private String aiCodeUrl = "/advanced-search/search-in-institutions/results-(institutions)";
-    private String eacUrlBase = "/advanced-search/search-in-names/results-(names)";
-    private String eadUrl = "/advanced-search/search-in-archives/results-(archives)";
+    private String aiCodeUrl = "/institution";
+    private String eacUrlBase = "/name";
+    private String eadUrl = "/archive";
     private String secondDisplayUrl = null;
 
-//    advanced-search/search-in-institutions/results-(institutions)/?repositoryCode=FI-007&term=archive
-    ///advanced-search/search-in-archives/results-(archives)/?&repositoryCode=GB-2856&term=london&levelName=clevel&t=fa&recordId=gb2856-%28new%29lt000223&c=C499754185
     private final static Map<String, String> xsltUrls = new HashMap<String,String>();
     static {
         xsltUrls.put(EACCPFDETAILS_XSLT, "xsl/eaccpf/eaccpfdetails.xsl");

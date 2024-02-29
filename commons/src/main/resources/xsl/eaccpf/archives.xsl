@@ -104,9 +104,9 @@
 											<xsl:variable name="aiCode" select="ape:checkAICode($href, '', 'true')" />
 											<xsl:choose>
 												<xsl:when test="$aiCode != 'ERROR' and $aiCode != ''">
-													<xsl:variable name="encodedAiCode" select="ape:encodeSpecialCharacters($aiCode)" />
-<!--													<a href="{$aiCodeUrl}/{$encodedAiCode}" target="_blank">-->
-													<a href="{$aiCodeUrl}?repositoryCode={$aiCode}" target="_blank">
+													<xsl:variable name="encodedAiCode" select="ape:encodeSpecialCharacters($aiCode,'simple')" />
+													<a href="{$aiCodeUrl}/aicode/{$encodedAiCode}" target="_blank">
+<!--													<a href="{$aiCodeUrl}?repositoryCode={$aiCode}" target="_blank">-->
 														<xsl:value-of select="$aiName"/>
 													</a>
 												</xsl:when>
@@ -126,16 +126,16 @@
 											<xsl:variable name="aiName" select="ape:checkAICode($href, '', 'false')" />
 											<xsl:choose>
 												<xsl:when test="$aiCode != 'ERROR' and $aiCode != '' and $aiName != 'ERROR' and $aiName != ''">
-													<xsl:variable name="encodedAiCode" select="ape:encodeSpecialCharacters($aiCode)" />
-<!--													<a href="{$aiCodeUrl}/{$encodedAiCode}" target="_blank">-->
-													<a href="{$aiCodeUrl}?repositoryCode={$aiCode}" target="_blank">
+													<xsl:variable name="encodedAiCode" select="ape:encodeSpecialCharacters($aiCode,'simple')" />
+													<a href="{$aiCodeUrl}/aicode/{$encodedAiCode}" target="_blank">
+<!--													<a href="{$aiCodeUrl}?repositoryCode={$aiCode}" target="_blank">-->
 														<xsl:value-of select="$aiName"/>
 													</a>
 												</xsl:when>
 												<xsl:when test="$aiCode != 'ERROR' and $aiCode != '' ">
-													<xsl:variable name="encodedAiCode" select="ape:encodeSpecialCharacters($aiCode)" />
-<!--													<a href="{$aiCodeUrl}/{$encodedAiCode}" target="_blank">-->
-													<a href="{$aiCodeUrl}?repositoryCode={$aiCode}" target="_blank">
+													<xsl:variable name="encodedAiCode" select="ape:encodeSpecialCharacters($aiCode,'simple')" />
+													<a href="{$aiCodeUrl}/aicode/{$encodedAiCode}" target="_blank">
+<!--													<a href="{$aiCodeUrl}?repositoryCode={$aiCode}" target="_blank">-->
 														<xsl:apply-templates select="." mode="other"/>
 													</a>
 												</xsl:when>
@@ -183,9 +183,9 @@
 											<xsl:variable name="aiCode" select="ape:checkAICode($href, '', 'true')" />
 											<xsl:choose>
 												<xsl:when test="$aiCode != 'ERROR' and $aiCode != ''">
-													<xsl:variable name="encodedAiCode" select="ape:encodeSpecialCharacters($aiCode)" />
-<!--													<a href="{$aiCodeUrl}/{$encodedAiCode}" target="_blank">-->
-													<a href="{$aiCodeUrl}?repositoryCode={$aiCode}" target="_blank">
+													<xsl:variable name="encodedAiCode" select="ape:encodeSpecialCharacters($aiCode,'simple')" />
+													<a href="{$aiCodeUrl}/aicode/{$encodedAiCode}" target="_blank">
+<!--													<a href="{$aiCodeUrl}?repositoryCode={$aiCode}" target="_blank">-->
 														<xsl:value-of select="$aiName"/>
 													</a>
 												</xsl:when>
@@ -205,16 +205,16 @@
 											<xsl:variable name="aiName" select="ape:checkAICode($href, '', 'false')" />
 											<xsl:choose>
 												<xsl:when test="$aiCode != 'ERROR' and $aiCode != '' and $aiName != 'ERROR' and $aiName != ''">
-													<xsl:variable name="encodedAiCode" select="ape:encodeSpecialCharacters($aiCode)" />
-<!--													<a href="{$aiCodeUrl}/{$encodedAiCode}" target="_blank">-->
-													<a href="{$aiCodeUrl}?repositoryCode={$aiCode}" target="_blank">
+													<xsl:variable name="encodedAiCode" select="ape:encodeSpecialCharacters($aiCode,'simple')" />
+													<a href="{$aiCodeUrl}/aicode/{$encodedAiCode}" target="_blank">
+<!--													<a href="{$aiCodeUrl}?repositoryCode={$aiCode}" target="_blank">-->
 														<xsl:value-of select="$aiName"/>
 													</a>
 												</xsl:when>
 												<xsl:when test="$aiCode != 'ERROR' and $aiCode != '' ">
-													<xsl:variable name="encodedAiCode" select="ape:encodeSpecialCharacters($aiCode)" />
-<!--													<a href="{$aiCodeUrl}/{$encodedAiCode}" target="_blank">-->
-													<a href="{$aiCodeUrl}?repositoryCode={$aiCode}" target="_blank">
+													<xsl:variable name="encodedAiCode" select="ape:encodeSpecialCharacters($aiCode,'simple')" />
+													<a href="{$aiCodeUrl}/aicode/{$encodedAiCode}" target="_blank">
+<!--													<a href="{$aiCodeUrl}?repositoryCode={$aiCode}" target="_blank">-->
 														<xsl:apply-templates select="." mode="other"/>
 													</a>
 												</xsl:when>
@@ -247,9 +247,9 @@
 											<xsl:variable name="aiCode" select="ape:checkAICode($href, '', 'true')" />
 											<xsl:choose>
 												<xsl:when test="$aiCode != 'ERROR' and $aiCode != ''">
-													<xsl:variable name="encodedAiCode" select="ape:encodeSpecialCharacters($aiCode)" />
-<!--													<a href="{$aiCodeUrl}/{$encodedAiCode}" target="_blank">-->
-													<a href="{$aiCodeUrl}?repositoryCode={$aiCode}" target="_blank">
+													<xsl:variable name="encodedAiCode" select="ape:encodeSpecialCharacters($aiCode,'simple')" />
+													<a href="{$aiCodeUrl}/aicode/{$encodedAiCode}" target="_blank">
+<!--													<a href="{$aiCodeUrl}?repositoryCode={$aiCode}" target="_blank">-->
 														<xsl:value-of select="$aiName"/>
 													</a>
 												</xsl:when>
@@ -269,16 +269,16 @@
 											<xsl:variable name="aiName" select="ape:checkAICode($href, '', 'false')" />
 											<xsl:choose>
 												<xsl:when test="$aiCode != 'ERROR' and $aiCode != '' and $aiName != 'ERROR' and $aiName != ''">
-													<xsl:variable name="encodedAiCode" select="ape:encodeSpecialCharacters($aiCode)" />
-<!--													<a href="{$aiCodeUrl}/{$encodedAiCode}" target="_blank">-->
-													<a href="{$aiCodeUrl}?repositoryCode={$aiCode}" target="_blank">
+													<xsl:variable name="encodedAiCode" select="ape:encodeSpecialCharacters($aiCode,'simple')" />
+													<a href="{$aiCodeUrl}/aicode/{$encodedAiCode}" target="_blank">
+<!--													<a href="{$aiCodeUrl}?repositoryCode={$aiCode}" target="_blank">-->
 														<xsl:value-of select="$aiName"/>
 													</a>
 												</xsl:when>
 												<xsl:when test="$aiCode != 'ERROR' and $aiCode != '' ">
-													<xsl:variable name="encodedAiCode" select="ape:encodeSpecialCharacters($aiCode)" />
-<!--													<a href="{$aiCodeUrl}/{$encodedAiCode}" target="_blank">-->
-													<a href="{$aiCodeUrl}?repositoryCode={$aiCode}" target="_blank">
+													<xsl:variable name="encodedAiCode" select="ape:encodeSpecialCharacters($aiCode,'simple')" />
+													<a href="{$aiCodeUrl}/aicode/{$encodedAiCode}" target="_blank">
+<!--													<a href="{$aiCodeUrl}?repositoryCode={$aiCode}" target="_blank">-->
 														<xsl:apply-templates select="." mode="other"/>
 													</a>
 												</xsl:when>
@@ -326,9 +326,9 @@
 												<xsl:variable name="aiCode" select="ape:checkAICode($href, '', 'true')" />
 												<xsl:choose>
 													<xsl:when test="$aiCode != 'ERROR' and $aiCode != ''">
-														<xsl:variable name="encodedAiCode" select="ape:encodeSpecialCharacters($aiCode)" />
-<!--														<a href="{$aiCodeUrl}/{$encodedAiCode}" target="_blank">-->
-														<a href="{$aiCodeUrl}?repositoryCode={$aiCode}" target="_blank">
+														<xsl:variable name="encodedAiCode" select="ape:encodeSpecialCharacters($aiCode,'simple')" />
+														<a href="{$aiCodeUrl}/aicode/{$encodedAiCode}" target="_blank">
+<!--														<a href="{$aiCodeUrl}?repositoryCode={$aiCode}" target="_blank">-->
 															<xsl:value-of select="$aiName"/>
 														</a>
 													</xsl:when>
@@ -348,16 +348,16 @@
 												<xsl:variable name="aiName" select="ape:checkAICode($href, '', 'false')" />
 												<xsl:choose>
 													<xsl:when test="$aiCode != 'ERROR' and $aiCode != '' and $aiName != 'ERROR' and $aiName != ''">
-														<xsl:variable name="encodedAiCode" select="ape:encodeSpecialCharacters($aiCode)" />
-<!--														<a href="{$aiCodeUrl}/{$encodedAiCode}" target="_blank">-->
-														<a href="{$aiCodeUrl}?repositoryCode={$aiCode}" target="_blank">
+														<xsl:variable name="encodedAiCode" select="ape:encodeSpecialCharacters($aiCode,'simple')" />
+														<a href="{$aiCodeUrl}/aicode/{$encodedAiCode}" target="_blank">
+<!--														<a href="{$aiCodeUrl}?repositoryCode={$aiCode}" target="_blank">-->
 															<xsl:value-of select="$aiName"/>
 														</a>
 													</xsl:when>
 													<xsl:when test="$aiCode != 'ERROR' and $aiCode != '' ">
-														<xsl:variable name="encodedAiCode" select="ape:encodeSpecialCharacters($aiCode)" />
-<!--														<a href="{$aiCodeUrl}/{$encodedAiCode}" target="_blank">-->
-														<a href="{$aiCodeUrl}?repositoryCode={$aiCode}" target="_blank">
+														<xsl:variable name="encodedAiCode" select="ape:encodeSpecialCharacters($aiCode,'simple')" />
+														<a href="{$aiCodeUrl}/aicode/{$encodedAiCode}" target="_blank">
+<!--														<a href="{$aiCodeUrl}?repositoryCode={$aiCode}" target="_blank">-->
 															<xsl:apply-templates select="." mode="other"/>
 														</a>
 													</xsl:when>
@@ -408,9 +408,9 @@
 												<xsl:variable name="aiCode" select="ape:checkAICode($href, '', 'true')" />
 												<xsl:choose>
 													<xsl:when test="$aiCode != 'ERROR' and $aiCode != ''">
-														<xsl:variable name="encodedAiCode" select="ape:encodeSpecialCharacters($aiCode)" />
-<!--														<a href="{$aiCodeUrl}/{$encodedAiCode}" target="_blank">-->
-														<a href="{$aiCodeUrl}?repositoryCode={$aiCode}" target="_blank">
+														<xsl:variable name="encodedAiCode" select="ape:encodeSpecialCharacters($aiCode,'simple')" />
+														<a href="{$aiCodeUrl}/aicode/{$encodedAiCode}" target="_blank">
+<!--														<a href="{$aiCodeUrl}?repositoryCode={$aiCode}" target="_blank">-->
 															<xsl:value-of select="$aiName"/>
 														</a>
 													</xsl:when>
@@ -430,16 +430,16 @@
 												<xsl:variable name="aiName" select="ape:checkAICode($href, '', 'false')" />
 												<xsl:choose>
 													<xsl:when test="$aiCode != 'ERROR' and $aiCode != '' and $aiName != 'ERROR' and $aiName != ''">
-														<xsl:variable name="encodedAiCode" select="ape:encodeSpecialCharacters($aiCode)" />
-<!--														<a href="{$aiCodeUrl}/{$encodedAiCode}" target="_blank">-->
-														<a href="{$aiCodeUrl}?repositoryCode={$aiCode}" target="_blank">
+														<xsl:variable name="encodedAiCode" select="ape:encodeSpecialCharacters($aiCode,'simple')" />
+														<a href="{$aiCodeUrl}/aicode/{$encodedAiCode}" target="_blank">
+<!--														<a href="{$aiCodeUrl}?repositoryCode={$aiCode}" target="_blank">-->
 															<xsl:value-of select="$aiName"/>
 														</a>
 													</xsl:when>
 													<xsl:when test="$aiCode != 'ERROR' and $aiCode != '' ">
-														<xsl:variable name="encodedAiCode" select="ape:encodeSpecialCharacters($aiCode)" />
-<!--														<a href="{$aiCodeUrl}/{$encodedAiCode}" target="_blank">-->
-														<a href="{$aiCodeUrl}?repositoryCode={$aiCode}" target="_blank">
+														<xsl:variable name="encodedAiCode" select="ape:encodeSpecialCharacters($aiCode,'simple')" />
+														<a href="{$aiCodeUrl}/aicode/{$encodedAiCode}" target="_blank">
+<!--														<a href="{$aiCodeUrl}?repositoryCode={$aiCode}" target="_blank">-->
 															<xsl:apply-templates select="." mode="other"/>
 														</a>
 													</xsl:when>
@@ -490,9 +490,9 @@
 									<xsl:variable name="aiCode" select="ape:checkAICode($href, '', 'true')" />
 									<xsl:choose>
 										<xsl:when test="$aiCode != 'ERROR' and $aiCode != ''">
-											<xsl:variable name="encodedAiCode" select="ape:encodeSpecialCharacters($aiCode)" />
-<!--											<a href="{$aiCodeUrl}/{$encodedAiCode}" target="_blank">-->
-											<a href="{$aiCodeUrl}?repositoryCode={$aiCode}" target="_blank">
+											<xsl:variable name="encodedAiCode" select="ape:encodeSpecialCharacters($aiCode,'simple')" />
+											<a href="{$aiCodeUrl}/aicode/{$encodedAiCode}" target="_blank">
+<!--											<a href="{$aiCodeUrl}?repositoryCode={$aiCode}" target="_blank">-->
 												<xsl:value-of select="$aiName"/>
 											</a>
 										</xsl:when>
@@ -512,16 +512,16 @@
 									<xsl:variable name="aiName" select="ape:checkAICode($href, '', 'false')" />
 									<xsl:choose>
 										<xsl:when test="$aiCode != 'ERROR' and $aiCode != '' and $aiName != 'ERROR' and $aiName != ''">
-											<xsl:variable name="encodedAiCode" select="ape:encodeSpecialCharacters($aiCode)" />
-<!--											<a href="{$aiCodeUrl}/{$encodedAiCode}" target="_blank">-->
-											<a href="{$aiCodeUrl}?repositoryCode={$aiCode}" target="_blank">
+											<xsl:variable name="encodedAiCode" select="ape:encodeSpecialCharacters($aiCode,'simple')" />
+											<a href="{$aiCodeUrl}/aicode/{$encodedAiCode}" target="_blank">
+<!--											<a href="{$aiCodeUrl}?repositoryCode={$aiCode}" target="_blank">-->
 												<xsl:value-of select="$aiName"/>
 											</a>
 										</xsl:when>
 										<xsl:when test="$aiCode != 'ERROR' and $aiCode != '' ">
-											<xsl:variable name="encodedAiCode" select="ape:encodeSpecialCharacters($aiCode)" />
-<!--											<a href="{$aiCodeUrl}/{$encodedAiCode}" target="_blank">-->
-											<a href="{$aiCodeUrl}?repositoryCode={$aiCode}" target="_blank">
+											<xsl:variable name="encodedAiCode" select="ape:encodeSpecialCharacters($aiCode,'simple')" />
+											<a href="{$aiCodeUrl}/aicode/{$encodedAiCode}" target="_blank">
+<!--											<a href="{$aiCodeUrl}?repositoryCode={$aiCode}" target="_blank">-->
 												<xsl:apply-templates select="." mode="other"/>
 											</a>
 										</xsl:when>

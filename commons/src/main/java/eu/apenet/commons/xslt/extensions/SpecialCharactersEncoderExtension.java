@@ -19,6 +19,8 @@ import eu.apenet.persistence.factory.DAOFactory;
 import eu.apenet.persistence.vo.FindingAid;
 import eu.archivesportaleurope.util.ApeUtil;
 
+import java.net.URLEncoder;
+
 public class SpecialCharactersEncoderExtension extends ExtensionFunctionDefinition {
 	/**
 	 * 
@@ -44,7 +46,7 @@ public class SpecialCharactersEncoderExtension extends ExtensionFunctionDefiniti
 	}
 
 	public int getMaximumNumberOfArguments() {
-		return 1;
+		return 2;
 	}
 
 	@Override
@@ -74,7 +76,23 @@ public class SpecialCharactersEncoderExtension extends ExtensionFunctionDefiniti
 					value =  ApeUtil.encodeSpecialCharacters(link);
 				}
 				return StringValue.makeStringValue(value);
-			} else {
+			}
+			else if (sequences.length == 2) {
+				Item firstArgument = sequences[0].head();
+				Item secondArgument = sequences[1].head();
+				String value = "";
+				if (firstArgument != null) {
+					String link = firstArgument.getStringValue();
+					if (secondArgument.getStringValue().equals("simple")){
+						value = URLEncoder.encode(link);
+					}
+					else {
+						value = ApeUtil.encodeSpecialCharacters(link);
+					}
+				}
+				return StringValue.makeStringValue(value);
+			}
+			else {
 				return StringValue.makeStringValue("ERROR");
 			}
 		}

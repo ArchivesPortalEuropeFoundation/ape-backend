@@ -324,11 +324,12 @@
                                             </option>
                                         </c:if>
                                         <c:if test="${eadResult.validated}">
-                                            <option value="_blank|preview.action">
-                                                <s:text name="content.message.preview" />
-                                            </option>
+<%--                                            <option value="_blank|preview.action">--%>
+<%--                                                <s:text name="content.message.preview" />--%>
+<%--                                            </option>--%>
                                             <option value="_blank|preview-modx.action">
-                                                <s:text name="content.message.preview.modx" />
+<%--                                                <s:text name="content.message.preview.modx" />--%>
+                                                <s:text name="content.message.preview" />
                                             </option>
                                             <c:if test="${not eadResult.dynamic}">
                                                 <option value="_self|download.action">

@@ -253,11 +253,12 @@
                                                                                     </option>
                                                                                 </c:if>--%>
                                         <c:if test="${eacCpfResult.validated}">
-                                            <option value="_blank|preview.action">
-                                                <s:text name="content.message.preview.eac" />
-                                            </option>
+<%--                                            <option value="_blank|preview.action">--%>
+<%--                                                <s:text name="content.message.preview.eac" />--%>
+<%--                                            </option>--%>
                                             <option value="_blank|preview-modx.action">
-                                                <s:text name="content.message.preview.eac.modx" />
+<%--                                                <s:text name="content.message.preview.eac.modx" />--%>
+                                                <s:text name="content.message.preview.eac" />
                                             </option>
                                             <option value="_self|downloadEacCpf.action">
                                                 <s:text name="content.message.download" />
