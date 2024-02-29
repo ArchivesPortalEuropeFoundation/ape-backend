@@ -43,7 +43,7 @@ public class EadApiAction {
     private String xmlType;
     private String preview = "false";
     private String dashboardPreview = "false";
-    private String eacUrlBase = "/advanced-search/search-in-names/results-(names)";
+    private String eacUrlBase = "/name";
     private String secondDisplayUrl = null;
 
     private String aiId;
