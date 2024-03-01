@@ -19,6 +19,8 @@ import java.util.Map;
 
 public class ContactFinderApiAction {
 
+    private final String APE_EMAIL = "info@archivesportaleurope.net";
+
     private String aiId;
     private String aiRepositoryCode;
     private Map contactInformation;
@@ -52,7 +54,7 @@ public class ContactFinderApiAction {
                 aiRepositoryCode = archivalInstitution.getRepositorycode();
             }
         }
-        else if (aiRepositoryCode != null) {
+        else if (aiRepositoryCode != null && aiRepositoryCode.length()>0) {
             archivalInstitution = archivalInstitutionDAO.getArchivalInstitutionByRepositoryCode(aiRepositoryCode);
             if (archivalInstitution == null){
                 errors = new ArrayList();
@@ -66,15 +68,18 @@ public class ContactFinderApiAction {
             }
         }
         else {
-            errors = new ArrayList();
-            Map error2 = new HashMap();
-            error2.put("code", 2);
-            error2.put("reason", "Institution is missing");
-            errors.add(error2);
+            if (!"contact_form_explore".equals(type) && !"rating_form_explore".equals(type) && !"suggestion_form_explore".equals(type)) {
+                errors = new ArrayList();
+                Map error2 = new HashMap();
+                error2.put("code", 2);
+                error2.put("reason", "Institution is missing");
+                errors.add(error2);
+            }
 
         }
 
-        if (!"contact_form_detail_page".equals(type)){
+        if (!"contact_form_detail_page".equals(type) && !"rating_form_detail_page".equals(type) && !"suggestion_form_detail_page".equals(type)
+                && !"contact_form_explore".equals(type) && !"rating_form_explore".equals(type) && !"suggestion_form_explore".equals(type)){
             if (errors==null){
                 errors = new ArrayList();
             }
@@ -88,18 +93,22 @@ public class ContactFinderApiAction {
         if (errors == null) {
             contactInformation = new HashMap();
 
-            if (type.equals("contact_form_detail_page")) {
+            //TODO: need to check this value from the database
+            boolean cmWantsToCC = true;
+            boolean addBcc = true;
+
+            if (type.equals("contact_form_detail_page") || type.equals("rating_form_detail_page") ||
+                    ((type.equals("rating_form_explore") || type.equals("contact_form_explore")) && aiRepositoryCode != null && aiRepositoryCode.length() > 0)) {
                 String cmEmail = null;
                 User userCM = userDAO.getCountryManagerOfCountry(archivalInstitution.getCountry());
                 if (userCM != null){
+                    cmWantsToCC = userCM.isContactFormsAsCC();
                     cmEmail = userCM.getEmailAddress();
-                    System.out.println(cmEmail);
                 }
-                System.out.println("here");
                 String feedbackEmail = archivalInstitution.getFeedbackEmail();
                 if (feedbackEmail != null) {
                     contactInformation.put("to", feedbackEmail);
-                    if (cmEmail != null) {
+                    if (cmWantsToCC && cmEmail != null) {
                         contactInformation.put("cc", cmEmail);
                     }
                 }
@@ -107,18 +116,39 @@ public class ContactFinderApiAction {
                     User user = archivalInstitution.getPartner();
                     if (user != null){
                         contactInformation.put("to", user.getEmailAddress());
-                        if (cmEmail != null) {
+                        if (cmWantsToCC && cmEmail != null) {
                             contactInformation.put("cc", cmEmail);
                         }
                     }
                     else {
-                        if (cmEmail != null) {
+                        if (cmWantsToCC && cmEmail != null) {
                             contactInformation.put("to", cmEmail);
                         }
                     }
                 }
-            }
 
+                if (addBcc) {
+                    contactInformation.put("bcc", APE_EMAIL);
+                }
+            }
+            else if (type.equals("suggestion_form_detail_page") ||
+                    (type.equals("suggestion_form_explore") && aiRepositoryCode != null && aiRepositoryCode.length() > 0)) {
+                String cmEmail = null;
+                User userCM = userDAO.getCountryManagerOfCountry(archivalInstitution.getCountry());
+                if (userCM != null){
+                    cmEmail = userCM.getEmailAddress();
+                }
+                if (cmEmail != null) {
+                    contactInformation.put("to", cmEmail);
+                    contactInformation.put("cc", APE_EMAIL);
+                }
+                else {
+                    contactInformation.put("to", APE_EMAIL);
+                }
+            }
+            else {
+                contactInformation.put("to", APE_EMAIL);
+            }
         }
 
         return Action.SUCCESS;
