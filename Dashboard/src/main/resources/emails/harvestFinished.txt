@@ -3,7 +3,8 @@
           The last automatic harvest of the data from '${archivalInstitution}' is finished on '${dashboardBase}'.<br/>
           <br/>
           You can check online to see if all went as expected.</br><br/>
-          <b>The harvesting process is finished succesfully. ${numberEadHarvested} records are processed.</b><br/>
+          <span style="color:green"><b>The harvesting process is finished succesfully. ${numberEadHarvested} records are processed.</b></span><br/>
+          <span style="color:#000"><b>Please note, that this only refers to the transfer of data from your servers to the ones of Archives Portal Europe. For checking the progress of ingest and publication, please log into your Dashboard account.</b></span><br/>
           <br/>
           Please see the following information on the harvest:<br/>
           <br/>
