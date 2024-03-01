@@ -401,5 +401,10 @@
             <!-- 7.0.79 | 8.0.47 -->
             <version>7.0.79</version>
         </dependency>
+        <dependency>
+            <groupId>javax.el</groupId>
+            <artifactId>javax.el-api</artifactId>
+            <version>2.2.4</version>
+        </dependency>
     </dependencies>
 </project>

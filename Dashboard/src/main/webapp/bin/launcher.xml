@@ -14,4 +14,11 @@
             <class>eu.apenet.scripts.EadXmlFileStatistics</class>
         </step>
     </command>
+    <command>
+        <name>batch-social-info-extractor</name>
+        <description>Batch extract social info</description>
+        <step>
+            <class>eu.apenet.scripts.BatchSocialInfoExtractor</class>
+        </step>
+    </command>
 </commands>

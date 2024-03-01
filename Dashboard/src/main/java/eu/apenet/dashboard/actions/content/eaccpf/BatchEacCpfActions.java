@@ -61,6 +61,11 @@ public class BatchEacCpfActions extends AbstractEacCpfActions {
     }
 
     @Override
+    public String reindexSocial() {
+        return SUCCESS;
+    }
+
+    @Override
     public String deleteEseEdm() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }

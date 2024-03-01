@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Properties;
 
 import eu.apenet.commons.utils.APEnetUtilities;
+import eu.apenet.commons.utils.analyzers.ead.SocialInfoExtractor;
 import eu.apenet.dashboard.security.SecurityContext;
 import eu.apenet.dashboard.services.ead.EadService;
 import eu.apenet.dashboard.utils.ContentUtils;
@@ -13,10 +14,8 @@ import eu.apenet.persistence.dao.CLevelDAO;
 import eu.apenet.persistence.dao.EadDAO;
 import eu.apenet.persistence.dao.HgSgFaRelationDAO;
 import eu.apenet.persistence.factory.DAOFactory;
-import eu.apenet.persistence.vo.CLevel;
-import eu.apenet.persistence.vo.Ead;
-import eu.apenet.persistence.vo.FindingAid;
-import eu.apenet.persistence.vo.HgSgFaRelation;
+import eu.apenet.persistence.vo.*;
+
 import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -193,6 +192,18 @@ public class EadActions extends AbstractEadActions {
             logger.error(e.getMessage(), e);
             return ERROR;
         }
+    }
+
+    @Override
+    public String reindexSocial() {
+        EadDAO eadDAO = DAOFactory.instance().getEadDAO();
+        Ead ead = eadDAO.findById(id, getXmlType().getClazz());
+        EadContent eadContent = ead.getEadContent();
+        SocialInfoExtractor socialInfoExtractor = new SocialInfoExtractor();
+        String content = socialInfoExtractor.extractStringInfo(eadContent);
+        ead.setMetaContent(content);
+        eadDAO.update(ead);
+        return SUCCESS;
     }
 
     public String downloadHgSgStatistics() throws IOException, Exception {
