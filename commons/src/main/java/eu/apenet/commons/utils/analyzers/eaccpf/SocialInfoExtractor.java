@@ -144,29 +144,33 @@ public class SocialInfoExtractor {
             }
 
             List<Part> parts = null;
+            String typeOfParts = null;
             if (preferredNameEntry != null) {
                 if (preferredNameEntry instanceof Identity.NameEntry) {
                     parts = ((Identity.NameEntry) preferredNameEntry).getPart();
                 } else if (preferredNameEntry instanceof NameEntryParallel) {
                     parts = ((NameEntryParallel) preferredNameEntry).getNameEntry().get(0).getPart();
                 }
+                typeOfParts = "preferred";
             } else if (authorizedNameEntry != null) {
                 if (authorizedNameEntry instanceof Identity.NameEntry) {
                     parts = ((Identity.NameEntry) authorizedNameEntry).getPart();
                 } else if (authorizedNameEntry instanceof NameEntryParallel) {
                     parts = ((NameEntryParallel) authorizedNameEntry).getNameEntry().get(0).getPart();
                 }
+                typeOfParts = "authorized";
             } else if (otherNameEntry != null) {
                 if (otherNameEntry instanceof Identity.NameEntry) {
                     parts = ((Identity.NameEntry) otherNameEntry).getPart();
                 } else if (otherNameEntry instanceof NameEntryParallel) {
                     parts = ((NameEntryParallel) otherNameEntry).getNameEntry().get(0).getPart();
                 }
+                typeOfParts = "other";
             }
 
             String title = null;
             if (parts != null) {
-                title = handleNameParts(parts);
+                title = handleNameParts(parts,typeOfParts);
             }
             if (title == null) {
                 if (eacCpf.getTitle() != null) {
@@ -312,13 +316,57 @@ public class SocialInfoExtractor {
         return map;
     }
 
-    private String handleNameParts(List<Part> parts){
-        Part part = parts.get(0);
-        return part.getContent();
+    private String handleNameParts(List<Part> parts, String typeOfParts) {
+        String firstname = null;
+        String surname = null;
+        String persname = null;
+        String famname = null;
+        String corponame = null;
+        String other = "";
+        for (Part part : parts) {
+            if ("firstname".equals(part.getLocalType())) {
+                firstname = part.getContent();
+            } else if ("surname".equals(part.getLocalType())) {
+                surname = part.getContent();
+            } else if ("persname".equals(part.getLocalType())) {
+                persname = part.getContent();
+            } else if ("famname".equals(part.getLocalType())) {
+                famname = part.getContent();
+            } else if ("corponame".equals(part.getLocalType())) {
+                corponame = part.getContent();
+            } else {
+                other += (other.length() == 0 ? "" : ", ") + part.getContent();
+            }
+        }
+        if (firstname != null || surname != null || persname != null || famname != null || corponame != null){
+            String response = "";
+            if (firstname != null){
+                response += firstname;
+            }
+            if (surname != null){
+                response += (response.length() == 0 ? "" : " ") + surname;
+            }
+            if (persname != null){
+                response += (response.length() == 0 ? "" : "; ") + persname;
+            }
+            if (famname != null){
+                response += (response.length() == 0 ? "" : "; ") + famname;
+            }
+            if (corponame != null){
+                response += (response.length() == 0 ? "" : "; ") + corponame;
+            }
+            return response;
+        }
+        else {
+            return other;
+        }
     }
 
     private String handleKeywordNameParts(List<Part> parts){
-        Part part = parts.get(0);
-        return part.getContent();
+        String response = "";
+        for (Part part : parts){
+            response += " " + part.getContent();
+        }
+        return response.trim();
     }
 }

@@ -524,7 +524,11 @@ public class SocialInfoExtractor {
                 if (isTitleFromParent){
                     prefix = "Part of: ";
                 }
-                title = prefix + unitTitles.get(0);
+                String finalTitle = "";
+                for (String s : unitTitles){
+                    finalTitle += s+ " ";
+                }
+                title = prefix + finalTitle.trim();
             }
             else if (titleProper!=null){
                 title = titleProper;
