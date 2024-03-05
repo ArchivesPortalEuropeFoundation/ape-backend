@@ -3,6 +3,7 @@ package eu.apenet.dashboard.services.ead;
 import java.io.IOException;
 import java.util.Properties;
 
+import eu.apenet.commons.utils.analyzers.ead.SocialInfoExtractor;
 import org.apache.solr.client.solrj.SolrServerException;
 
 import eu.apenet.commons.exceptions.APEnetException;
@@ -44,6 +45,12 @@ public class UnpublishTask extends AbstractEadTask {
 				eadDAO.insertSimple(ead);
 				JpaUtil.commitDatabaseTransaction();
 				logSolrAction(ead, "", solrTime, System.currentTimeMillis()-(startTime+solrTime));
+
+
+				//Also remove social metadata
+				ead.setMetaContent(null);
+				eadDAO.update(ead);
+
 			} catch (Exception e) {
 				logAction(ead, e);
 				throw new APEnetException(this.getActionName() + " " + e.getMessage(), e);
