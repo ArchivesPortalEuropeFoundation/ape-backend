@@ -5,9 +5,11 @@ import java.util.Properties;
 
 import eu.apenet.commons.exceptions.APEnetException;
 import eu.apenet.commons.types.XmlType;
+import eu.apenet.commons.utils.analyzers.ead.SocialInfoExtractor;
 import eu.apenet.dashboard.services.ead.xml.stream.DatabaseXmlEadParser;
 import eu.apenet.dashboard.services.ead.xml.stream.XmlEadParser;
 import eu.apenet.persistence.dao.EadContentDAO;
+import eu.apenet.persistence.dao.EadDAO;
 import eu.apenet.persistence.factory.DAOFactory;
 import eu.apenet.persistence.vo.Ead;
 import eu.apenet.persistence.vo.EadContent;
@@ -44,6 +46,14 @@ public class PublishTask extends AbstractEadTask {
                 }
 
                 logSolrAction(ead, message, solrTime, System.currentTimeMillis() - (startTime + solrTime));
+
+                //Also create its social metadata
+                EadDAO eadDAO = DAOFactory.instance().getEadDAO();
+                SocialInfoExtractor socialInfoExtractor = new SocialInfoExtractor();
+                String content = socialInfoExtractor.extractStringInfo(ead.getEadContent());
+                ead.setMetaContent(content);
+                eadDAO.update(ead);
+
             } catch (Exception e) {
                 logAction(ead, e);
                 throw new APEnetException(this.getActionName() + " " + e.getMessage(), e);

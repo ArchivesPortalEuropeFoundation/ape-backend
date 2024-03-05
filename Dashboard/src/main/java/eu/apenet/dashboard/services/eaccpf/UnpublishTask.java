@@ -43,6 +43,10 @@ public class UnpublishTask extends AbstractEacCpfTask {
 				eacCpfDAO.insertSimple(eacCpf);
 				JpaUtil.commitDatabaseTransaction();
 				logSolrAction(eacCpf, "", solrTime, System.currentTimeMillis()-(startTime+solrTime));
+
+				//Also remove its social metadata
+				eacCpf.setMetaContent(null);
+				eacCpfDAO.update(eacCpf);
 			} catch (Exception e) {
 				logAction(eacCpf, e);
 				throw new APEnetException(this.getActionName() + " " + e.getMessage(), e);
