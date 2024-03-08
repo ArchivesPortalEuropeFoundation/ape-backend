@@ -542,6 +542,7 @@ public class SocialInfoExtractor {
 //                }
             }
             if (title != null) {
+                title = title.replaceAll("\n","").replaceAll(" +", " ");
                 if (SocialUtils.TITLE_MAX_LENGTH > 0) {
                     response.put("title", StringUtils.left(title, SocialUtils.TITLE_MAX_LENGTH));
                 }
@@ -555,6 +556,8 @@ public class SocialInfoExtractor {
             String description = null;
             if (scopeContents != null && scopeContents.size() > 0) {
                 description = scopeContents.get(0);
+
+                description = description.replaceAll("\n","").replaceAll(" +", " ");
             }
 //            else {
 //                description = SocialUtils.DEFAULT_EAD_DESCRIPTION;
