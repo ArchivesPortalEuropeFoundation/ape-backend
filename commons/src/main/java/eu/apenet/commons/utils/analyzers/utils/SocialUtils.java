@@ -1,10 +1,7 @@
 package eu.apenet.commons.utils.analyzers.utils;
 
 import eu.apenet.commons.utils.analyzers.eag.SocialInfoExtractor;
-import eu.apenet.persistence.vo.ArchivalInstitution;
-import eu.apenet.persistence.vo.CLevel;
-import eu.apenet.persistence.vo.EacCpf;
-import eu.apenet.persistence.vo.EadContent;
+import eu.apenet.persistence.vo.*;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.json.JSONException;
@@ -28,7 +25,7 @@ public class SocialUtils {
     public static String DEFAULT_EAD_DESCRIPTION = "To be decided with Marta";
     public static String DEFAULT_EACCPF_DESCRIPTION = "To be decided with Marta";
     public static String DEFAULT_EAG_DESCRIPTION = "To be decided with Marta";
-    public static String DEFAULT_DAO_URL = "https://www.archivesportaleurope.net/assets/images/fb_img.jpg";
+    public static String DEFAULT_DAO_URL = "assets/images/ape_poster.png";
 
     public static Map<String, Object> getJsonInfoForEadContent(String repoPath, EadContent eadContent){
 
@@ -95,6 +92,18 @@ public class SocialUtils {
         }
 
         map.put("hashtags", SocialUtils.EAD_HASHTAGS);
+
+        //URL
+        String type = "";
+        if (eadContent.getEad() instanceof FindingAid){
+            type = "fa";
+        } else if (eadContent.getEad() instanceof HoldingsGuide){
+            type = "hg";
+        } else if (eadContent.getEad() instanceof SourceGuide){
+            type = "sg";
+        }
+        String url = "archive/aicode/" + eadContent.getEad().getArchivalInstitution().getRepositorycode() + "/type/"+ type + "/id/" + eadContent.getEad().getEadid();
+        map.put("url", url);
 
         return map;
     }
@@ -170,6 +179,26 @@ public class SocialUtils {
 
         map.put("hashtags", SocialUtils.EAD_HASHTAGS);
 
+
+        //URL
+        EadContent eadContent = cLevel.getEadContent();
+        String type = "";
+        if (eadContent.getEad() instanceof FindingAid){
+            type = "fa";
+        } else if (eadContent.getEad() instanceof HoldingsGuide){
+            type = "hg";
+        } else if (eadContent.getEad() instanceof SourceGuide){
+            type = "sg";
+        }
+        String url = "archive/aicode/" + eadContent.getEad().getArchivalInstitution().getRepositorycode() + "/type/"+ type + "/id/" + eadContent.getEad().getEadid();
+        if (cLevel.getUnitid()!=null){
+            url += "/unitid/"+cLevel.getUnitid();
+        }
+        else {
+            url += "/dbid/C"+cLevel.getId();
+        }
+        map.put("url", url);
+
         return map;
     }
 
@@ -206,6 +235,9 @@ public class SocialUtils {
         }
 
         map.put("hashtags", SocialUtils.EAG_HASHTAGS);
+
+        String url = "institution/aicode/" + archivalInstitution.getRepositorycode();
+        map.put("url", url);
 
         return map;
     }
@@ -279,6 +311,10 @@ public class SocialUtils {
         }
 
         map.put("hashtags", SocialUtils.EACCPF_HASHTAGS);
+
+        String url = "name/aicode/" + eacCpf.getArchivalInstitution().getRepositorycode() + "/id/" + eacCpf.getIdentifier();
+        map.put("url", url);
+
         return map;
     }
 
