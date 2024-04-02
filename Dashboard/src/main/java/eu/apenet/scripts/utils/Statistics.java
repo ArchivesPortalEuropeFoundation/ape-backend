@@ -28,7 +28,7 @@ public class Statistics {
     public Map<String, Map<String, Double>> perInsitutionInfo = new HashMap<>();
 
     public Map<String, Statistics> perCountryInfoStatistics = new HashMap<>();
-    public Map<String, Statistics> perInsitutionStatistics = new HashMap<>();
+    public Map<String, Statistics> perInsitutionInfoStatistics = new HashMap<>();
 
     public Map<String, Integer> archdescDidElementsMap = new HashMap<>();
     public Map<String, Integer> archdescElementsMap = new HashMap<>();
@@ -81,9 +81,9 @@ public class Statistics {
         PrintWriter printWriter = new PrintWriter(fileWriter);
 
         printWriter.println("total files;"+totalFiles);
-        printWriter.println("total size;"+ gettFileSize(totalSize));
-        printWriter.println("max size;"+ gettFileSize(maxSize));
-        printWriter.println("min size;"+ gettFileSize(minSize));
+        printWriter.println("total size;"+ getFileSize(totalSize));
+        printWriter.println("max size;"+ getFileSize(maxSize));
+        printWriter.println("min size;"+ getFileSize(minSize));
         if (type.equals("total")) {
             printWriter.println("max country;" + maxFileCountry);
             printWriter.println("max institution;" + maxFileInstitution);
@@ -107,7 +107,7 @@ public class Statistics {
         }
 
         printWriter.println("c counter;"+cCounter);
-        printWriter.println("c counter2;"+cCounter2);
+//        printWriter.println("c counter2;"+cCounter2);
         printWriter.println("c leaves;"+cCounterLeaves);
 
         int counter = 0;
@@ -124,10 +124,10 @@ public class Statistics {
         counter = 0;
         for (String s : archdescElementsMap.keySet()){
             if (counter==0) {
-                printWriter.println("arch elements;" + s+";"+archdescElementsMap.get(s));
+                printWriter.println("arch elements;" + s+";"+archdescElementsMap.get(s)+";"+getPrettyPercentage(new Double(archdescElementsMap.get(s))/new Double(totalFiles)));
             }
             else {
-                printWriter.println(";" + s + ";" + archdescElementsMap.get(s));
+                printWriter.println(";" + s + ";" + archdescElementsMap.get(s)+";"+getPrettyPercentage(new Double(archdescElementsMap.get(s))/new Double(totalFiles)));
             }
             counter++;
         }
@@ -135,32 +135,10 @@ public class Statistics {
         counter = 0;
         for (String s : archdescDidElementsMap.keySet()){
             if (counter==0) {
-                printWriter.println("arch did elements;" + s+";"+archdescDidElementsMap.get(s));
+                printWriter.println("arch did elements;" + s+";"+archdescDidElementsMap.get(s)+";"+getPrettyPercentage(new Double(archdescDidElementsMap.get(s))/new Double(archdescElementsMap.get("did"))));
             }
             else {
-                printWriter.println(";" + s + ";" + archdescDidElementsMap.get(s));
-            }
-            counter++;
-        }
-
-        counter = 0;
-        for (String s : cDidElementsMap.keySet()){
-            if (counter==0) {
-                printWriter.println("c did elements;" + s+";"+cDidElementsMap.get(s));
-            }
-            else {
-                printWriter.println(";" + s + ";" + cDidElementsMap.get(s));
-            }
-            counter++;
-        }
-
-        counter = 0;
-        for (String s : cLeavesDidElementsMap.keySet()){
-            if (counter==0) {
-                printWriter.println("c (leaves) did elements;" + s+";"+cLeavesDidElementsMap.get(s));
-            }
-            else {
-                printWriter.println(";" + s + ";" + cLeavesDidElementsMap.get(s));
+                printWriter.println(";" + s + ";" + archdescDidElementsMap.get(s)+";"+getPrettyPercentage(new Double(archdescDidElementsMap.get(s))/new Double(archdescElementsMap.get("did"))));
             }
             counter++;
         }
@@ -168,21 +146,21 @@ public class Statistics {
         counter = 0;
         for (String s : cElementsMap.keySet()){
             if (counter==0) {
-                printWriter.println("c elements;" + s+";"+cElementsMap.get(s));
+                printWriter.println("c elements;" + s+";"+cElementsMap.get(s)+";"+getPrettyPercentage(new Double(cElementsMap.get(s))/new Double(cCounter)));
             }
             else {
-                printWriter.println(";" + s + ";" + cElementsMap.get(s));
+                printWriter.println(";" + s + ";" + cElementsMap.get(s)+";"+getPrettyPercentage(new Double(cElementsMap.get(s))/new Double(cCounter)));
             }
             counter++;
         }
 
         counter = 0;
-        for (String s : cLeavesElementsMap.keySet()){
+        for (String s : cDidElementsMap.keySet()){
             if (counter==0) {
-                printWriter.println("c (leaves) elements;" + s+";"+cLeavesElementsMap.get(s));
+                printWriter.println("c did elements;" + s+";"+cDidElementsMap.get(s)+";"+getPrettyPercentage(new Double(cDidElementsMap.get(s))/new Double(cElementsMap.get("did"))));
             }
             else {
-                printWriter.println(";" + s + ";" + cLeavesElementsMap.get(s));
+                printWriter.println(";" + s + ";" + cDidElementsMap.get(s)+";"+getPrettyPercentage(new Double(cDidElementsMap.get(s))/new Double(cElementsMap.get("did"))));
             }
             counter++;
         }
@@ -198,78 +176,179 @@ public class Statistics {
             counter++;
         }
 
-        counter = 0;
-        for (String s : otherUnitIdTypesForLeaves.keySet()){
-            if (counter==0) {
-                printWriter.println("other unitid types (leaves);" + s+";"+otherUnitIdTypesForLeaves.get(s));
-            }
-            else {
-                printWriter.println(";" + s + ";" + otherUnitIdTypesForLeaves.get(s));
-            }
-            counter++;
-        }
+//        counter = 0;
+//        for (String s : cLeavesElementsMap.keySet()){
+//            if (counter==0) {
+//                printWriter.println("c (leaves) elements;" + s+";"+cLeavesElementsMap.get(s));
+//            }
+//            else {
+//                printWriter.println(";" + s + ";" + cLeavesElementsMap.get(s));
+//            }
+//            counter++;
+//        }
+//
+//        counter = 0;
+//        for (String s : cLeavesDidElementsMap.keySet()){
+//            if (counter==0) {
+//                printWriter.println("c (leaves) did elements;" + s+";"+cLeavesDidElementsMap.get(s));
+//            }
+//            else {
+//                printWriter.println(";" + s + ";" + cLeavesDidElementsMap.get(s));
+//            }
+//            counter++;
+//        }
+//
+//        counter = 0;
+//        for (String s : otherUnitIdTypesForLeaves.keySet()){
+//            if (counter==0) {
+//                printWriter.println("other unitid types (leaves);" + s+";"+otherUnitIdTypesForLeaves.get(s));
+//            }
+//            else {
+//                printWriter.println(";" + s + ";" + otherUnitIdTypesForLeaves.get(s));
+//            }
+//            counter++;
+//        }
 
-        counter = 0;
-        for (String s : unitIdInfoMap.keySet()){
 
-            String trans = this.newMetricName(s);
-            if (trans!=null) {
-                if (counter == 0) {
-                    printWriter.println("unitid info;" + trans + ";" + unitIdInfoMap.get(s));
-                } else {
-                    printWriter.println(";" + trans + ";" + unitIdInfoMap.get(s));
-                }
-                counter++;
-            }
-        }
 
-        counter = 0;
-        for (String s : unitIdInfoMapForLeaves.keySet()){
-            String trans = this.newMetricName(s);
-            if (trans!=null) {
-                if (counter == 0) {
-                    printWriter.println("unitid info (leaves);" + trans + ";" + unitIdInfoMapForLeaves.get(s));
-                } else {
-                    printWriter.println(";" + trans + ";" + unitIdInfoMapForLeaves.get(s));
-                }
-                counter++;
-            }
-        }
+
+//        counter = 0;
+//        for (String s : unitIdInfoMap.keySet()){
+//            String trans = this.newMetricName(s);
+//            if (trans!=null) {
+//                if (counter == 0) {
+//                    printWriter.println("unitid info;" + trans + ";" + unitIdInfoMap.get(s));
+//                } else {
+//                    printWriter.println(";" + trans + ";" + unitIdInfoMap.get(s));
+//                }
+//                counter++;
+//            }
+//        }
+
+//        counter = 0;
+//        for (String s : unitIdInfoMapForLeaves.keySet()){
+//            String trans = this.newMetricName(s);
+//            if (trans!=null) {
+//                if (counter == 0) {
+//                    printWriter.println("unitid info (leaves);" + trans + ";" + unitIdInfoMapForLeaves.get(s));
+//                } else {
+//                    printWriter.println(";" + trans + ";" + unitIdInfoMapForLeaves.get(s));
+//                }
+//                counter++;
+//            }
+//        }
 
         if (type.equals("total")) {
             counter = 0;
             String str = "";
             for (String s : perCountryInfoStatistics.keySet()) {
-                if (counter>0) s += ";";
-                str += s;
-                counter++;
+                Statistics statistics = perCountryInfoStatistics.get(s);
+                if (statistics.totalFiles > 0) {
+                    if (counter > 0) str += ";";
+                    str += s+";";
+                    counter++;
+                }
             }
-            printWriter.println("country statistics;"+str);
+            printWriter.println("unitid info (per country + total);;"+str+";Total;");
 
             List<String> lines = new ArrayList<>();
             boolean firsttime = true;
             for (String ccode : perCountryInfoStatistics.keySet()) {
                 counter = 0;
                 Statistics statistics = perCountryInfoStatistics.get(ccode);
-                for (String s : statistics.unitIdInfoMap.keySet()){
-                    String trans = this.newMetricShortName(s);
-                    if (trans!=null) {
-                        if (firsttime){
-                            lines.add(trans+";");
-                        }
-                        else {
-                            lines.set(counter, lines.get(counter) + ";" + statistics.unitIdInfoMap.get(s));
-                        }
+                if (statistics.totalFiles > 0) {
+                    for (String s : statistics.unitIdInfoMap.keySet()) {
+                        String trans = this.newMetricName(s);
+                        if (trans != null) {
+                            if (firsttime) {
+                                lines.add(";" + trans + ";" + statistics.unitIdInfoMap.get(s)+";" + getPrettyPercentage(new Double(statistics.unitIdInfoMap.get(s)/new Double(statistics.cCounter))));
+                            } else {
+                                lines.set(counter, lines.get(counter) + ";" + statistics.unitIdInfoMap.get(s)+";" + getPrettyPercentage(new Double(statistics.unitIdInfoMap.get(s)/new Double(statistics.cCounter))));
+                            }
 //                        printWriter.println(";" + trans + ";" + unitIdInfoMap.get(s));
 
+                        }
+                        counter++;
                     }
+                    firsttime = false;
+                }
+            }
+
+            counter = 0;
+            for (String s : unitIdInfoMap.keySet()){
+                String trans = this.newMetricName(s);
+                if (trans!=null) {
+                    lines.set(counter, lines.get(counter) + ";" + unitIdInfoMap.get(s) + ";" + getPrettyPercentage(new Double(unitIdInfoMap.get(s)/new Double(cCounter))));
                     counter++;
                 }
-                firsttime = false;
             }
+
             for (String s : lines){
                 printWriter.println(s);
             }
+        }
+        else if (type.equals("country")) {
+            counter = 0;
+            String str = "";
+            for (String s : perInsitutionInfoStatistics.keySet()) {
+                Statistics statistics = perInsitutionInfoStatistics.get(s);
+                if (statistics.totalFiles > 0) {
+                    if (counter > 0) str += ";";
+                    str += s+";";
+                    counter++;
+                }
+            }
+            printWriter.println("unitid info (per inst + total);;"+str+";Total;");
+
+            List<String> lines = new ArrayList<>();
+            boolean firsttime = true;
+            for (String ccode : perInsitutionInfoStatistics.keySet()) {
+                counter = 0;
+                Statistics statistics = perInsitutionInfoStatistics.get(ccode);
+                if (statistics.totalFiles > 0) {
+                    for (String s : statistics.unitIdInfoMap.keySet()) {
+                        String trans = this.newMetricName(s);
+                        if (trans != null) {
+                            if (firsttime) {
+                                lines.add(";" + trans + ";" + statistics.unitIdInfoMap.get(s)+";" + getPrettyPercentage(new Double(statistics.unitIdInfoMap.get(s)/new Double(statistics.cCounter))));
+                            } else {
+                                lines.set(counter, lines.get(counter) + ";" + statistics.unitIdInfoMap.get(s)+";" + getPrettyPercentage(new Double(statistics.unitIdInfoMap.get(s)/new Double(statistics.cCounter))));
+                            }
+//                        printWriter.println(";" + trans + ";" + unitIdInfoMap.get(s));
+
+                        }
+                        counter++;
+                    }
+                    firsttime = false;
+                }
+            }
+
+            counter = 0;
+            for (String s : unitIdInfoMap.keySet()){
+                String trans = this.newMetricName(s);
+                if (trans!=null) {
+                    lines.set(counter, lines.get(counter) + ";" + unitIdInfoMap.get(s) + ";" + getPrettyPercentage(new Double(unitIdInfoMap.get(s)/new Double(cCounter))));
+                    counter++;
+                }
+            }
+
+            for (String s : lines){
+                printWriter.println(s);
+            }
+        }
+        else if (type.equals("institutions")) {
+        counter = 0;
+        for (String s : unitIdInfoMap.keySet()){
+            String trans = this.newMetricName(s);
+            if (trans!=null) {
+                if (counter == 0) {
+                    printWriter.println("unitid info;" + trans + ";" + unitIdInfoMap.get(s) + ";" + getPrettyPercentage(new Double(unitIdInfoMap.get(s)/new Double(cCounter))));
+                } else {
+                    printWriter.println(";" + trans + ";" + unitIdInfoMap.get(s) + ";" + getPrettyPercentage(new Double(unitIdInfoMap.get(s)/new Double(cCounter))));
+                }
+                counter++;
+            }
+        }
         }
 
         printWriter.close();
@@ -401,15 +480,29 @@ public class Statistics {
         return null;
     }
 
-    private static String gettFileSize(Double fileSize){
+    private static String getFileSize(Double fileSize){
+        Double fs;
+        String type;
         if (fileSize  / (1024 * 1024 * 1024) > 1){
-            return fileSize  / (1024 * 1024 * 1024)+ " GB";
+            fs = fileSize  / (1024 * 1024 * 1024);
+            type="GB";
         }
         else if (fileSize  / (1024 * 1024) > 1){
-            return fileSize  / (1024 * 1024)+ " MB";
+            fs = fileSize  / (1024 * 1024);
+            type="MB";
         }
         else {
-            return fileSize  / (1024)+ " KB";
+            fs = fileSize  / (1024);
+            type="KB";
         }
+
+        Double fs2 = Math.floor(fs*100) / 100;
+
+        return fs2 + " " + type;
+    }
+
+    private static String getPrettyPercentage(Double number){
+        Double fs2 = Math.floor(number*10000) / 100;
+        return fs2 + "%";
     }
 }

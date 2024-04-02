@@ -178,6 +178,7 @@ public class EadXmlFileStatistics {
                                             countryStatistics.minSize = fileSize;
                                             countryStatistics.minFileCountry = countryDir.getName();
                                             countryStatistics.minFileInsitution = institutionDir.getName();
+                                            countryStatistics.minFileName = xmlFile.getAbsolutePath();
                                         }
 
                                         if (fileSize > institutionStatistics.maxSize){
@@ -191,6 +192,7 @@ public class EadXmlFileStatistics {
                                             institutionStatistics.minSize = fileSize;
                                             institutionStatistics.minFileCountry = countryDir.getName();
                                             institutionStatistics.minFileInsitution = institutionDir.getName();
+                                            institutionStatistics.minFileName = xmlFile.getAbsolutePath();
                                         }
 
                                         Stack<CInfo> stack = new Stack<>();
@@ -266,6 +268,7 @@ public class EadXmlFileStatistics {
                                                         }
                                                         else if (currentCInfo != null){
                                                             inCDid = true;
+                                                            currentCInfo.handleCSubElement(startElement);
                                                         }
                                                     }
                                                     else if (startElement.getName().getLocalPart().equals("c")) {
@@ -1056,8 +1059,10 @@ public class EadXmlFileStatistics {
                             }
                         }
                         //End of institution
-                        institutionStatistics.writeCSV("output/"+countryDir.getName()+"/"+institutionDir.getName());
-                        totalStatistics.perCountryInfoStatistics.put(countryDir.getName(), institutionStatistics);
+                        if (institutionStatistics.totalFiles > 0) {
+                            institutionStatistics.writeCSV("output/" + countryDir.getName() + "/" + institutionDir.getName());
+                        }
+                        countryStatistics.perInsitutionInfoStatistics.put(institutionDir.getName(), institutionStatistics);
                     }
                 }
                 //End of country
@@ -1069,7 +1074,9 @@ public class EadXmlFileStatistics {
 
                 totalStatistics.perCountryInfoStatistics.put(countryDir.getName(), countryStatistics);
 
-                countryStatistics.writeCSV("output/"+countryDir.getName());
+                if (countryStatistics.totalFiles > 0) {
+                    countryStatistics.writeCSV("output/" + countryDir.getName());
+                }
             }
         }
 
