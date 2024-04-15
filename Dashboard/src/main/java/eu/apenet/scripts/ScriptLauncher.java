@@ -59,6 +59,7 @@ public class ScriptLauncher
                 if (scriptProperties.containsKey("CONTEXT_XML_FILE")){
                     scriptsConfig.setContextXmlPath(scriptProperties.getProperty("CONTEXT_XML_FILE"));
                 }
+                scriptsConfig.setScriptProperties(scriptProperties);
             } catch (IOException ioe) {
             }
         }

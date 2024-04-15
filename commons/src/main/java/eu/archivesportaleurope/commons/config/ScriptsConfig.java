@@ -1,9 +1,12 @@
 package eu.archivesportaleurope.commons.config;
 
+import java.util.Properties;
+
 public class ScriptsConfig extends ApePortalAndDashboardConfig {
 
     private String configPropertiesPath;
     private String contextXmlPath;
+    private Properties scriptProperties;
 
     @Override
     protected void initBeforeFinalize() {
@@ -25,5 +28,13 @@ public class ScriptsConfig extends ApePortalAndDashboardConfig {
 
     public String getContextXmlPath() {
         return contextXmlPath;
+    }
+
+    public void setScriptProperties(Properties scriptProperties) {
+        this.scriptProperties = scriptProperties;
+    }
+
+    public Properties getScriptProperties() {
+        return scriptProperties;
     }
 }

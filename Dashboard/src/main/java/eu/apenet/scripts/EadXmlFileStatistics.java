@@ -1,5 +1,6 @@
 package eu.apenet.scripts;
 
+import com.google.gson.JsonObject;
 import eu.apenet.commons.utils.APEnetUtilities;
 import eu.apenet.persistence.dao.ArchivalInstitutionDAO;
 import eu.apenet.persistence.factory.DAOFactory;
@@ -71,6 +72,9 @@ public class EadXmlFileStatistics {
         System.out.println("time start: " + (new Date()));
         String repoPath = ((ScriptsConfig) APEnetUtilities.getConfig()).getRepoDirPath();
 
+        String dqstatsPath = ((ScriptsConfig) APEnetUtilities.getConfig()).getScriptProperties().getProperty("DATA_QUALITY_DIR_PATH") + "/" + System.currentTimeMillis();
+
+
 //        int totalFileCounter = 0;
 //        int totalNotFoundFiles = 0;
 //        double maxFileSize = 0;
@@ -131,7 +135,7 @@ public class EadXmlFileStatistics {
 //                        System.out.println("\tInstitution: " + institutionDir.getName());
 
                         Statistics institutionStatistics = new Statistics();
-                        institutionStatistics.type = "institutions";
+                        institutionStatistics.type = "institution";
 
                         for (File typeDir : institutionDir.listFiles()){
                             if (typeDir.isDirectory() && (typeDir.getName().equals("FA") || typeDir.getName().equals("SG") || typeDir.getName().equals("HG"))){
@@ -227,30 +231,30 @@ public class EadXmlFileStatistics {
                                                         if (attribute2!=null) {
                                                             if (!totalStatistics.schemaLocations.containsKey(attribute2.getValue())) {
                                                                 totalStatistics.schemaLocations.put(attribute2.getValue(),1);
-                                                                totalStatistics.schemaLocationsMap.put(attribute2.getValue(), new ArrayList<>());
-                                                                totalStatistics.schemaLocationsMap.get(attribute2.getValue()).add(xmlFile.getAbsolutePath());
+//                                                                totalStatistics.schemaLocationsMap.put(attribute2.getValue(), new ArrayList<>());
+//                                                                totalStatistics.schemaLocationsMap.get(attribute2.getValue()).add(xmlFile.getAbsolutePath());
                                                             }
                                                             else {
                                                                 totalStatistics.schemaLocations.put(attribute2.getValue(), totalStatistics.schemaLocations.get(attribute2.getValue())+1);
-                                                                totalStatistics.schemaLocationsMap.get(attribute2.getValue()).add(xmlFile.getAbsolutePath());
+//                                                                totalStatistics.schemaLocationsMap.get(attribute2.getValue()).add(xmlFile.getAbsolutePath());
                                                             }
                                                             if (!countryStatistics.schemaLocations.containsKey(attribute2.getValue())) {
                                                                 countryStatistics.schemaLocations.put(attribute2.getValue(),1);
-                                                                countryStatistics.schemaLocationsMap.put(attribute2.getValue(), new ArrayList<>());
-                                                                countryStatistics.schemaLocationsMap.get(attribute2.getValue()).add(xmlFile.getAbsolutePath());
+//                                                                countryStatistics.schemaLocationsMap.put(attribute2.getValue(), new ArrayList<>());
+//                                                                countryStatistics.schemaLocationsMap.get(attribute2.getValue()).add(xmlFile.getAbsolutePath());
                                                             }
                                                             else {
                                                                 countryStatistics.schemaLocations.put(attribute2.getValue(), countryStatistics.schemaLocations.get(attribute2.getValue())+1);
-                                                                countryStatistics.schemaLocationsMap.get(attribute2.getValue()).add(xmlFile.getAbsolutePath());
+//                                                                countryStatistics.schemaLocationsMap.get(attribute2.getValue()).add(xmlFile.getAbsolutePath());
                                                             }
                                                             if (!institutionStatistics.schemaLocations.containsKey(attribute2.getValue())) {
                                                                 institutionStatistics.schemaLocations.put(attribute2.getValue(),1);
-                                                                institutionStatistics.schemaLocationsMap.put(attribute2.getValue(), new ArrayList<>());
-                                                                institutionStatistics.schemaLocationsMap.get(attribute2.getValue()).add(xmlFile.getAbsolutePath());
+//                                                                institutionStatistics.schemaLocationsMap.put(attribute2.getValue(), new ArrayList<>());
+//                                                                institutionStatistics.schemaLocationsMap.get(attribute2.getValue()).add(xmlFile.getAbsolutePath());
                                                             }
                                                             else {
                                                                 institutionStatistics.schemaLocations.put(attribute2.getValue(), institutionStatistics.schemaLocations.get(attribute2.getValue())+1);
-                                                                institutionStatistics.schemaLocationsMap.get(attribute2.getValue()).add(xmlFile.getAbsolutePath());
+//                                                                institutionStatistics.schemaLocationsMap.get(attribute2.getValue()).add(xmlFile.getAbsolutePath());
                                                             }
                                                         }
                                                         else {
@@ -1060,27 +1064,33 @@ public class EadXmlFileStatistics {
                         }
                         //End of institution
                         if (institutionStatistics.totalFiles > 0) {
-                            institutionStatistics.writeCSV("output/" + countryDir.getName() + "/" + institutionDir.getName());
+//                            institutionStatistics.writeCSV(dqstatsPath+"/" + countryDir.getName() + "/" + institutionDir.getName());
+                            JsonObject jsonObject = institutionStatistics.writeJson(dqstatsPath+"/" + countryDir.getName() + "/" + institutionDir.getName());
+                            institutionStatistics.writeExcel(dqstatsPath+"/" + countryDir.getName() + "/" + institutionDir.getName(), jsonObject, "institution", countryDir.getName(), institutionDir.getName());
                         }
                         countryStatistics.perInsitutionInfoStatistics.put(institutionDir.getName(), institutionStatistics);
                     }
                 }
                 //End of country
                 System.out.println("\tFiles: " + (int)countryStatistics.totalFiles);
-                Map<String, Double> temp = new HashMap<>();
-                temp.put("no_of_files", new Double(countryStatistics.totalFiles));
-                temp.put("size_of_files", countryStatistics.totalSize);
-                totalStatistics.perCountryInfo.put(countryDir.getName(),temp);
+//                Map<String, Double> temp = new HashMap<>();
+//                temp.put("no_of_files", new Double(countryStatistics.totalFiles));
+//                temp.put("size_of_files", countryStatistics.totalSize);
+//                totalStatistics.perCountryInfo.put(countryDir.getName(),temp);
 
                 totalStatistics.perCountryInfoStatistics.put(countryDir.getName(), countryStatistics);
 
                 if (countryStatistics.totalFiles > 0) {
-                    countryStatistics.writeCSV("output/" + countryDir.getName());
+//                    countryStatistics.writeCSV(dqstatsPath+"/" + countryDir.getName());
+                    JsonObject jsonObject = countryStatistics.writeJson(dqstatsPath+"/" + countryDir.getName());
+                    countryStatistics.writeExcel(dqstatsPath+"/" + countryDir.getName(), jsonObject, "country", countryDir.getName(), null);
                 }
             }
         }
 
-        totalStatistics.writeCSV("output");
+//        totalStatistics.writeCSV(dqstatsPath+"/");
+        JsonObject jsonObject = totalStatistics.writeJson(dqstatsPath+"/");
+        totalStatistics.writeExcel(dqstatsPath+"/", jsonObject, "total", null, null);
 
         System.out.println("totalFileCounter: " + totalStatistics.totalFiles);
         System.out.println("totalNotFoundFiles: " + totalStatistics.totalNotFoundFiles);
@@ -1102,14 +1112,14 @@ public class EadXmlFileStatistics {
             System.out.println("\t["+totalStatistics.schemaLocations.get(s)+"] " + s);
         }
 
-        FileWriter fileWriter3 = new FileWriter("schemalocations.txt");
-        PrintWriter printWriter3 = new PrintWriter(fileWriter3);
-        for (String s : totalStatistics.schemaLocationsMap.keySet()){
-            for (String s1 : totalStatistics.schemaLocationsMap.get(s)) {
-                printWriter3.println(s.replaceAll("[\\t\\n\\r]+", " ") + ";" + s1);
-            }
-        }
-        printWriter3.close();
+//        FileWriter fileWriter3 = new FileWriter("schemalocations.txt");
+//        PrintWriter printWriter3 = new PrintWriter(fileWriter3);
+//        for (String s : totalStatistics.schemaLocationsMap.keySet()){
+//            for (String s1 : totalStatistics.schemaLocationsMap.get(s)) {
+//                printWriter3.println(s.replaceAll("[\\t\\n\\r]+", " ") + ";" + s1);
+//            }
+//        }
+//        printWriter3.close();
 
         System.out.println("arch elements");
         for (String s : totalStatistics.archdescElementsMap.keySet()){
@@ -1161,17 +1171,12 @@ public class EadXmlFileStatistics {
             System.out.println("\t["+totalStatistics.cLeavesElementsMap.get(s)+"] " + s);
         }
 
-        System.out.println("Per country info:");
-        System.out.println("------------------------------");
-        for (String country : totalStatistics.perCountryInfo.keySet()){
-            Map<String, Double> temp = totalStatistics.perCountryInfo.get(country);
-//            System.out.println("country: " + country);
-//            System.out.println("\tNo of files: " + temp.get("no_of_files").intValue());
-//            System.out.println("\tSize of files: " + gettFileSize(temp.get("size_of_files")));
-//            System.out.println("\tMean size of files: " + (temp.get("no_of_files")>0?gettFileSize(temp.get("size_of_files")/temp.get("no_of_files")):0));
-
-            System.out.println(country + ";" + temp.get("no_of_files").intValue() + ";" + gettFileSizeInMB(temp.get("size_of_files")) + ";" + (temp.get("no_of_files")>0?gettFileSizeInMB(temp.get("size_of_files")/temp.get("no_of_files")):0));
-        }
+//        System.out.println("Per country info:");
+//        System.out.println("------------------------------");
+//        for (String country : totalStatistics.perCountryInfo.keySet()){
+//            Map<String, Double> temp = totalStatistics.perCountryInfo.get(country);
+//            System.out.println(country + ";" + temp.get("no_of_files").intValue() + ";" + gettFileSizeInMB(temp.get("size_of_files")) + ";" + (temp.get("no_of_files")>0?gettFileSizeInMB(temp.get("size_of_files")/temp.get("no_of_files")):0));
+//        }
 
         printWriter.close();
         printWriter2.close();
