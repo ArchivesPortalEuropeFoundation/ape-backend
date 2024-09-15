@@ -54,6 +54,9 @@ public class Statistics {
     public int cCounter2 = 0;
     public int cCounterLeaves = 0;
 
+    private Map<String, String> countryMap = new HashMap<>();
+    public Map<String, String> allAIs = new HashMap<>();
+
     public Statistics(){
         unitIdInfoMap.put("metric01", 0);
         unitIdInfoMap.put("metric02", 0);
@@ -74,12 +77,182 @@ public class Statistics {
         unitIdInfoMap.put("metric17", 0);
         unitIdInfoMap.put("metric18", 0);
         unitIdInfoMap.put("metric19", 0);
+
+        countryMap.put("ES","SPAIN");
+        countryMap.put("FR","FRANCE");
+        countryMap.put("DE","GERMANY");
+        countryMap.put("GR","GREECE");
+        countryMap.put("PL","POLAND");
+        countryMap.put("SE","SWEDEN");
+        countryMap.put("NL","NETHERLANDS");
+        countryMap.put("BE","BELGIUM");
+        countryMap.put("SI","SLOVENIA");
+        countryMap.put("IE","IRELAND");
+        countryMap.put("LV","LATVIA");
+        countryMap.put("MT","MALTA");
+        countryMap.put("PT","PORTUGAL");
+        countryMap.put("FI","FINLAND");
+        countryMap.put("BG","BULGARIA");
+        countryMap.put("CZ","CZECH REPUBLIC");
+        countryMap.put("EE","ESTONIA");
+        countryMap.put("HU","HUNGARY");
+        countryMap.put("IS","ICELAND");
+        countryMap.put("LU","LUXEMBOURG");
+        countryMap.put("CH","SWITZERLAND");
+        countryMap.put("DK","DENMARK");
+        countryMap.put("AT","AUSTRIA");
+        countryMap.put("GB","UNITED KINGDOM");
+        countryMap.put("LI","LIECHTENSTEIN");
+        countryMap.put("SK","SLOVAKIA");
+        countryMap.put("NO","NORWAY");
+        countryMap.put("IT","ITALY");
+        countryMap.put("LT","LITHUANIA");
+        countryMap.put("RO","ROMANIA");
+        countryMap.put("HR","CROATIA");
+        countryMap.put("MK","MACEDONIA");
+        countryMap.put("RS","SERBIA");
+        countryMap.put("ME","MONTENEGRO");
+        countryMap.put("GE","GEORGIA");
+        countryMap.put("IM","ISLE OF MAN");
+        countryMap.put("AL","ALBANIA");
+        countryMap.put("IL","ISRAEL");
+        countryMap.put("UA","UKRAINE");
+        countryMap.put("XX","MULTINATIONAL INSTITUTIONS");
+        countryMap.put("XK","KOSOVO");
+        countryMap.put("TR","TURKEY");
     }
 
     public JsonObject writeJson(String filePath) throws IOException {
         File file = new File(filePath);
         if (!file.exists()){
             file.mkdirs();
+        }
+
+        List<String> allPossibleSchemaLocations = new ArrayList<>();
+        allPossibleSchemaLocations.add("urn:isbn:1-931666-22-9 https://www.archivesportaleurope.net/schemas/ead/apeEAD.xsd http://www.w3.org/1999/xlink http://www.loc.gov/standards/xlink/xlink.xsd");
+        allPossibleSchemaLocations.add("urn:isbn:1-931666-22-9 https://www.archivesportaleurope.net/Portal/profiles/apeEAD.xsd http://www.w3.org/1999/xlink http://www.loc.gov/standards/xlink/xlink.xsd");
+        allPossibleSchemaLocations.add("urn:isbn:1-931666-22-9 http://www.archivesportaleurope.net/Portal/profiles/apeEAD.xsd http://www.w3.org/1999/xlink http://www.loc.gov/standards/xlink/xlink.xsd");
+        allPossibleSchemaLocations.add("urn:isbn:1-931666-22-9 https://schemas.archivesportaleurope.net/profiles/apeEAD.xsd http://www.w3.org/1999/xlink http://www.loc.gov/standards/xlink/xlink.xsd");
+        allPossibleSchemaLocations.add("urn:isbn:1-931666-22-9 http://schemas.archivesportaleurope.net/profiles/apeEAD.xsd http://www.w3.org/1999/xlink http://www.loc.gov/standards/xlink/xlink.xsd");
+        allPossibleSchemaLocations.add("urn:isbn:1-931666-22-9 https://www.archivesportaleurope.net/schemas/ead/apeEAD.xsd");
+        allPossibleSchemaLocations.add("urn:isbn:1-931666-22-9 http://www.archivesportaleurope.net/Portal/profiles/apeEAD.xsd");
+        allPossibleSchemaLocations.add("urn:isbn:1-931666-22-9 https://www.archivesportaleurope.net/Portal/profiles/apeEAD.xsd");
+        allPossibleSchemaLocations.add("urn:isbn:1-931666-22-9 https://schemas.archivesportaleurope.net/profiles/apeEAD.xsd");
+        allPossibleSchemaLocations.add("urn:isbn:1-931666-22-9 http://schemas.archivesportaleurope.net/profiles/apeEAD.xsd");
+        allPossibleSchemaLocations.add("urn:isbn:1-931666-22-9 apeEAD.xsd");
+        allPossibleSchemaLocations.add("no_schema_location");
+        allPossibleSchemaLocations.add("other_schema_location");
+        for (String s : allPossibleSchemaLocations){
+            if (!schemaLocations.containsKey(s)){
+                schemaLocations.put(s, 0);
+            }
+        }
+
+        List<String> allPossibleOtherUnitIdTypes = new ArrayList<>();
+        allPossibleOtherUnitIdTypes.add("former call number");
+        allPossibleOtherUnitIdTypes.add("file reference");
+        allPossibleOtherUnitIdTypes.add("other_unitid_type");
+        for (String s : allPossibleOtherUnitIdTypes){
+            if (!otherUnitIdTypes.containsKey(s)){
+                otherUnitIdTypes.put(s, 0);
+            }
+        }
+
+        List<String> allPossibleCDidElements = new ArrayList<>();
+        allPossibleCDidElements.add("scopecontent");
+        allPossibleCDidElements.add("userestrict");
+        allPossibleCDidElements.add("prefercite");
+        allPossibleCDidElements.add("accessrestrict");
+        allPossibleCDidElements.add("controlaccess");
+        allPossibleCDidElements.add("bioghist");
+        allPossibleCDidElements.add("custodhist");
+        allPossibleCDidElements.add("otherfindaid");
+        allPossibleCDidElements.add("altformavail");
+        allPossibleCDidElements.add("relatedmaterial");
+        allPossibleCDidElements.add("bibliography");
+        allPossibleCDidElements.add("acqinfo");
+        allPossibleCDidElements.add("appraisal");
+        allPossibleCDidElements.add("accruals");
+        allPossibleCDidElements.add("arrangement");
+        allPossibleCDidElements.add("processinfo");
+        allPossibleCDidElements.add("fileplan");
+        allPossibleCDidElements.add("phystech");
+        allPossibleCDidElements.add("odd");
+        allPossibleCDidElements.add("fileplan");
+        allPossibleCDidElements.add("other_c_element");
+        for (String s : allPossibleCDidElements){
+            if (!cElementsMap.containsKey(s)){
+                cElementsMap.put(s, 0);
+            }
+        }
+
+        List<String> allPossibleCElements = new ArrayList<>();
+        allPossibleCElements.add("unittitle");
+        allPossibleCElements.add("unitdate");
+        allPossibleCElements.add("physdesc");
+        allPossibleCElements.add("dao");
+        allPossibleCElements.add("origination");
+        allPossibleCElements.add("repository");
+        allPossibleCElements.add("langmaterial");
+        allPossibleCElements.add("container");
+        allPossibleCElements.add("physloc");
+        allPossibleCElements.add("materialspec");
+        allPossibleCElements.add("note");
+        allPossibleCElements.add("head");
+        allPossibleCElements.add("other_c_did_element");
+        for (String s : allPossibleCElements){
+            if (!cDidElementsMap.containsKey(s)){
+                cDidElementsMap.put(s, 0);
+            }
+        }
+
+        List<String> allPossibleArchDescElements = new ArrayList<>();
+        allPossibleArchDescElements.add("scopecontent");
+        allPossibleArchDescElements.add("userestrict");
+        allPossibleArchDescElements.add("prefercite");
+        allPossibleArchDescElements.add("accessrestrict");
+        allPossibleArchDescElements.add("controlaccess");
+        allPossibleArchDescElements.add("bioghist");
+        allPossibleArchDescElements.add("custodhist");
+        allPossibleArchDescElements.add("otherfindaid");
+        allPossibleArchDescElements.add("altformavail");
+        allPossibleArchDescElements.add("relatedmaterial");
+        allPossibleArchDescElements.add("bibliography");
+        allPossibleArchDescElements.add("acqinfo");
+        allPossibleArchDescElements.add("appraisal");
+        allPossibleArchDescElements.add("accruals");
+        allPossibleArchDescElements.add("arrangement");
+        allPossibleArchDescElements.add("processinfo");
+        allPossibleArchDescElements.add("fileplan");
+        allPossibleArchDescElements.add("phystech");
+        allPossibleArchDescElements.add("odd");
+        allPossibleArchDescElements.add("dsc");
+        allPossibleArchDescElements.add("other_archdesc_element");
+        for (String s : allPossibleArchDescElements){
+            if (!archdescElementsMap.containsKey(s)){
+                archdescElementsMap.put(s, 0);
+            }
+        }
+
+        List<String> allPossibleArchDescDidElements = new ArrayList<>();
+        allPossibleArchDescDidElements.add("unitid");
+        allPossibleArchDescDidElements.add("unittitle");
+        allPossibleArchDescDidElements.add("unitdate");
+        allPossibleArchDescDidElements.add("physdesc");
+        allPossibleArchDescDidElements.add("dao");
+        allPossibleArchDescDidElements.add("origination");
+        allPossibleArchDescDidElements.add("repository");
+        allPossibleArchDescDidElements.add("langmaterial");
+        allPossibleArchDescDidElements.add("container");
+        allPossibleArchDescDidElements.add("physloc");
+        allPossibleArchDescDidElements.add("materialspec");
+        allPossibleArchDescDidElements.add("note");
+        allPossibleArchDescDidElements.add("head");
+        allPossibleArchDescDidElements.add("other_archdesc_did_element");
+        for (String s : allPossibleArchDescDidElements){
+            if (!archdescDidElementsMap.containsKey(s)){
+                archdescDidElementsMap.put(s, 0);
+            }
         }
 
         JsonObject jsonObject = new JsonObject();
@@ -115,13 +288,14 @@ public class Statistics {
         JsonArray localJsonArray = null;
         JsonObject localJsonObject = null;
 
-        localJsonArray = new JsonArray();
+        localJsonObject = new JsonObject();
         for (String s : schemaLocations.keySet()){
-            localJsonObject = new JsonObject();
-            localJsonObject.addProperty(s, schemaLocations.get(s));
-            localJsonArray.add(localJsonObject);
+            localJsonArray = new JsonArray();
+            localJsonArray.add(schemaLocations.get(s));
+            localJsonArray.add(getPrettyPercentage(new Double(schemaLocations.get(s))/new Double(totalFiles)));
+            localJsonObject.add(s, localJsonArray);
         }
-        jsonObject.add("schema_locations", localJsonArray);
+        jsonObject.add("schema_locations", localJsonObject);
 
         localJsonObject = new JsonObject();
         for (String s : archdescElementsMap.keySet()){
@@ -136,7 +310,12 @@ public class Statistics {
         for (String s : archdescDidElementsMap.keySet()){
             localJsonArray = new JsonArray();
             localJsonArray.add(archdescDidElementsMap.get(s));
-            localJsonArray.add(getPrettyPercentage(new Double(archdescDidElementsMap.get(s))/new Double(archdescElementsMap.get("did"))));
+            try {
+                localJsonArray.add(getPrettyPercentage(new Double(archdescDidElementsMap.get(s))/new Double(archdescElementsMap.get("did"))));
+            } catch (Exception e) {
+//                e.printStackTrace();
+                localJsonArray.add("--%");
+            }
             localJsonObject.add(s, localJsonArray);
         }
         jsonObject.add("arch_did_elements", localJsonObject);
@@ -155,14 +334,22 @@ public class Statistics {
         for (String s : cDidElementsMap.keySet()){
             localJsonArray = new JsonArray();
             localJsonArray.add(cDidElementsMap.get(s));
-            localJsonArray.add(getPrettyPercentage(new Double(cDidElementsMap.get(s))/new Double(cElementsMap.get("did"))));
+            try {
+                localJsonArray.add(getPrettyPercentage(new Double(cDidElementsMap.get(s))/new Double(cElementsMap.get("did"))));
+            } catch (Exception e) {
+                //e.printStackTrace();
+                localJsonArray.add("--%");
+            }
             localJsonObject.add(s, localJsonArray);
         }
         jsonObject.add("c_did_elements", localJsonObject);
 
         JsonObject localJsonObject22 = new JsonObject();
         for (String s : otherUnitIdTypes.keySet()){
-            localJsonObject22.addProperty(s, otherUnitIdTypes.get(s));
+            localJsonArray = new JsonArray();
+            localJsonArray.add(otherUnitIdTypes.get(s));
+            localJsonArray.add(getPrettyPercentage(new Double(otherUnitIdTypes.get(s))/new Double(cCounter)));
+            localJsonObject22.add(s, localJsonArray);
         }
         jsonObject.add("other_unitid_types", localJsonObject22);
 
@@ -216,6 +403,7 @@ public class Statistics {
                     for (String s : otherUnitIdTypes.keySet()){
                         if (!allSchemas2.contains(s)){
                             JsonArray localJsonArray2 = new JsonArray();
+                            localJsonArray2.add(0);
                             localJsonArray2.add("0.00%");
                             localJsonArray2.add("0.00%");
                             countryLocalJsonObject3.add(s, localJsonArray2);
@@ -248,6 +436,7 @@ public class Statistics {
                     for (String s : schemaLocations.keySet()){
                         if (!allSchemas.contains(s)){
                             JsonArray localJsonArray2 = new JsonArray();
+                            localJsonArray2.add(0);
                             localJsonArray2.add("0.00%");
                             localJsonArray2.add("0.00%");
                             localJsonObject2.add(s, localJsonArray2);
@@ -269,6 +458,7 @@ public class Statistics {
                     for (String s : otherUnitIdTypes.keySet()){
                         if (!allSchemas.contains(s)){
                             JsonArray localJsonArray2 = new JsonArray();
+                            localJsonArray2.add(0);
                             localJsonArray2.add("0.00%");
                             localJsonArray2.add("0.00%");
                             localJsonObject2.add(s, localJsonArray2);
@@ -291,6 +481,7 @@ public class Statistics {
                     for (String s : archdescElementsMap.keySet()){
                         if (!allSchemas.contains(s)){
                             JsonArray localJsonArray2 = new JsonArray();
+                            localJsonArray2.add(0);
                             localJsonArray2.add("0.00%");
                             localJsonArray2.add("0.00%");
                             localJsonObject2.add(s, localJsonArray2);
@@ -304,14 +495,21 @@ public class Statistics {
                     for (String s : statistics.archdescDidElementsMap.keySet()){
                         JsonArray localJsonArray2 = new JsonArray();
                         localJsonArray2.add(statistics.archdescDidElementsMap.get(s));
-                        localJsonArray2.add(getPrettyPercentage(new Double(statistics.archdescDidElementsMap.get(s)/new Double(archdescElementsMap.get("did")))));
-                        localJsonArray2.add(getPrettyPercentage(new Double(statistics.archdescDidElementsMap.get(s)/new Double(statistics.archdescElementsMap.get("did")))));
+                        try {
+                            localJsonArray2.add(getPrettyPercentage(new Double(statistics.archdescDidElementsMap.get(s)/new Double(archdescElementsMap.get("did")))));
+                            localJsonArray2.add(getPrettyPercentage(new Double(statistics.archdescDidElementsMap.get(s)/new Double(statistics.archdescElementsMap.get("did")))));
+                        } catch (Exception e) {
+//                            e.printStackTrace();
+                            localJsonArray2.add("--%");
+                            localJsonArray2.add("--%");
+                        }
                         localJsonObject2.add(s, localJsonArray2);
                         allSchemas.add(s);
                     }
                     for (String s : archdescDidElementsMap.keySet()){
                         if (!allSchemas.contains(s)){
                             JsonArray localJsonArray2 = new JsonArray();
+                            localJsonArray2.add(0);
                             localJsonArray2.add("0.00%");
                             localJsonArray2.add("0.00%");
                             localJsonObject2.add(s, localJsonArray2);
@@ -334,6 +532,7 @@ public class Statistics {
                     for (String s : cElementsMap.keySet()){
                         if (!allSchemas.contains(s)){
                             JsonArray localJsonArray2 = new JsonArray();
+                            localJsonArray2.add(0);
                             localJsonArray2.add("0.00%");
                             localJsonArray2.add("0.00%");
                             localJsonObject2.add(s, localJsonArray2);
@@ -347,16 +546,26 @@ public class Statistics {
                     localJsonObject2 = new JsonObject();
                     allSchemas = new ArrayList<>();
                     for (String s : statistics.cDidElementsMap.keySet()){
-                        JsonArray localJsonArray2 = new JsonArray();
-                        localJsonArray2.add(statistics.cDidElementsMap.get(s));
-                        localJsonArray2.add(getPrettyPercentage(new Double(statistics.cDidElementsMap.get(s)/new Double(cElementsMap.get("did")))));
-                        localJsonArray2.add(getPrettyPercentage(new Double(statistics.cDidElementsMap.get(s)/new Double(statistics.cElementsMap.get("did")))));
-                        localJsonObject2.add(s, localJsonArray2);
+                        try {
+                            JsonArray localJsonArray2 = new JsonArray();
+                            localJsonArray2.add(statistics.cDidElementsMap.get(s));
+                            localJsonArray2.add(getPrettyPercentage(new Double(statistics.cDidElementsMap.get(s)/new Double(cElementsMap.get("did")))));
+                            localJsonArray2.add(getPrettyPercentage(new Double(statistics.cDidElementsMap.get(s)/new Double(statistics.cElementsMap.get("did")))));
+                            localJsonObject2.add(s, localJsonArray2);
+                        } catch (Exception e) {
+//                            e.printStackTrace();
+                            JsonArray localJsonArray2 = new JsonArray();
+                            localJsonArray2.add(statistics.cDidElementsMap.get(s));
+                            localJsonArray2.add("--%");
+                            localJsonArray2.add("--%");
+                            localJsonObject2.add(s, localJsonArray2);
+                        }
                         allSchemas.add(s);
                     }
                     for (String s : cDidElementsMap.keySet()){
                         if (!allSchemas.contains(s)){
                             JsonArray localJsonArray2 = new JsonArray();
+                            localJsonArray2.add(0);
                             localJsonArray2.add("0.00%");
                             localJsonArray2.add("0.00%");
                             localJsonObject2.add(s, localJsonArray2);
@@ -400,6 +609,7 @@ public class Statistics {
             for (String s : schemaLocations.keySet()){
                 if (!allSchemas.contains(s)){
                     JsonArray localJsonArray2 = new JsonArray();
+                    localJsonArray2.add(0);
                     localJsonArray2.add("0.00%");
                     localJsonArray2.add("0.00%");
                     localJsonObject2.add(s, localJsonArray2);
@@ -419,6 +629,7 @@ public class Statistics {
             for (String s : archdescElementsMap.keySet()){
                 if (!allSchemas.contains(s)){
                     JsonArray localJsonArray2 = new JsonArray();
+                    localJsonArray2.add(0);
                     localJsonArray2.add("0.00%");
                     localJsonArray2.add("0.00%");
                     localJsonObject2.add(s, localJsonArray2);
@@ -429,15 +640,24 @@ public class Statistics {
             localJsonObject2 = new JsonObject();
             allSchemas = new ArrayList<>();
             for (String s : archdescDidElementsMap.keySet()){
-                JsonArray localJsonArray2 = new JsonArray();
-                localJsonArray2.add(archdescDidElementsMap.get(s));
-                localJsonArray2.add(getPrettyPercentage(new Double(archdescDidElementsMap.get(s)/new Double(archdescElementsMap.get("did")))));
-                localJsonObject2.add(s, localJsonArray2);
+                try {
+                    JsonArray localJsonArray2 = new JsonArray();
+                    localJsonArray2.add(archdescDidElementsMap.get(s));
+                    localJsonArray2.add(getPrettyPercentage(new Double(archdescDidElementsMap.get(s)/new Double(archdescElementsMap.get("did")))));
+                    localJsonObject2.add(s, localJsonArray2);
+                } catch (Exception e) {
+//                    e.printStackTrace();
+                    JsonArray localJsonArray2 = new JsonArray();
+                    localJsonArray2.add(archdescDidElementsMap.get(s));
+                    localJsonArray2.add("--%");
+                    localJsonObject2.add(s, localJsonArray2);
+                }
                 allSchemas.add(s);
             }
             for (String s : archdescDidElementsMap.keySet()){
                 if (!allSchemas.contains(s)){
                     JsonArray localJsonArray2 = new JsonArray();
+                    localJsonArray2.add(0);
                     localJsonArray2.add("0.00%");
                     localJsonArray2.add("0.00%");
                     localJsonObject2.add(s, localJsonArray2);
@@ -458,6 +678,7 @@ public class Statistics {
             for (String s : cElementsMap.keySet()){
                 if (!allSchemas.contains(s)){
                     JsonArray localJsonArray2 = new JsonArray();
+                    localJsonArray2.add(0);
                     localJsonArray2.add("0.00%");
                     localJsonArray2.add("0.00%");
                     localJsonObject2.add(s, localJsonArray2);
@@ -471,13 +692,18 @@ public class Statistics {
             for (String s : cDidElementsMap.keySet()){
                 JsonArray localJsonArray2 = new JsonArray();
                 localJsonArray2.add(cDidElementsMap.get(s));
-                localJsonArray2.add(getPrettyPercentage(new Double(cDidElementsMap.get(s)/new Double(cElementsMap.get("did")))));
+                try {
+                    localJsonArray2.add(getPrettyPercentage(new Double(cDidElementsMap.get(s)/new Double(cElementsMap.get("did")))));
+                } catch (Exception e) {
+                    localJsonArray2.add("--%");
+                }
                 localJsonObject2.add(s, localJsonArray2);
                 allSchemas.add(s);
             }
             for (String s : cDidElementsMap.keySet()){
                 if (!allSchemas.contains(s)){
                     JsonArray localJsonArray2 = new JsonArray();
+                    localJsonArray2.add(0);
                     localJsonArray2.add("0.00%");
                     localJsonArray2.add("0.00%");
                     localJsonObject2.add(s, localJsonArray2);
@@ -489,7 +715,7 @@ public class Statistics {
             jsonObject.add("unitid_info_"+lektiko, localJsonObject);
             jsonObject.add("schema_locations_"+lektiko, schemaLocationsLocalJsonObject);
             jsonObject.add("arch_elements_"+lektiko, archElementsLocalJsonObject);
-            jsonObject.add("arch_did elements_"+lektiko, archDidElementsLocalJsonObject);
+            jsonObject.add("arch_did_elements_"+lektiko, archDidElementsLocalJsonObject);
             jsonObject.add("c_elements_"+lektiko, cElementsLocalJsonObject);
             jsonObject.add("c_did_elements_"+lektiko, cDidElementsLocalJsonObject);
             jsonObject.add("other_unitid_types_"+lektiko, otherUnitIdsLocalJsonObject);
@@ -585,10 +811,12 @@ public class Statistics {
             fillCell(sheet1, 1, 1, jsonObject.get("total_size").getAsString());
             fillCell(sheet1, 1, 2, jsonObject.get("max_size").getAsString());
             if (country != null){
-                fillCell(sheet1, 1, 3, country);
+
+                fillCell(sheet1, 1, 3, countryMap.get(country) +" ("+country+")");
             }
             else {
-                fillCell(sheet1, 1, 3, jsonObject.get("max_country").getAsString());
+                String country2 = jsonObject.get("max_country").getAsString();
+                fillCell(sheet1, 1, 3, countryMap.get(country2) +" ("+country2+")");
             }
             if (institution != null){
                 fillCell(sheet1, 1, 4, institution);
@@ -599,10 +827,11 @@ public class Statistics {
             fillCell(sheet1, 1, 5, jsonObject.get("max_filename").getAsString());
             fillCell(sheet1, 1, 6, jsonObject.get("min_size").getAsString());
             if (country != null){
-                fillCell(sheet1, 1, 7, country);
+                fillCell(sheet1, 1, 7, countryMap.get(country) +" ("+country+")");
             }
             else {
-                fillCell(sheet1, 1, 7, jsonObject.get("min_country").getAsString());
+                String country2 = jsonObject.get("min_country").getAsString();
+                fillCell(sheet1, 1, 7, countryMap.get(country2) +" ("+country2+")");
             }
             if (institution != null){
                 fillCell(sheet1, 1, 8, institution);
@@ -618,28 +847,138 @@ public class Statistics {
             //Sheet 2
             fillCell(sheet2, 3, 0, " total (#)");
             fillCell(sheet2, 4, 0, " total (%)");
-            Set<String> allCountriesOrInstitutions = findAllCountriesOrInstitutions(jsonObject);
+            List<String> allCountriesOrInstitutions = findAllCountriesOrInstitutions(jsonObject);
             if (allCountriesOrInstitutions != null) {
-                List<String> s = new ArrayList<>(allCountriesOrInstitutions);
-                for (int i = 0; i < s.size(); i++) {
-                    fillCell(sheet2, i * 3 + 5, 0, s.get(i) + " (#)");
-                    fillCell(sheet2, i * 3 + 1 + 5, 0,  s.get(i) + " (%)");
-                    fillCell(sheet2, i * 3 + 2 + 5, 0, s.get(i) + " (%)");
+                for (int i = 0; i < allCountriesOrInstitutions.size(); i++) {
+                    String country2 = allCountriesOrInstitutions.get(i);
+                    String countryToDisplay;
+                    if (countryMap.containsKey(country2)){
+                        countryToDisplay = countryMap.get(country2) +" ("+country2+")";
+                    }
+                    else {
+                        countryToDisplay = allAIs.get(country2) +" ("+country2+")";
+                    }
+
+                    fillCell(sheet2, i * 3 + 5, 0, countryToDisplay + " (#)");
+                    fillCell(sheet2, i * 3 + 1 + 5, 0,  countryToDisplay + " (%)");
+                    fillCell(sheet2, i * 3 + 2 + 5, 0, countryToDisplay + " (%)");
                 }
             }
-            fillCell(sheet2, 0, 1, "Schema location");
             int row = 1;
-            for (JsonElement jsonElement : jsonObject.get("schema_locations").getAsJsonArray()){
+            fillCell(sheet2, 0, row, "Schema location");
 
-                row++;
-            }
-//            row = jsonObject.get("schema_locations").getAsJsonArray().size() + 1;
-            fillCell(sheet2, 0, row, "Component description");
+            fillSchemaLocationCell(sheet2, row, jsonObject, lektiko, allCountriesOrInstitutions, "Expected schema location (new)", "urn:isbn:1-931666-22-9 https://www.archivesportaleurope.net/schemas/ead/apeEAD.xsd http://www.w3.org/1999/xlink http://www.loc.gov/standards/xlink/xlink.xsd");
+            fillSchemaLocationCell(sheet2, ++row, jsonObject, lektiko, allCountriesOrInstitutions, "Expected schema location (old, https)", "urn:isbn:1-931666-22-9 https://www.archivesportaleurope.net/Portal/profiles/apeEAD.xsd http://www.w3.org/1999/xlink http://www.loc.gov/standards/xlink/xlink.xsd");
+            fillSchemaLocationCell(sheet2, ++row, jsonObject, lektiko, allCountriesOrInstitutions, "Expected schema location (old, http)", "urn:isbn:1-931666-22-9 http://www.archivesportaleurope.net/Portal/profiles/apeEAD.xsd http://www.w3.org/1999/xlink http://www.loc.gov/standards/xlink/xlink.xsd");
+            fillSchemaLocationCell(sheet2, ++row, jsonObject, lektiko, allCountriesOrInstitutions, "Expected schema location (old, schemas..., https)", "urn:isbn:1-931666-22-9 https://schemas.archivesportaleurope.net/profiles/apeEAD.xsd http://www.w3.org/1999/xlink http://www.loc.gov/standards/xlink/xlink.xsd");
+            fillSchemaLocationCell(sheet2, ++row, jsonObject, lektiko, allCountriesOrInstitutions, "Expected schema location (old, schemas..., http)", "urn:isbn:1-931666-22-9 http://schemas.archivesportaleurope.net/profiles/apeEAD.xsd http://www.w3.org/1999/xlink http://www.loc.gov/standards/xlink/xlink.xsd");
+            fillSchemaLocationCell(sheet2, ++row, jsonObject, lektiko, allCountriesOrInstitutions, "Expected schema location (new, without XLink)", "urn:isbn:1-931666-22-9 https://www.archivesportaleurope.net/schemas/ead/apeEAD.xsd");
+            fillSchemaLocationCell(sheet2, ++row, jsonObject, lektiko, allCountriesOrInstitutions, "Expected schema location (old, http, without XLink)", "urn:isbn:1-931666-22-9 http://www.archivesportaleurope.net/Portal/profiles/apeEAD.xsd");
+            fillSchemaLocationCell(sheet2, ++row, jsonObject, lektiko, allCountriesOrInstitutions, "Expected schema location (old, https, without XLink)", "urn:isbn:1-931666-22-9 https://www.archivesportaleurope.net/Portal/profiles/apeEAD.xsd");
+            fillSchemaLocationCell(sheet2, ++row, jsonObject, lektiko, allCountriesOrInstitutions, "Expected schema location (old, schemas..., https)", "urn:isbn:1-931666-22-9 https://schemas.archivesportaleurope.net/profiles/apeEAD.xsd");
+            fillSchemaLocationCell(sheet2, ++row, jsonObject, lektiko, allCountriesOrInstitutions, "Expected schema location (old, schemas..., http)", "urn:isbn:1-931666-22-9 http://schemas.archivesportaleurope.net/profiles/apeEAD.xsd");
+            fillSchemaLocationCell(sheet2, ++row, jsonObject, lektiko, allCountriesOrInstitutions, "Expected schema location (no http)", "urn:isbn:1-931666-22-9 apeEAD.xsd");
+            fillSchemaLocationCell(sheet2, ++row, jsonObject, lektiko, allCountriesOrInstitutions, "No schema location", "", "no_schema_location");
+            fillSchemaLocationCell(sheet2, ++row, jsonObject, lektiko, allCountriesOrInstitutions, "Other schema location", "Anything else, more details on request", "other_schema_location");
 
-            fillMetricCell(sheet2, row, jsonObject, lektiko, allCountriesOrInstitutions, "Reference codes of the materials", "(05) - At least one did/unitid/@type = \"call number\"", "metric05");
-            fillMetricCell(sheet2, ++row, jsonObject, lektiko, allCountriesOrInstitutions, "Several reference codes of the materials", "(07) - Two or more did/unitid/@type = \"call number\"", "metric07");
-            fillMetricCell(sheet2, ++row, jsonObject, lektiko, allCountriesOrInstitutions, "Identifiers of the components", "(14) - With @id attribute", "metric14");
-            fillMetricCell(sheet2, ++row, jsonObject, lektiko, allCountriesOrInstitutions, "Reference codes of the materials plus idenifiers of the components", "(06) - At least one did/unitid/@type = \"call number\" + @id attribute", "metric06");
+            fillCell(sheet2, 0, ++row, "Component description");
+
+            fillMetricCell(sheet2, row, jsonObject, lektiko, allCountriesOrInstitutions, "Reference codes of the materials", "05 - At least one did/unitid/@type = \"call number\"", "metric05");
+            fillMetricCell(sheet2, ++row, jsonObject, lektiko, allCountriesOrInstitutions, "Several reference codes of the materials", "07 - Two or more did/unitid/@type = \"call number\"", "metric07");
+            fillMetricCell(sheet2, ++row, jsonObject, lektiko, allCountriesOrInstitutions, "Identifiers of the components", "14 - With @id attribute", "metric14");
+            fillMetricCell(sheet2, ++row, jsonObject, lektiko, allCountriesOrInstitutions, "Reference codes of the materials plus idenifiers of the components", "06 - At least one did/unitid/@type = \"call number\" + @id attribute", "metric06");
+            fillMetricCell(sheet2, ++row, jsonObject, lektiko, allCountriesOrInstitutions, "Identifiers of the materials (incl. reference codes)", "01 - At least one did/unitid (any or no type)", "metric01");
+            fillMetricCell(sheet2, ++row, jsonObject, lektiko, allCountriesOrInstitutions, "Identifiers of the materials plus identifiers of the components", "02 - At least one did/unitid (of any of no type) + @id attribute", "metric02");
+            fillMetricCell(sheet2, ++row, jsonObject, lektiko, allCountriesOrInstitutions, "No identifiers of the materials", "03 - No did/unitid (of any or no type)", "metric03");
+            fillMetricCell(sheet2, ++row, jsonObject, lektiko, allCountriesOrInstitutions, "No identifiers of the materials, but identifiers of the components instead", "04 - No did/unitid (of any or no type), but with @id attribute", "metric01");
+            fillMetricCell(sheet2, ++row, jsonObject, lektiko, allCountriesOrInstitutions, "No identifiers of the components", "17 - No @id attribute", "metric17");
+            fillMetricCell(sheet2, ++row, jsonObject, lektiko, allCountriesOrInstitutions, "No identifiers of the components, but identifiers of the materials instead", "18 - No @id attribute, but at least one did/unitid (of any type or no type)", "metric18");
+            fillMetricCell(sheet2, ++row, jsonObject, lektiko, allCountriesOrInstitutions, "No identifiers at all (neither materials nor components)", "19 - No @id attribute nor at least one did/unitid (of any type or no type)", "metric19");
+            fillMetricCell(sheet2, ++row, jsonObject, lektiko, allCountriesOrInstitutions, "Other identifiers of the materials (one or more)", "08 - At least one did/unitid/@type <> \"call number\"", "metric08");
+            fillMetricCell(sheet2, ++row, jsonObject, lektiko, allCountriesOrInstitutions, "", "09 - At least one did/unitid/@type <> \"call number\" plus at least one did/unitid/@type = \"call number\"", "metric09");
+            fillMetricCell(sheet2, ++row, jsonObject, lektiko, allCountriesOrInstitutions, "", "10 - At least one did/unitid/@type <> \"call number\", but no did/unitid/@type = \"call number\"", "metric10");
+
+            fillOtherUnitIdTypeCell(sheet2, ++row, jsonObject, lektiko, allCountriesOrInstitutions, "Types of other identifiers of the materials", "did/unitid/@type = \"former call number\"", "former call number");
+            fillOtherUnitIdTypeCell(sheet2, ++row, jsonObject, lektiko, allCountriesOrInstitutions, "", "did/unitid/@type = \"file reference\"","file reference");
+            fillOtherUnitIdTypeCell(sheet2, ++row, jsonObject, lektiko, allCountriesOrInstitutions, "",  "Any other (non-apeEAD) types, more details on request", "other_unitid_type");
+
+            fillMetricCell(sheet2, ++row, jsonObject, lektiko, allCountriesOrInstitutions, "Unknown identifiers of the materials (one or more)", "11 - At least one did/unitid with no @type attribute at all", "metric11");
+            fillMetricCell(sheet2, ++row, jsonObject, lektiko, allCountriesOrInstitutions, "", "12 - At least one did/unitid with no @type attribute at all plus at least one did/unitid@type = \"call number\"", "metric12");
+            fillMetricCell(sheet2, ++row, jsonObject, lektiko, allCountriesOrInstitutions, "", "13 - At least one did/unitid with no @type attribute at all, but no did/unitid@type = \"call number\"", "metric13");
+
+            fillElementCell(sheet2, ++row, "c_did_elements", jsonObject, lektiko, allCountriesOrInstitutions, "Title",  "unittitle", "unittitle");
+            fillElementCell(sheet2, ++row, "c_did_elements", jsonObject, lektiko, allCountriesOrInstitutions, "Date of creation",  "unitdate", "unitdate");
+            fillElementCell(sheet2, ++row, "c_did_elements", jsonObject, lektiko, allCountriesOrInstitutions, "Extent, dimensions",  "physdesc", "physdesc");
+            fillElementCell(sheet2, ++row, "c_did_elements", jsonObject, lektiko, allCountriesOrInstitutions, "Link to digital object",  "dao", "dao");
+            fillElementCell(sheet2, ++row, "c_did_elements", jsonObject, lektiko, allCountriesOrInstitutions, "Name of creator",  "origination", "origination");
+            fillElementCell(sheet2, ++row, "c_did_elements", jsonObject, lektiko, allCountriesOrInstitutions, "Name of institution",  "repository", "repository");
+            fillElementCell(sheet2, ++row, "c_did_elements", jsonObject, lektiko, allCountriesOrInstitutions, "Language of material",  "langmaterial", "langmaterial");
+            fillElementCell(sheet2, ++row, "c_did_elements", jsonObject, lektiko, allCountriesOrInstitutions, "Container",  "container", "container");
+            fillElementCell(sheet2, ++row, "c_did_elements", jsonObject, lektiko, allCountriesOrInstitutions, "Physical location",  "physloc", "physloc");
+            fillElementCell(sheet2, ++row, "c_did_elements", jsonObject, lektiko, allCountriesOrInstitutions, "Material specific details",  "materialspec", "materialspec");
+            fillElementCell(sheet2, ++row, "c_did_elements", jsonObject, lektiko, allCountriesOrInstitutions, "Note",  "note", "note");
+            fillElementCell(sheet2, ++row, "c_did_elements", jsonObject, lektiko, allCountriesOrInstitutions, "Header",  "head", "head");
+            fillElementCell(sheet2, ++row, "c_did_elements", jsonObject, lektiko, allCountriesOrInstitutions, "Other",  "Any other elements (i.e. elements allowed in did in general, but not in apeEAD)", "other_c_did_element");
+
+            fillElementCell(sheet2, ++row, "c_elements", jsonObject, lektiko, allCountriesOrInstitutions, "Scope and content",  "scopecontent", "scopecontent");
+            fillElementCell(sheet2, ++row, "c_elements", jsonObject, lektiko, allCountriesOrInstitutions, "Conditions governing reproduction",  "userestrict", "userestrict");
+            fillElementCell(sheet2, ++row, "c_elements", jsonObject, lektiko, allCountriesOrInstitutions, "Preferred citation",  "prefercite", "prefercite");
+            fillElementCell(sheet2, ++row, "c_elements", jsonObject, lektiko, allCountriesOrInstitutions, "Conditions governing access",  "accessrestrict", "accessrestrict");
+            fillElementCell(sheet2, ++row, "c_elements", jsonObject, lektiko, allCountriesOrInstitutions, "Controlled access headings",  "controlaccess", "controlaccess");
+            fillElementCell(sheet2, ++row, "c_elements", jsonObject, lektiko, allCountriesOrInstitutions, "Administrative/biographical history",  "bioghist", "bioghist");
+            fillElementCell(sheet2, ++row, "c_elements", jsonObject, lektiko, allCountriesOrInstitutions, "Archival history",  "custodhist", "custodhist");
+            fillElementCell(sheet2, ++row, "c_elements", jsonObject, lektiko, allCountriesOrInstitutions, "Other finding aids",  "otherfindaid", "otherfindaid");
+            fillElementCell(sheet2, ++row, "c_elements", jsonObject, lektiko, allCountriesOrInstitutions, "Existence and location of copies",  "altformavail and/or originalsloc", "altformavail");
+            fillElementCell(sheet2, ++row, "c_elements", jsonObject, lektiko, allCountriesOrInstitutions, "Related units of description",  "relatedmaterial and/or separatedmaterial", "relatedmaterial");
+            fillElementCell(sheet2, ++row, "c_elements", jsonObject, lektiko, allCountriesOrInstitutions, "Publication note",  "bibliography", "bibliography");
+            fillElementCell(sheet2, ++row, "c_elements", jsonObject, lektiko, allCountriesOrInstitutions, "Source of acquisition",  "acqinfo", "acqinfo");
+            fillElementCell(sheet2, ++row, "c_elements", jsonObject, lektiko, allCountriesOrInstitutions, "Appraisal",  "appraisal", "appraisal");
+            fillElementCell(sheet2, ++row, "c_elements", jsonObject, lektiko, allCountriesOrInstitutions, "Accruals",  "accruals", "accruals");
+            fillElementCell(sheet2, ++row, "c_elements", jsonObject, lektiko, allCountriesOrInstitutions, "System of arrangement",  "arrangement", "arrangement");
+            fillElementCell(sheet2, ++row, "c_elements", jsonObject, lektiko, allCountriesOrInstitutions, "Processing information",  "processinfo", "processinfo");
+            fillElementCell(sheet2, ++row, "c_elements", jsonObject, lektiko, allCountriesOrInstitutions, "File plan",  "fileplan", "fileplan");
+            fillElementCell(sheet2, ++row, "c_elements", jsonObject, lektiko, allCountriesOrInstitutions, "Physical characteristics and technical requirements",  "phystech", "phystech");
+            fillElementCell(sheet2, ++row, "c_elements", jsonObject, lektiko, allCountriesOrInstitutions, "Other descriptive information",  "odd", "odd");
+            fillElementCell(sheet2, ++row, "c_elements", jsonObject, lektiko, allCountriesOrInstitutions, "Other",  "Any other elements (i.e. elements allowed in did in general, but not in apeEAD)", "other_c_element");
+
+            fillCell(sheet2, 0, ++row, "Highest level description");
+
+            fillElementCell(sheet2, row, "arch_did_elements", jsonObject, lektiko, allCountriesOrInstitutions, "Reference codes of the materials",  "unitid", "unitid");
+            fillElementCell(sheet2, ++row, "arch_did_elements", jsonObject, lektiko, allCountriesOrInstitutions, "Title",  "unittitle", "unittitle");
+            fillElementCell(sheet2, ++row, "arch_did_elements", jsonObject, lektiko, allCountriesOrInstitutions, "Date of creation",  "unitdate", "unitdate");
+            fillElementCell(sheet2, ++row, "arch_did_elements", jsonObject, lektiko, allCountriesOrInstitutions, "Extent, dimensions",  "physdesc", "physdesc");
+            fillElementCell(sheet2, ++row, "arch_did_elements", jsonObject, lektiko, allCountriesOrInstitutions, "Link to digital object",  "dao", "dao");
+            fillElementCell(sheet2, ++row, "arch_did_elements", jsonObject, lektiko, allCountriesOrInstitutions, "Name of creator",  "origination", "origination");
+            fillElementCell(sheet2, ++row, "arch_did_elements", jsonObject, lektiko, allCountriesOrInstitutions, "Name of institution",  "repository", "repository");
+            fillElementCell(sheet2, ++row, "arch_did_elements", jsonObject, lektiko, allCountriesOrInstitutions, "Language of material",  "langmaterial", "langmaterial");
+            fillElementCell(sheet2, ++row, "arch_did_elements", jsonObject, lektiko, allCountriesOrInstitutions, "Container",  "container", "container");
+            fillElementCell(sheet2, ++row, "arch_did_elements", jsonObject, lektiko, allCountriesOrInstitutions, "Physical location",  "physloc", "physloc");
+            fillElementCell(sheet2, ++row, "arch_did_elements", jsonObject, lektiko, allCountriesOrInstitutions, "Material specific details",  "materialspec", "materialspec");
+            fillElementCell(sheet2, ++row, "arch_did_elements", jsonObject, lektiko, allCountriesOrInstitutions, "Note",  "note", "note");
+            fillElementCell(sheet2, ++row, "arch_did_elements", jsonObject, lektiko, allCountriesOrInstitutions, "Header",  "head", "head");
+            fillElementCell(sheet2, ++row, "arch_did_elements", jsonObject, lektiko, allCountriesOrInstitutions, "Other",  "Any other elements (i.e. elements allowed in did in general, but not in apeEAD)", "other_archdesc_did_element");
+
+            fillElementCell(sheet2, ++row, "arch_elements", jsonObject, lektiko, allCountriesOrInstitutions, "Scope and content",  "scopecontent", "scopecontent");
+            fillElementCell(sheet2, ++row, "arch_elements", jsonObject, lektiko, allCountriesOrInstitutions, "Conditions governing reproduction",  "userestrict", "userestrict");
+            fillElementCell(sheet2, ++row, "arch_elements", jsonObject, lektiko, allCountriesOrInstitutions, "Preferred citation",  "prefercite", "prefercite");
+            fillElementCell(sheet2, ++row, "arch_elements", jsonObject, lektiko, allCountriesOrInstitutions, "Conditions governing access",  "accessrestrict", "accessrestrict");
+            fillElementCell(sheet2, ++row, "arch_elements", jsonObject, lektiko, allCountriesOrInstitutions, "Controlled access headings",  "controlaccess", "controlaccess");
+            fillElementCell(sheet2, ++row, "arch_elements", jsonObject, lektiko, allCountriesOrInstitutions, "Administrative/biographical history",  "bioghist", "bioghist");
+            fillElementCell(sheet2, ++row, "arch_elements", jsonObject, lektiko, allCountriesOrInstitutions, "Archival history",  "custodhist", "custodhist");
+            fillElementCell(sheet2, ++row, "arch_elements", jsonObject, lektiko, allCountriesOrInstitutions, "Other finding aids",  "otherfindaid", "otherfindaid");
+            fillElementCell(sheet2, ++row, "arch_elements", jsonObject, lektiko, allCountriesOrInstitutions, "Existence and location of copies",  "altformavail and/or originalsloc", "altformavail");
+            fillElementCell(sheet2, ++row, "arch_elements", jsonObject, lektiko, allCountriesOrInstitutions, "Related units of description",  "relatedmaterial and/or separatedmaterial", "relatedmaterial");
+            fillElementCell(sheet2, ++row, "arch_elements", jsonObject, lektiko, allCountriesOrInstitutions, "Publication note",  "bibliography", "bibliography");
+            fillElementCell(sheet2, ++row, "arch_elements", jsonObject, lektiko, allCountriesOrInstitutions, "Source of acquisition",  "acqinfo", "acqinfo");
+            fillElementCell(sheet2, ++row, "arch_elements", jsonObject, lektiko, allCountriesOrInstitutions, "Appraisal",  "appraisal", "appraisal");
+            fillElementCell(sheet2, ++row, "arch_elements", jsonObject, lektiko, allCountriesOrInstitutions, "Accruals",  "accruals", "accruals");
+            fillElementCell(sheet2, ++row, "arch_elements", jsonObject, lektiko, allCountriesOrInstitutions, "System of arrangement",  "arrangement", "arrangement");
+            fillElementCell(sheet2, ++row, "arch_elements", jsonObject, lektiko, allCountriesOrInstitutions, "Processing information",  "processinfo", "processinfo");
+            fillElementCell(sheet2, ++row, "arch_elements", jsonObject, lektiko, allCountriesOrInstitutions, "File plan",  "fileplan", "fileplan");
+            fillElementCell(sheet2, ++row, "arch_elements", jsonObject, lektiko, allCountriesOrInstitutions, "Physical characteristics and technical requirements",  "phystech", "phystech");
+            fillElementCell(sheet2, ++row, "arch_elements", jsonObject, lektiko, allCountriesOrInstitutions, "Other descriptive information",  "odd", "odd");
+            fillElementCell(sheet2, ++row, "arch_elements", jsonObject, lektiko, allCountriesOrInstitutions, "Description of components",  "dsc", "dsc");
+            fillElementCell(sheet2, ++row, "arch_elements", jsonObject, lektiko, allCountriesOrInstitutions, "Other",  "Any other elements (i.e. elements allowed in did in general, but not in apeEAD)", "other_archdesc_element");
 
             OutputStream outputStream = new FileOutputStream(filePath+"/info.xls");
             document.save(outputStream);
@@ -650,7 +989,7 @@ public class Statistics {
         }
     }
 
-    private void fillMetricCell(Table sheet, int row, JsonObject jsonObject, String lektiko, Set<String> allCountriesOrInstitutions, String metricLabel, String metricExplanation, String metric){
+    private void fillMetricCell(Table sheet, int row, JsonObject jsonObject, String lektiko, List<String> allCountriesOrInstitutions, String metricLabel, String metricExplanation, String metric){
         fillCell(sheet, 1, row, metricLabel);
         fillCell(sheet, 2, row, metricExplanation);
         JsonElement jsonEle = jsonObject.get("unitid_info_"+lektiko);
@@ -665,9 +1004,8 @@ public class Statistics {
         fillCell(sheet, 3, row, jsonObject1.get(metric).getAsJsonArray().get(0).getAsInt());
         fillCell(sheet, 4, row, jsonObject1.get(metric).getAsJsonArray().get(1).getAsString());
         if (!type.equals("institution")){
-            List<String> s = new ArrayList<>(allCountriesOrInstitutions);
-            for (int i = 0; i < s.size(); i++) {
-                jsonObject1 = jsonEle.getAsJsonObject().get(s.get(i)).getAsJsonObject();
+            for (int i = 0; i < allCountriesOrInstitutions.size(); i++) {
+                jsonObject1 = jsonEle.getAsJsonObject().get(allCountriesOrInstitutions.get(i)).getAsJsonObject();
 
                 fillCell(sheet, 5+i*3, row, jsonObject1.get(metric).getAsJsonArray().get(0).getAsInt());
                 fillCell(sheet, 6+i*3, row, jsonObject1.get(metric).getAsJsonArray().get(1).getAsString());
@@ -675,6 +1013,105 @@ public class Statistics {
             }
         }
     }
+
+    private void fillSchemaLocationCell(Table sheet, int row, JsonObject jsonObject, String lektiko, List<String> allCountriesOrInstitutions, String schemaLocationLabel, String schemaLocation){
+        fillSchemaLocationCell(sheet, row, jsonObject, lektiko, allCountriesOrInstitutions, schemaLocationLabel, schemaLocation, schemaLocation);
+    }
+
+    private void fillSchemaLocationCell(Table sheet, int row, JsonObject jsonObject, String lektiko, List<String> allCountriesOrInstitutions, String schemaLocationLabel, String schemaLocationDescription, String schemaLocation){
+        fillCell(sheet, 1, row, schemaLocationLabel);
+        fillCell(sheet, 2, row, schemaLocationDescription);
+        JsonElement jsonEle = jsonObject.get("schema_locations_"+lektiko);
+        JsonObject jsonObject1 = null;
+        if (jsonEle == null){
+            jsonEle = jsonObject.get("schema_locations");
+            jsonObject1 = jsonEle.getAsJsonObject();
+        }
+        else {
+            jsonObject1 = jsonEle.getAsJsonObject().get("total").getAsJsonObject();
+        }
+        fillCell(sheet, 3, row, jsonObject1.get(schemaLocation).getAsJsonArray().get(0).getAsInt());
+        fillCell(sheet, 4, row, jsonObject1.get(schemaLocation).getAsJsonArray().get(1).getAsString());
+
+        if (!type.equals("institution")){
+            for (int i = 0; i < allCountriesOrInstitutions.size(); i++) {
+                jsonObject1 = jsonEle.getAsJsonObject().get(allCountriesOrInstitutions.get(i)).getAsJsonObject();
+
+                fillCell(sheet, 5+i*3, row, jsonObject1.get(schemaLocation).getAsJsonArray().get(0).getAsInt());
+                fillCell(sheet, 6+i*3, row, jsonObject1.get(schemaLocation).getAsJsonArray().get(1).getAsString());
+                fillCell(sheet, 7+i*3, row, jsonObject1.get(schemaLocation).getAsJsonArray().get(2).getAsString());
+            }
+        }
+    }
+
+    private void fillOtherUnitIdTypeCell(Table sheet, int row, JsonObject jsonObject, String lektiko, List<String> allCountriesOrInstitutions, String schemaLocationLabel, String schemaLocationDescription, String schemaLocation){
+        fillCell(sheet, 1, row, schemaLocationLabel);
+        fillCell(sheet, 2, row, schemaLocationDescription);
+        JsonElement jsonEle = jsonObject.get("other_unitid_types_"+lektiko);
+        JsonObject jsonObject1 = null;
+        if (jsonEle == null){
+            jsonEle = jsonObject.get("other_unitid_types");
+            jsonObject1 = jsonEle.getAsJsonObject();
+        }
+        else {
+            jsonObject1 = jsonEle.getAsJsonObject().get("total").getAsJsonObject();
+        }
+        try {
+            fillCell(sheet, 3, row, jsonObject1.get(schemaLocation).getAsJsonArray().get(0).getAsInt());
+            fillCell(sheet, 4, row, jsonObject1.get(schemaLocation).getAsJsonArray().get(1).getAsString());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        if (!type.equals("institution")){
+            for (int i = 0; i < allCountriesOrInstitutions.size(); i++) {
+                jsonObject1 = jsonEle.getAsJsonObject().get(allCountriesOrInstitutions.get(i)).getAsJsonObject();
+
+                fillCell(sheet, 5+i*3, row, jsonObject1.get(schemaLocation).getAsJsonArray().get(0).getAsInt());
+                fillCell(sheet, 6+i*3, row, jsonObject1.get(schemaLocation).getAsJsonArray().get(1).getAsString());
+                fillCell(sheet, 7+i*3, row, jsonObject1.get(schemaLocation).getAsJsonArray().get(2).getAsString());
+            }
+        }
+    }
+
+    private void fillElementCell(Table sheet, int row, String elementName, JsonObject jsonObject, String lektiko, List<String> allCountriesOrInstitutions, String schemaLocationLabel, String schemaLocationDescription, String schemaLocation){
+        fillCell(sheet, 1, row, schemaLocationLabel);
+        fillCell(sheet, 2, row, schemaLocationDescription);
+        JsonElement jsonEle = jsonObject.get(elementName+"_"+lektiko);
+        JsonObject jsonObject1 = null;
+        if (jsonEle == null){
+            jsonEle = jsonObject.get(elementName);
+            try {
+                jsonObject1 = jsonEle.getAsJsonObject();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        else {
+            jsonObject1 = jsonEle.getAsJsonObject().get("total").getAsJsonObject();
+        }
+        try {
+            fillCell(sheet, 3, row, jsonObject1.get(schemaLocation).getAsJsonArray().get(0).getAsInt());
+            fillCell(sheet, 4, row, jsonObject1.get(schemaLocation).getAsJsonArray().get(1).getAsString());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        if (!type.equals("institution")){
+            for (int i = 0; i < allCountriesOrInstitutions.size(); i++) {
+                try {
+                    jsonObject1 = jsonEle.getAsJsonObject().get(allCountriesOrInstitutions.get(i)).getAsJsonObject();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                fillCell(sheet, 5+i*3, row, jsonObject1.get(schemaLocation).getAsJsonArray().get(0).getAsInt());
+                fillCell(sheet, 6+i*3, row, jsonObject1.get(schemaLocation).getAsJsonArray().get(1).getAsString());
+                fillCell(sheet, 7+i*3, row, jsonObject1.get(schemaLocation).getAsJsonArray().get(2).getAsString());
+            }
+        }
+    }
+
     public void writeCSV(String filePath) throws IOException {
         File file = new File(filePath);
         if (!file.exists()){
@@ -941,18 +1378,18 @@ public class Statistics {
             }
         }
         else if (type.equals("institution")) {
-        counter = 0;
-        for (String s : unitIdInfoMap.keySet()){
-            String trans = this.newMetricName(s);
-            if (trans!=null) {
-                if (counter == 0) {
-                    printWriter.println("unitid info;" + trans + ";" + unitIdInfoMap.get(s) + ";" + getPrettyPercentage(new Double(unitIdInfoMap.get(s)/new Double(cCounter))));
-                } else {
-                    printWriter.println(";" + trans + ";" + unitIdInfoMap.get(s) + ";" + getPrettyPercentage(new Double(unitIdInfoMap.get(s)/new Double(cCounter))));
+            counter = 0;
+            for (String s : unitIdInfoMap.keySet()){
+                String trans = this.newMetricName(s);
+                if (trans!=null) {
+                    if (counter == 0) {
+                        printWriter.println("unitid info;" + trans + ";" + unitIdInfoMap.get(s) + ";" + getPrettyPercentage(new Double(unitIdInfoMap.get(s)/new Double(cCounter))));
+                    } else {
+                        printWriter.println(";" + trans + ";" + unitIdInfoMap.get(s) + ";" + getPrettyPercentage(new Double(unitIdInfoMap.get(s)/new Double(cCounter))));
+                    }
+                    counter++;
                 }
-                counter++;
             }
-        }
         }
 
         printWriter.close();
@@ -1117,38 +1554,45 @@ public class Statistics {
         font.setFontStyle(StyleTypeDefinitions.FontStyle.BOLD);
 //        font.setSize(10);
         cell.setFont(font);
-        cell.setDisplayText(stringValue);
+//        cell.setDisplayText(stringValue);
+        cell.setStringValue(stringValue);
     }
 
     protected void fillCell(Table table, int col, int row, String stringValue) {
         table.getColumnByIndex(col).setUseOptimalWidth(true);
         Cell cell = table.getCellByPosition(col, row);
         cell.setHorizontalAlignment(StyleTypeDefinitions.HorizontalAlignmentType.LEFT);
-        cell.setDisplayText(stringValue);
+//        cell.setDisplayText(stringValue);
+        cell.setStringValue(stringValue);
     }
 
     protected void fillCell(Table table, int col, int row, int stringValue) {
         Cell cell = table.getCellByPosition(col, row);
         cell.setHorizontalAlignment(StyleTypeDefinitions.HorizontalAlignmentType.LEFT);
         cell.setDisplayText(stringValue + "");
+//        cell.setStringValue(stringValue + "");
     }
 
     protected void fillCell(Table table, int col, int row, long stringValue) {
         Cell cell = table.getCellByPosition(col, row);
         cell.setHorizontalAlignment(StyleTypeDefinitions.HorizontalAlignmentType.LEFT);
         cell.setDisplayText(stringValue + "");
+//        cell.setStringValue(stringValue + "");
     }
 
-    private Set<String> findAllCountriesOrInstitutions(JsonObject jsonObject){
+    private List<String> findAllCountriesOrInstitutions(JsonObject jsonObject){
+        List<String> response = new ArrayList<>();
         if (jsonObject.has("schema_locations_country")){
             JsonObject jsonObject1 = jsonObject.get("schema_locations_country").getAsJsonObject();
-            jsonObject1.remove("total");
-            return jsonObject1.keySet();
+            response.addAll(jsonObject1.keySet());
+            response.remove("total");
+            return response;
         }
         else if (jsonObject.has("schema_locations_institution")){
             JsonObject jsonObject1 = jsonObject.get("schema_locations_institution").getAsJsonObject();
-            jsonObject1.remove("total");
-            return jsonObject1.keySet();
+            response.addAll(jsonObject1.keySet());
+            response.remove("total");
+            return response;
         }
         return null;
     }

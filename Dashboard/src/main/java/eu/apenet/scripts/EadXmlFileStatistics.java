@@ -31,12 +31,14 @@ public class EadXmlFileStatistics {
     private final Logger log = Logger.getLogger(getClass());
 
     private Set<String> validPaths = new HashSet<>();
+    private Map<String, String> allAIs = new HashMap<>();
 
     public static void main (String[] args) throws IOException {
         System.out.println("Hello from CLI world!");
 
         EadXmlFileStatistics eadXmlFileStatistics = new EadXmlFileStatistics();
         eadXmlFileStatistics.readValidFilePaths();
+        eadXmlFileStatistics.readArchInsts();
         eadXmlFileStatistics.doTheJob();
 
     }
@@ -57,6 +59,35 @@ public class EadXmlFileStatistics {
                 if (line.trim().length()>0) {
 //                    System.out.println("Adding:SSS" + line.trim()+"SSS --> " + line.trim().length());
                     validPaths.add(line.trim());
+                }
+                line = reader.readLine();
+            }
+
+            reader.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        System.out.println();
+    }
+
+    private void readArchInsts(){
+        BufferedReader reader;
+        try {
+            reader = new BufferedReader(new FileReader("data/arch_inst.txt"));
+            String line = reader.readLine();
+
+            while (line != null) {
+                // read next line
+                if (line.trim().length()>0) {
+//                    System.out.println("Adding:SSS" + line.trim()+"SSS --> " + line.trim().length());
+                    String[] parts = line.split(";");
+                    if (parts.length==2) {
+                        String name = parts[1];
+                        if (name.startsWith("\"") && name.endsWith("\"")){
+                            name = name.substring(1, name.length()-1);
+                        }
+                        allAIs.put(parts[0], name);
+                    }
                 }
                 line = reader.readLine();
             }
@@ -106,6 +137,7 @@ public class EadXmlFileStatistics {
 
         Statistics totalStatistics = new Statistics();
         totalStatistics.type = "total";
+        totalStatistics.allAIs = allAIs;
 
         FileWriter fileWriter = new FileWriter("found.txt");
         PrintWriter printWriter = new PrintWriter(fileWriter);
@@ -128,18 +160,22 @@ public class EadXmlFileStatistics {
 
                 Statistics countryStatistics = new Statistics();
                 countryStatistics.type = "country";
+                countryStatistics.allAIs = allAIs;
 
 
                 for (File institutionDir : countryDir.listFiles()){
                     if (institutionDir.isDirectory()){
-//                        System.out.println("\tInstitution: " + institutionDir.getName());
+                        System.out.println("\tInstitution: " + institutionDir.getName());
 
                         Statistics institutionStatistics = new Statistics();
                         institutionStatistics.type = "institution";
+                        institutionStatistics.allAIs = allAIs;
 
                         for (File typeDir : institutionDir.listFiles()){
+//                            System.out.println("\t\ttype: " + typeDir.getName());
                             if (typeDir.isDirectory() && (typeDir.getName().equals("FA") || typeDir.getName().equals("SG") || typeDir.getName().equals("HG"))){
                                 for (File xmlFile : typeDir.listFiles()){
+                                    System.out.println("\t\t\tfile: " + xmlFile.getName());
                                     if (isValidFile(xmlFile)/* || true*//*xmlFile.getName().endsWith(".xml")*/){
 //                                        System.out.println("\t\tXML file ("+typeDir.getName()+"): " + xmlFile.getName());
 
@@ -229,37 +265,81 @@ public class EadXmlFileStatistics {
                                                         Iterator iterator = startElement.getAttributes();
                                                         Attribute attribute2 = startElement.getAttributeByName(new QName("http://www.w3.org/2001/XMLSchema-instance","schemaLocation"));
                                                         if (attribute2!=null) {
-                                                            if (!totalStatistics.schemaLocations.containsKey(attribute2.getValue())) {
-                                                                totalStatistics.schemaLocations.put(attribute2.getValue(),1);
-//                                                                totalStatistics.schemaLocationsMap.put(attribute2.getValue(), new ArrayList<>());
-//                                                                totalStatistics.schemaLocationsMap.get(attribute2.getValue()).add(xmlFile.getAbsolutePath());
+                                                            String tmp = attribute2.getValue();
+                                                            tmp = getCorrectSchemaLocation(tmp);
+                                                            if (!totalStatistics.schemaLocations.containsKey(tmp)) {
+                                                                totalStatistics.schemaLocations.put(tmp,1);
+//                                                                totalStatistics.schemaLocationsMap.put(tmp, new ArrayList<>());
+//                                                                totalStatistics.schemaLocationsMap.get(tmp).add(xmlFile.getAbsolutePath());
                                                             }
                                                             else {
-                                                                totalStatistics.schemaLocations.put(attribute2.getValue(), totalStatistics.schemaLocations.get(attribute2.getValue())+1);
-//                                                                totalStatistics.schemaLocationsMap.get(attribute2.getValue()).add(xmlFile.getAbsolutePath());
+                                                                totalStatistics.schemaLocations.put(tmp, totalStatistics.schemaLocations.get(tmp)+1);
+//                                                                totalStatistics.schemaLocationsMap.get(tmp).add(xmlFile.getAbsolutePath());
                                                             }
-                                                            if (!countryStatistics.schemaLocations.containsKey(attribute2.getValue())) {
-                                                                countryStatistics.schemaLocations.put(attribute2.getValue(),1);
-//                                                                countryStatistics.schemaLocationsMap.put(attribute2.getValue(), new ArrayList<>());
-//                                                                countryStatistics.schemaLocationsMap.get(attribute2.getValue()).add(xmlFile.getAbsolutePath());
-                                                            }
-                                                            else {
-                                                                countryStatistics.schemaLocations.put(attribute2.getValue(), countryStatistics.schemaLocations.get(attribute2.getValue())+1);
-//                                                                countryStatistics.schemaLocationsMap.get(attribute2.getValue()).add(xmlFile.getAbsolutePath());
-                                                            }
-                                                            if (!institutionStatistics.schemaLocations.containsKey(attribute2.getValue())) {
-                                                                institutionStatistics.schemaLocations.put(attribute2.getValue(),1);
-//                                                                institutionStatistics.schemaLocationsMap.put(attribute2.getValue(), new ArrayList<>());
-//                                                                institutionStatistics.schemaLocationsMap.get(attribute2.getValue()).add(xmlFile.getAbsolutePath());
+                                                            if (!countryStatistics.schemaLocations.containsKey(tmp)) {
+                                                                countryStatistics.schemaLocations.put(tmp,1);
+//                                                                countryStatistics.schemaLocationsMap.put(tmp, new ArrayList<>());
+//                                                                countryStatistics.schemaLocationsMap.get(tmp).add(xmlFile.getAbsolutePath());
                                                             }
                                                             else {
-                                                                institutionStatistics.schemaLocations.put(attribute2.getValue(), institutionStatistics.schemaLocations.get(attribute2.getValue())+1);
-//                                                                institutionStatistics.schemaLocationsMap.get(attribute2.getValue()).add(xmlFile.getAbsolutePath());
+                                                                countryStatistics.schemaLocations.put(tmp, countryStatistics.schemaLocations.get(tmp)+1);
+//                                                                countryStatistics.schemaLocationsMap.get(tmp).add(xmlFile.getAbsolutePath());
+                                                            }
+                                                            if (!institutionStatistics.schemaLocations.containsKey(tmp)) {
+                                                                institutionStatistics.schemaLocations.put(tmp,1);
+//                                                                institutionStatistics.schemaLocationsMap.put(tmp, new ArrayList<>());
+//                                                                institutionStatistics.schemaLocationsMap.get(tmp).add(xmlFile.getAbsolutePath());
+                                                            }
+                                                            else {
+                                                                institutionStatistics.schemaLocations.put(tmp, institutionStatistics.schemaLocations.get(tmp)+1);
+//                                                                institutionStatistics.schemaLocationsMap.get(tmp).add(xmlFile.getAbsolutePath());
                                                             }
                                                         }
                                                         else {
                                                             System.out.println("Error: " + xmlFile.getAbsolutePath());
+
+                                                            String tmp = "no_schema_location";
+
+                                                            if (!totalStatistics.schemaLocations.containsKey(tmp)) {
+                                                                totalStatistics.schemaLocations.put(tmp,1);
+//                                                                totalStatistics.schemaLocationsMap.put(tmp, new ArrayList<>());
+//                                                                totalStatistics.schemaLocationsMap.get(tmp).add(xmlFile.getAbsolutePath());
+                                                            }
+                                                            else {
+                                                                totalStatistics.schemaLocations.put(tmp, totalStatistics.schemaLocations.get(tmp)+1);
+//                                                                totalStatistics.schemaLocationsMap.get(tmp).add(xmlFile.getAbsolutePath());
+                                                            }
+                                                            if (!countryStatistics.schemaLocations.containsKey(tmp)) {
+                                                                countryStatistics.schemaLocations.put(tmp,1);
+//                                                                countryStatistics.schemaLocationsMap.put(tmp, new ArrayList<>());
+//                                                                countryStatistics.schemaLocationsMap.get(tmp).add(xmlFile.getAbsolutePath());
+                                                            }
+                                                            else {
+                                                                countryStatistics.schemaLocations.put(tmp, countryStatistics.schemaLocations.get(tmp)+1);
+//                                                                countryStatistics.schemaLocationsMap.get(tmp).add(xmlFile.getAbsolutePath());
+                                                            }
+                                                            if (!institutionStatistics.schemaLocations.containsKey(tmp)) {
+                                                                institutionStatistics.schemaLocations.put(tmp,1);
+//                                                                institutionStatistics.schemaLocationsMap.put(tmp, new ArrayList<>());
+//                                                                institutionStatistics.schemaLocationsMap.get(tmp).add(xmlFile.getAbsolutePath());
+                                                            }
+                                                            else {
+                                                                institutionStatistics.schemaLocations.put(tmp, institutionStatistics.schemaLocations.get(tmp)+1);
+//                                                                institutionStatistics.schemaLocationsMap.get(tmp).add(xmlFile.getAbsolutePath());
+                                                            }
                                                         }
+
+                                                        if (!institutionStatistics.schemaLocations.containsKey("no_schema_location")){
+                                                            institutionStatistics.schemaLocations.put("no_schema_location",0);
+                                                        }
+                                                        if (!institutionStatistics.schemaLocations.containsKey("other_schema_location")){
+                                                            institutionStatistics.schemaLocations.put("other_schema_location",0);
+                                                        }
+
+                                                        if (xmlFile.getName().equals("EDM_conversionTest_Umlaut.xml")){
+                                                            System.out.println();
+                                                        }
+
 //                                                        break;
                                                     }
                                                     else if (startElement.getName().getLocalPart().equals("archdesc")) {
@@ -353,7 +433,7 @@ public class EadXmlFileStatistics {
                                             }
 
                                             for (String s : archDescElementSet){
-//                                                System.out.println(s);
+                                                s = getCorrectArchDescElement(s);
                                                 if (!totalStatistics.archdescElementsMap.containsKey(s)){
                                                     totalStatistics.archdescElementsMap.put(s, 1);
                                                 }
@@ -373,8 +453,12 @@ public class EadXmlFileStatistics {
                                                     institutionStatistics.archdescElementsMap.put(s, institutionStatistics.archdescElementsMap.get(s)+1);
                                                 }
                                             }
+                                            if (!institutionStatistics.archdescElementsMap.containsKey("other_archdesc_element")){
+                                                institutionStatistics.archdescElementsMap.put("other_archdesc_element",0);
+                                            }
 
                                             for (String s : archDescDidElementSet){
+                                                s = getCorrectArchDescDidElement(s);
                                                 if (!totalStatistics.archdescDidElementsMap.containsKey(s)){
                                                     totalStatistics.archdescDidElementsMap.put(s, 1);
                                                 }
@@ -394,6 +478,9 @@ public class EadXmlFileStatistics {
                                                     institutionStatistics.archdescDidElementsMap.put(s, institutionStatistics.archdescDidElementsMap.get(s)+1);
                                                 }
                                             }
+                                            if (!institutionStatistics.archdescDidElementsMap.containsKey("other_archdesc_did_element")){
+                                                institutionStatistics.archdescDidElementsMap.put("other_archdesc_did_element",0);
+                                            }
 
                                             totalStatistics.cCounter2 += allCInfos.size();
                                             totalStatistics.cCounterLeaves += allCLeavesInfos.size();
@@ -404,6 +491,8 @@ public class EadXmlFileStatistics {
 
                                             for (CInfo cInfo : allCInfos){
                                                 for (String s : cInfo.otheUnitIdTypes){
+                                                    s = getCorrectOtherUnitIdType(s);
+
                                                     if (!totalStatistics.otherUnitIdTypes.containsKey(s)){
                                                         totalStatistics.otherUnitIdTypes.put(s, 1);
                                                     }
@@ -423,8 +512,13 @@ public class EadXmlFileStatistics {
                                                         institutionStatistics.otherUnitIdTypes.put(s, institutionStatistics.otherUnitIdTypes.get(s)+1);
                                                     }
                                                 }
+                                                if (!institutionStatistics.otherUnitIdTypes.containsKey("other_unitid_type")){
+                                                    institutionStatistics.otherUnitIdTypes.put("other_unitid_type",0);
+                                                }
 
                                                 for (String s : cInfo.cDidSubElements){
+                                                    s = getCorrectCDidElement(s);
+
                                                     if (!totalStatistics.cDidElementsMap.containsKey(s)){
                                                         totalStatistics.cDidElementsMap.put(s, 1);
                                                     }
@@ -444,8 +538,13 @@ public class EadXmlFileStatistics {
                                                         institutionStatistics.cDidElementsMap.put(s, institutionStatistics.cDidElementsMap.get(s)+1);
                                                     }
                                                 }
+                                                if (!institutionStatistics.cDidElementsMap.containsKey("other_c_did_element")){
+                                                    institutionStatistics.cDidElementsMap.put("other_c_did_element",0);
+                                                }
 
                                                 for (String s : cInfo.cSubElements){
+                                                    s = getCorrectCElement(s);
+
                                                     if (!totalStatistics.cElementsMap.containsKey(s)){
                                                         totalStatistics.cElementsMap.put(s, 1);
                                                     }
@@ -464,6 +563,9 @@ public class EadXmlFileStatistics {
                                                     else {
                                                         institutionStatistics.cElementsMap.put(s, institutionStatistics.cElementsMap.get(s)+1);
                                                     }
+                                                }
+                                                if (!institutionStatistics.cElementsMap.containsKey("other_c_element")){
+                                                    institutionStatistics.cElementsMap.put("other_c_element",0);
                                                 }
 
                                                 if (cInfo.noOfUnitId>0){
@@ -1183,6 +1285,154 @@ public class EadXmlFileStatistics {
         printWriter4.close();
 
         System.out.println("time standart: " + (new Date()));
+    }
+
+    private String getCorrectSchemaLocation(String s){
+        if (s.equals("urn:isbn:1-931666-22-9 https://www.archivesportaleurope.net/schemas/ead/apeEAD.xsd http://www.w3.org/1999/xlink http://www.loc.gov/standards/xlink/xlink.xsd")
+                || s.equals("urn:isbn:1-931666-22-9 https://www.archivesportaleurope.net/Portal/profiles/apeEAD.xsd http://www.w3.org/1999/xlink http://www.loc.gov/standards/xlink/xlink.xsd")
+                || s.equals("urn:isbn:1-931666-22-9 http://www.archivesportaleurope.net/Portal/profiles/apeEAD.xsd http://www.w3.org/1999/xlink http://www.loc.gov/standards/xlink/xlink.xsd")
+                || s.equals("urn:isbn:1-931666-22-9 https://schemas.archivesportaleurope.net/profiles/apeEAD.xsd http://www.w3.org/1999/xlink http://www.loc.gov/standards/xlink/xlink.xsd")
+                || s.equals("urn:isbn:1-931666-22-9 http://schemas.archivesportaleurope.net/profiles/apeEAD.xsd http://www.w3.org/1999/xlink http://www.loc.gov/standards/xlink/xlink.xsd")
+                || s.equals("urn:isbn:1-931666-22-9 https://www.archivesportaleurope.net/schemas/ead/apeEAD.xsd")
+                || s.equals("urn:isbn:1-931666-22-9 http://www.archivesportaleurope.net/Portal/profiles/apeEAD.xsd")
+                || s.equals("urn:isbn:1-931666-22-9 https://www.archivesportaleurope.net/Portal/profiles/apeEAD.xsd")
+                || s.equals("urn:isbn:1-931666-22-9 https://schemas.archivesportaleurope.net/profiles/apeEAD.xsd")
+                || s.equals("urn:isbn:1-931666-22-9 http://schemas.archivesportaleurope.net/profiles/apeEAD.xsd")
+                || s.equals("urn:isbn:1-931666-22-9 apeEAD.xsd")
+        ){
+            return s;
+        }
+        else {
+//            System.out.println("Other SCHEMA LOCATION: " + s);
+            return "other_schema_location";
+        }
+    }
+
+    private String getCorrectOtherUnitIdType(String s){
+        if (s.equals("former call number")
+                || s.equals("file reference")
+        ){
+            return s;
+        }
+        else {
+//            System.out.println("Other UNITIDTYPE: " + s);
+            return "other_unitid_type";
+        }
+    }
+
+    private String getCorrectCDidElement(String s){
+        if (s.equals("unittitle")
+                || s.equals("unitdate")
+                || s.equals("physdesc")
+                || s.equals("dao")
+                || s.equals("origination")
+                || s.equals("repository")
+                || s.equals("langmaterial")
+                || s.equals("container")
+                || s.equals("physloc")
+                || s.equals("materialspec")
+                || s.equals("note")
+                || s.equals("head")
+        ){
+            return s;
+        }
+        else {
+//            System.out.println("Other UNITIDTYPE: " + s);
+            return "other_c_element";
+        }
+    }
+
+    private String getCorrectCElement(String s){
+        if (s.equals("scopecontent")
+                || s.equals("userestrict")
+                || s.equals("prefercite")
+                || s.equals("accessrestrict")
+                || s.equals("controlaccess")
+                || s.equals("bioghist")
+                || s.equals("custodhist")
+                || s.equals("otherfindaid")
+                || s.equals("bibliography")
+                || s.equals("acqinfo")
+                || s.equals("appraisal")
+                || s.equals("accruals")
+                || s.equals("arrangement")
+                || s.equals("processinfo")
+                || s.equals("fileplan")
+                || s.equals("phystech")
+                || s.equals("odd")
+                || s.equals("fileplan")
+                || s.equals("did")
+        ) {
+            return s;
+        }
+        else if (s.equals("altformavail") || s.equals("originalsloc")){
+            return "altformavail";
+        }
+        else if (s.equals("relatedmaterial") || s.equals("separatedmaterial")){
+            return "relatedmaterial";
+        }
+        else {
+//            System.out.println("Other UNITIDTYPE: " + s);
+            return "other_c_did_element";
+        }
+    }
+
+    private String getCorrectArchDescDidElement(String s){
+        if (s.equals("unittitle")
+                || s.equals("unitdate")
+                || s.equals("physdesc")
+                || s.equals("dao")
+                || s.equals("origination")
+                || s.equals("repository")
+                || s.equals("langmaterial")
+                || s.equals("physloc")
+                || s.equals("container")
+                || s.equals("materialspec")
+                || s.equals("note")
+                || s.equals("head")
+                || s.equals("unitid")
+        ){
+            return s;
+        }
+        else {
+//            System.out.println("Other UNITIDTYPE: " + s);
+            return "other_archdesc_did_element";
+        }
+    }
+
+    private String getCorrectArchDescElement(String s){
+        if (s.equals("scopecontent")
+                || s.equals("userestrict")
+                || s.equals("prefercite")
+                || s.equals("accessrestrict")
+                || s.equals("controlaccess")
+                || s.equals("bioghist")
+                || s.equals("custodhist")
+                || s.equals("otherfindaid")
+                || s.equals("bibliography")
+                || s.equals("acqinfo")
+                || s.equals("appraisal")
+                || s.equals("accruals")
+                || s.equals("arrangement")
+                || s.equals("processinfo")
+                || s.equals("fileplan")
+                || s.equals("phystech")
+                || s.equals("odd")
+                || s.equals("dsc")
+                || s.equals("did")
+        ) {
+            return s;
+        }
+        else if (s.equals("altformavail") || s.equals("originalsloc")){
+            return "altformavail";
+        }
+        else if (s.equals("relatedmaterial") || s.equals("separatedmaterial")){
+            return "relatedmaterial";
+        }
+        else {
+//            System.out.println("Other UNITIDTYPE: " + s);
+            return "other_archdesc_element";
+        }
     }
 
     private boolean isValidFile(File xmlFile){
