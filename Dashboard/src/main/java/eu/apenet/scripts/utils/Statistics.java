@@ -77,6 +77,8 @@ public class Statistics {
         unitIdInfoMap.put("metric17", 0);
         unitIdInfoMap.put("metric18", 0);
         unitIdInfoMap.put("metric19", 0);
+        unitIdInfoMap.put("metric20", 0);
+        unitIdInfoMap.put("metric21", 0);
 
         countryMap.put("ES","SPAIN");
         countryMap.put("FR","FRANCE");
@@ -886,8 +888,10 @@ public class Statistics {
             fillMetricCell(sheet2, row, jsonObject, lektiko, allCountriesOrInstitutions, "Reference codes of the materials", "05 - At least one did/unitid/@type = \"call number\"", "metric05");
             fillMetricCell(sheet2, ++row, jsonObject, lektiko, allCountriesOrInstitutions, "Several reference codes of the materials", "07 - Two or more did/unitid/@type = \"call number\"", "metric07");
             fillMetricCell(sheet2, ++row, jsonObject, lektiko, allCountriesOrInstitutions, "Identifiers of the components", "14 - With @id attribute", "metric14");
+            fillMetricCell(sheet2, ++row, jsonObject, lektiko, allCountriesOrInstitutions, "Identifiers of the components (as PIDs)", "20 - With @id attribute and PID value", "metric20");
             fillMetricCell(sheet2, ++row, jsonObject, lektiko, allCountriesOrInstitutions, "Reference codes of the materials plus idenifiers of the components", "06 - At least one did/unitid/@type = \"call number\" + @id attribute", "metric06");
             fillMetricCell(sheet2, ++row, jsonObject, lektiko, allCountriesOrInstitutions, "Identifiers of the materials (incl. reference codes)", "01 - At least one did/unitid (any or no type)", "metric01");
+            fillMetricCell(sheet2, ++row, jsonObject, lektiko, allCountriesOrInstitutions, "Identifiers of the materials (incl. reference codes) - PID", "21 - At least one did/unitid as PID", "metric21");
             fillMetricCell(sheet2, ++row, jsonObject, lektiko, allCountriesOrInstitutions, "Identifiers of the materials plus identifiers of the components", "02 - At least one did/unitid (of any of no type) + @id attribute", "metric02");
             fillMetricCell(sheet2, ++row, jsonObject, lektiko, allCountriesOrInstitutions, "No identifiers of the materials", "03 - No did/unitid (of any or no type)", "metric03");
             fillMetricCell(sheet2, ++row, jsonObject, lektiko, allCountriesOrInstitutions, "No identifiers of the materials, but identifiers of the components instead", "04 - No did/unitid (of any or no type), but with @id attribute", "metric01");

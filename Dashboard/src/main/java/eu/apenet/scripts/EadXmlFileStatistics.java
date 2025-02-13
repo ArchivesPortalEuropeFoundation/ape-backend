@@ -146,6 +146,11 @@ public class EadXmlFileStatistics {
         FileWriter fileWriter4 = new FileWriter("c_id.txt");
         PrintWriter printWriter4 = new PrintWriter(fileWriter4);
 
+        Map<String, Integer> materialSpecMap = new HashMap<>();
+        Map<String, Integer> physLocMap = new HashMap<>();
+        boolean doMaterialAndPhysLoc = false; //Literal stats for two fields
+        boolean doOther = true; //The original stats
+
         File repoFile = new File(repoPath);
         for (File countryDir : repoFile.listFiles()){
             if (countryDir.isDirectory() && countryDir.getName().length()==2){
@@ -248,6 +253,11 @@ public class EadXmlFileStatistics {
                                             boolean inArchDescDid = false;
                                             boolean inCDid = false;
 
+                                            boolean inPhysLoc = false;
+                                            boolean inMaterialSpec = false;
+
+                                            boolean inUnitId = false;
+
                                             int currentDepth = 0;
 
 //                                            System.out.println("File: " + xmlFile.getAbsoluteFile());
@@ -261,142 +271,168 @@ public class EadXmlFileStatistics {
 
                                                     StartElement startElement = nextEvent.asStartElement();
 //                                                    System.out.println("startElement: " + startElement.getName().getLocalPart() + " --> depth: " + currentDepth);
-                                                    if (startElement.getName().getLocalPart().equals("ead")) {
-                                                        Iterator iterator = startElement.getAttributes();
-                                                        Attribute attribute2 = startElement.getAttributeByName(new QName("http://www.w3.org/2001/XMLSchema-instance","schemaLocation"));
-                                                        if (attribute2!=null) {
-                                                            String tmp = attribute2.getValue();
-                                                            tmp = getCorrectSchemaLocation(tmp);
-                                                            if (!totalStatistics.schemaLocations.containsKey(tmp)) {
-                                                                totalStatistics.schemaLocations.put(tmp,1);
+
+                                                    if (doMaterialAndPhysLoc) {
+                                                        if (startElement.getName().getLocalPart().equals("materialspec")) {
+                                                            inMaterialSpec = true;
+                                                        } else if (startElement.getName().getLocalPart().equals("physloc")) {
+                                                            inPhysLoc = true;
+                                                        }
+                                                    }
+
+                                                    if (doOther) {
+                                                        if (startElement.getName().getLocalPart().equals("ead")) {
+                                                            Iterator iterator = startElement.getAttributes();
+                                                            Attribute attribute2 = startElement.getAttributeByName(new QName("http://www.w3.org/2001/XMLSchema-instance","schemaLocation"));
+                                                            if (attribute2!=null) {
+                                                                String tmp = attribute2.getValue();
+                                                                tmp = getCorrectSchemaLocation(tmp);
+                                                                if (!totalStatistics.schemaLocations.containsKey(tmp)) {
+                                                                    totalStatistics.schemaLocations.put(tmp,1);
 //                                                                totalStatistics.schemaLocationsMap.put(tmp, new ArrayList<>());
 //                                                                totalStatistics.schemaLocationsMap.get(tmp).add(xmlFile.getAbsolutePath());
-                                                            }
-                                                            else {
-                                                                totalStatistics.schemaLocations.put(tmp, totalStatistics.schemaLocations.get(tmp)+1);
+                                                                }
+                                                                else {
+                                                                    totalStatistics.schemaLocations.put(tmp, totalStatistics.schemaLocations.get(tmp)+1);
 //                                                                totalStatistics.schemaLocationsMap.get(tmp).add(xmlFile.getAbsolutePath());
-                                                            }
-                                                            if (!countryStatistics.schemaLocations.containsKey(tmp)) {
-                                                                countryStatistics.schemaLocations.put(tmp,1);
+                                                                }
+                                                                if (!countryStatistics.schemaLocations.containsKey(tmp)) {
+                                                                    countryStatistics.schemaLocations.put(tmp,1);
 //                                                                countryStatistics.schemaLocationsMap.put(tmp, new ArrayList<>());
 //                                                                countryStatistics.schemaLocationsMap.get(tmp).add(xmlFile.getAbsolutePath());
-                                                            }
-                                                            else {
-                                                                countryStatistics.schemaLocations.put(tmp, countryStatistics.schemaLocations.get(tmp)+1);
+                                                                }
+                                                                else {
+                                                                    countryStatistics.schemaLocations.put(tmp, countryStatistics.schemaLocations.get(tmp)+1);
 //                                                                countryStatistics.schemaLocationsMap.get(tmp).add(xmlFile.getAbsolutePath());
-                                                            }
-                                                            if (!institutionStatistics.schemaLocations.containsKey(tmp)) {
-                                                                institutionStatistics.schemaLocations.put(tmp,1);
+                                                                }
+                                                                if (!institutionStatistics.schemaLocations.containsKey(tmp)) {
+                                                                    institutionStatistics.schemaLocations.put(tmp,1);
 //                                                                institutionStatistics.schemaLocationsMap.put(tmp, new ArrayList<>());
 //                                                                institutionStatistics.schemaLocationsMap.get(tmp).add(xmlFile.getAbsolutePath());
+                                                                }
+                                                                else {
+                                                                    institutionStatistics.schemaLocations.put(tmp, institutionStatistics.schemaLocations.get(tmp)+1);
+//                                                                institutionStatistics.schemaLocationsMap.get(tmp).add(xmlFile.getAbsolutePath());
+                                                                }
                                                             }
                                                             else {
-                                                                institutionStatistics.schemaLocations.put(tmp, institutionStatistics.schemaLocations.get(tmp)+1);
-//                                                                institutionStatistics.schemaLocationsMap.get(tmp).add(xmlFile.getAbsolutePath());
-                                                            }
-                                                        }
-                                                        else {
-                                                            System.out.println("Error: " + xmlFile.getAbsolutePath());
+                                                                System.out.println("Error: " + xmlFile.getAbsolutePath());
 
-                                                            String tmp = "no_schema_location";
+                                                                String tmp = "no_schema_location";
 
-                                                            if (!totalStatistics.schemaLocations.containsKey(tmp)) {
-                                                                totalStatistics.schemaLocations.put(tmp,1);
+                                                                if (!totalStatistics.schemaLocations.containsKey(tmp)) {
+                                                                    totalStatistics.schemaLocations.put(tmp,1);
 //                                                                totalStatistics.schemaLocationsMap.put(tmp, new ArrayList<>());
 //                                                                totalStatistics.schemaLocationsMap.get(tmp).add(xmlFile.getAbsolutePath());
-                                                            }
-                                                            else {
-                                                                totalStatistics.schemaLocations.put(tmp, totalStatistics.schemaLocations.get(tmp)+1);
+                                                                }
+                                                                else {
+                                                                    totalStatistics.schemaLocations.put(tmp, totalStatistics.schemaLocations.get(tmp)+1);
 //                                                                totalStatistics.schemaLocationsMap.get(tmp).add(xmlFile.getAbsolutePath());
-                                                            }
-                                                            if (!countryStatistics.schemaLocations.containsKey(tmp)) {
-                                                                countryStatistics.schemaLocations.put(tmp,1);
+                                                                }
+                                                                if (!countryStatistics.schemaLocations.containsKey(tmp)) {
+                                                                    countryStatistics.schemaLocations.put(tmp,1);
 //                                                                countryStatistics.schemaLocationsMap.put(tmp, new ArrayList<>());
 //                                                                countryStatistics.schemaLocationsMap.get(tmp).add(xmlFile.getAbsolutePath());
-                                                            }
-                                                            else {
-                                                                countryStatistics.schemaLocations.put(tmp, countryStatistics.schemaLocations.get(tmp)+1);
+                                                                }
+                                                                else {
+                                                                    countryStatistics.schemaLocations.put(tmp, countryStatistics.schemaLocations.get(tmp)+1);
 //                                                                countryStatistics.schemaLocationsMap.get(tmp).add(xmlFile.getAbsolutePath());
-                                                            }
-                                                            if (!institutionStatistics.schemaLocations.containsKey(tmp)) {
-                                                                institutionStatistics.schemaLocations.put(tmp,1);
+                                                                }
+                                                                if (!institutionStatistics.schemaLocations.containsKey(tmp)) {
+                                                                    institutionStatistics.schemaLocations.put(tmp,1);
 //                                                                institutionStatistics.schemaLocationsMap.put(tmp, new ArrayList<>());
 //                                                                institutionStatistics.schemaLocationsMap.get(tmp).add(xmlFile.getAbsolutePath());
-                                                            }
-                                                            else {
-                                                                institutionStatistics.schemaLocations.put(tmp, institutionStatistics.schemaLocations.get(tmp)+1);
+                                                                }
+                                                                else {
+                                                                    institutionStatistics.schemaLocations.put(tmp, institutionStatistics.schemaLocations.get(tmp)+1);
 //                                                                institutionStatistics.schemaLocationsMap.get(tmp).add(xmlFile.getAbsolutePath());
+                                                                }
                                                             }
-                                                        }
 
-                                                        if (!institutionStatistics.schemaLocations.containsKey("no_schema_location")){
-                                                            institutionStatistics.schemaLocations.put("no_schema_location",0);
-                                                        }
-                                                        if (!institutionStatistics.schemaLocations.containsKey("other_schema_location")){
-                                                            institutionStatistics.schemaLocations.put("other_schema_location",0);
-                                                        }
+                                                            if (!institutionStatistics.schemaLocations.containsKey("no_schema_location")){
+                                                                institutionStatistics.schemaLocations.put("no_schema_location",0);
+                                                            }
+                                                            if (!institutionStatistics.schemaLocations.containsKey("other_schema_location")){
+                                                                institutionStatistics.schemaLocations.put("other_schema_location",0);
+                                                            }
 
-                                                        if (xmlFile.getName().equals("EDM_conversionTest_Umlaut.xml")){
-                                                            System.out.println();
-                                                        }
+                                                            if (xmlFile.getName().equals("EDM_conversionTest_Umlaut.xml")){
+                                                                System.out.println();
+                                                            }
 
 //                                                        break;
-                                                    }
-                                                    else if (startElement.getName().getLocalPart().equals("archdesc")) {
-                                                        inArchDesc = true;
-                                                    }
-                                                    else if (startElement.getName().getLocalPart().equals("did")) {
-                                                        if (inArchDesc && currentDepth==3){
-                                                            inArchDescDid = true;
-                                                            archDescElementSet.add(startElement.getName().getLocalPart());
                                                         }
-                                                        else if (currentCInfo != null){
-                                                            inCDid = true;
-                                                            currentCInfo.handleCSubElement(startElement);
+                                                        else if (startElement.getName().getLocalPart().equals("archdesc")) {
+                                                            inArchDesc = true;
                                                         }
-                                                    }
-                                                    else if (startElement.getName().getLocalPart().equals("c")) {
-                                                        totalStatistics.cCounter++;
-                                                        countryStatistics.cCounter++;
-                                                        institutionStatistics.cCounter++;
-
-                                                        if (!stack.empty()){
-                                                            CInfo tempInfo = stack.peek();
-                                                            tempInfo.hasChildCs = true;
-                                                        }
-
-                                                        CInfo cInfo = new CInfo();
-                                                        cInfo.handleStartElement(startElement);
-                                                        cInfo.depth = currentDepth;
-                                                        currentCInfo = stack.push(cInfo);
-                                                        if (cInfo.id != null){
-                                                            printWriter4.println(cInfo.id);
-                                                        }
-                                                    }
-                                                    else {
-                                                        if (inArchDescDid){
-                                                            if (currentDepth==4){
-                                                                archDescDidElementSet.add(startElement.getName().getLocalPart());
-                                                            }
-                                                        }
-                                                        if (inArchDesc){
-                                                            if (currentDepth==3){
+                                                        else if (startElement.getName().getLocalPart().equals("did")) {
+                                                            if (inArchDesc && currentDepth==3){
+                                                                inArchDescDid = true;
                                                                 archDescElementSet.add(startElement.getName().getLocalPart());
                                                             }
-                                                        }
-                                                        if (startElement.getName().getLocalPart().equals("unitid")) {
-                                                            if (currentCInfo != null){
-                                                                currentCInfo.handleUnitidElement(startElement);
-                                                            }
-                                                        }
-                                                        if (inCDid){
-                                                            if (currentCInfo.depth+2 == currentDepth){
-                                                                currentCInfo.handleCDidSubElement(startElement);
-                                                            }
-                                                        }
-                                                        if (currentCInfo!=null){
-                                                            if (currentCInfo.depth+1 == currentDepth){
+                                                            else if (currentCInfo != null){
+                                                                inCDid = true;
                                                                 currentCInfo.handleCSubElement(startElement);
+                                                            }
+                                                        }
+                                                        else if (startElement.getName().getLocalPart().equals("c")) {
+                                                            totalStatistics.cCounter++;
+                                                            countryStatistics.cCounter++;
+                                                            institutionStatistics.cCounter++;
+
+                                                            if (!stack.empty()){
+                                                                CInfo tempInfo = stack.peek();
+                                                                tempInfo.hasChildCs = true;
+                                                            }
+
+                                                            CInfo cInfo = new CInfo();
+                                                            cInfo.handleStartElement(startElement);
+                                                            cInfo.depth = currentDepth;
+                                                            currentCInfo = stack.push(cInfo);
+                                                            if (cInfo.id != null){
+                                                                printWriter4.println(cInfo.id);
+                                                            }
+                                                        }
+                                                        else if (startElement.getName().getLocalPart().equals("materialspec")) {
+                                                            inMaterialSpec = true;
+                                                        }
+                                                        else if (startElement.getName().getLocalPart().equals("physloc")) {
+                                                            inPhysLoc = true;
+                                                        }
+                                                        else {
+                                                            if (inArchDescDid){
+                                                                if (currentDepth==4){
+                                                                    archDescDidElementSet.add(startElement.getName().getLocalPart());
+                                                                }
+                                                            }
+                                                            if (inArchDesc){
+                                                                if (currentDepth==3){
+                                                                    archDescElementSet.add(startElement.getName().getLocalPart());
+                                                                }
+                                                            }
+                                                            if (startElement.getName().getLocalPart().equals("unitid")) {
+                                                                inUnitId = true;
+                                                                if (currentCInfo != null){
+                                                                    currentCInfo.handleUnitidElement(startElement);
+                                                                }
+                                                            }
+                                                            if (startElement.getName().getLocalPart().equals("extptr")) {
+                                                                if (inUnitId) {
+                                                                    if (currentCInfo != null) {
+                                                                        currentCInfo.handleExtptrElement(startElement);
+                                                                    }
+                                                                }
+
+                                                            }
+                                                            if (inCDid){
+                                                                if (currentCInfo.depth+2 == currentDepth){
+                                                                    currentCInfo.handleCDidSubElement(startElement);
+                                                                }
+                                                            }
+                                                            if (currentCInfo!=null){
+                                                                if (currentCInfo.depth+1 == currentDepth){
+                                                                    currentCInfo.handleCSubElement(startElement);
+                                                                }
                                                             }
                                                         }
                                                     }
@@ -405,29 +441,80 @@ public class EadXmlFileStatistics {
                                                     currentDepth--;
 
                                                     EndElement endElement = nextEvent.asEndElement();
-                                                    if (endElement.getName().getLocalPart().equals("archdesc")) {
-                                                        if (inArchDesc){
-                                                            inArchDesc = false;
-                                                        }
-                                                    }
-                                                    else if (endElement.getName().getLocalPart().equals("did")) {
-                                                        if (inArchDescDid && currentDepth==2){
-                                                            inArchDescDid = false;
-                                                            //break;
-                                                        }
-                                                        else if (inCDid) {
-                                                            inCDid = false;
-                                                        }
-                                                    }
-                                                    else if (endElement.getName().getLocalPart().equals("c")) {
-                                                        currentCInfo = stack.pop();
-                                                        allCInfos.add(currentCInfo);
-                                                        if (!currentCInfo.hasChildCs){
-                                                            allCLeavesInfos.add(currentCInfo);
-                                                        }
-                                                    }
-                                                    else {
 
+                                                    if (doMaterialAndPhysLoc) {
+                                                        if (endElement.getName().getLocalPart().equals("materialspec")) {
+                                                            if (inMaterialSpec) {
+                                                                inMaterialSpec = false;
+                                                            }
+                                                        } else if (endElement.getName().getLocalPart().equals("physloc")) {
+                                                            if (inPhysLoc) {
+                                                                inPhysLoc = false;
+                                                            }
+                                                        }
+                                                    }
+
+                                                    if (doOther) {
+                                                        if (endElement.getName().getLocalPart().equals("archdesc")) {
+                                                            if (inArchDesc){
+                                                                inArchDesc = false;
+                                                            }
+                                                        }
+                                                        else if (endElement.getName().getLocalPart().equals("did")) {
+                                                            if (inArchDescDid && currentDepth==2){
+                                                                inArchDescDid = false;
+                                                                //break;
+                                                            }
+                                                            else if (inCDid) {
+                                                                inCDid = false;
+                                                            }
+                                                        }
+                                                        else if (endElement.getName().getLocalPart().equals("c")) {
+                                                            currentCInfo = stack.pop();
+                                                            allCInfos.add(currentCInfo);
+                                                            if (!currentCInfo.hasChildCs){
+                                                                allCLeavesInfos.add(currentCInfo);
+                                                            }
+                                                        }
+                                                        else if (endElement.getName().getLocalPart().equals("materialspec")) {
+                                                            if (inMaterialSpec){
+                                                                inMaterialSpec = false;
+                                                            }
+                                                        }
+                                                        else if (endElement.getName().getLocalPart().equals("physloc")) {
+                                                            if (inPhysLoc){
+                                                                inPhysLoc = false;
+                                                            }
+                                                        }
+                                                        else if (endElement.getName().getLocalPart().equals("unitid")) {
+                                                            inUnitId = false;
+                                                        }
+                                                        else {
+
+                                                        }
+                                                    }
+                                                }
+                                                else if (nextEvent.isCharacters()) {
+                                                    if (doMaterialAndPhysLoc) {
+                                                        if (inMaterialSpec) {
+                                                            if (doMaterialAndPhysLoc) {
+                                                                String materialSpec = nextEvent.asCharacters().getData();
+                                                                //System.out.println("material: " + materialSpec);
+                                                                if (!materialSpecMap.containsKey(materialSpec)) {
+                                                                    materialSpecMap.put(materialSpec, 0);
+                                                                }
+                                                                materialSpecMap.put(materialSpec, materialSpecMap.get(materialSpec) + 1);
+                                                            }
+                                                        } else if (inPhysLoc) {
+                                                            if (doMaterialAndPhysLoc) {
+                                                                String physLoc = nextEvent.asCharacters().getData();
+                                                                //System.out.println("physloc: " + physLoc);
+                                                                if (!physLocMap.containsKey(physLoc)) {
+                                                                    physLocMap.put(physLoc, 0);
+                                                                }
+                                                                physLocMap.put(physLoc, physLocMap.get(physLoc) + 1);
+                                                            }
+                                                        }
                                                     }
                                                 }
                                             }
@@ -586,6 +673,12 @@ public class EadXmlFileStatistics {
                                                     if (cInfo.id != null){
                                                         increase("metric02", institutionStatistics.unitIdInfoMap);
                                                     }
+
+                                                    if (cInfo.isExtptrPID ){
+                                                        increase("metric21", totalStatistics.unitIdInfoMap);
+                                                        increase("metric21", countryStatistics.unitIdInfoMap);
+                                                        increase("metric21", institutionStatistics.unitIdInfoMap);
+                                                    }
                                                 }
                                                 else {
                                                     increase("metric03", totalStatistics.unitIdInfoMap);
@@ -687,6 +780,12 @@ public class EadXmlFileStatistics {
                                                     }
                                                     if (cInfo.noOfUnitId>0){
                                                         increase("metric16", institutionStatistics.unitIdInfoMap);
+                                                    }
+
+                                                    if (cInfo.idIsPID) {
+                                                        increase("metric20", totalStatistics.unitIdInfoMap);
+                                                        increase("metric20", countryStatistics.unitIdInfoMap);
+                                                        increase("metric20", institutionStatistics.unitIdInfoMap);
                                                     }
                                                 }
                                                 else {
@@ -912,10 +1011,22 @@ public class EadXmlFileStatistics {
                                                     }
                                                 }
 
+//                                                if (cInfo.idIsPID) {
+//                                                    increase("metric20", totalStatistics.unitIdInfoMapForLeaves);
+//                                                    increase("metric20", countryStatistics.unitIdInfoMapForLeaves);
+//                                                    increase("metric20", institutionStatistics.unitIdInfoMapForLeaves);
+//                                                }
+
                                                 if (cInfo.noOfUnitId>0){
                                                     increase("metric01", totalStatistics.unitIdInfoMapForLeaves);
                                                     increase("metric01", countryStatistics.unitIdInfoMapForLeaves);
                                                     increase("metric01", institutionStatistics.unitIdInfoMapForLeaves);
+
+                                                    if (cInfo.isExtptrPID ){
+                                                        increase("metric21", totalStatistics.unitIdInfoMapForLeaves);
+                                                        increase("metric21", countryStatistics.unitIdInfoMapForLeaves);
+                                                        increase("metric21", institutionStatistics.unitIdInfoMapForLeaves);
+                                                    }
 
                                                     if (cInfo.id != null){
                                                         increase("metric02", totalStatistics.unitIdInfoMapForLeaves);
@@ -984,6 +1095,12 @@ public class EadXmlFileStatistics {
                                                     increase("metric14", totalStatistics.unitIdInfoMapForLeaves);
                                                     increase("metric14", countryStatistics.unitIdInfoMapForLeaves);
                                                     increase("metric14", institutionStatistics.unitIdInfoMapForLeaves);
+
+                                                    if (cInfo.idIsPID) {
+                                                        increase("metric20", totalStatistics.unitIdInfoMapForLeaves);
+                                                        increase("metric20", countryStatistics.unitIdInfoMapForLeaves);
+                                                        increase("metric20", institutionStatistics.unitIdInfoMapForLeaves);
+                                                    }
 
                                                     if (cInfo.noOfUnitIdsWithCallNumber>0){
                                                         increase("metric15", totalStatistics.unitIdInfoMapForLeaves);
@@ -1167,8 +1284,10 @@ public class EadXmlFileStatistics {
                         //End of institution
                         if (institutionStatistics.totalFiles > 0) {
 //                            institutionStatistics.writeCSV(dqstatsPath+"/" + countryDir.getName() + "/" + institutionDir.getName());
-                            JsonObject jsonObject = institutionStatistics.writeJson(dqstatsPath+"/" + countryDir.getName() + "/" + institutionDir.getName());
-                            institutionStatistics.writeExcel(dqstatsPath+"/" + countryDir.getName() + "/" + institutionDir.getName(), jsonObject, "institution", countryDir.getName(), institutionDir.getName());
+                            if (doOther) {
+                                JsonObject jsonObject = institutionStatistics.writeJson(dqstatsPath + "/" + countryDir.getName() + "/" + institutionDir.getName());
+                                institutionStatistics.writeExcel(dqstatsPath + "/" + countryDir.getName() + "/" + institutionDir.getName(), jsonObject, "institution", countryDir.getName(), institutionDir.getName());
+                            }
                         }
                         countryStatistics.perInsitutionInfoStatistics.put(institutionDir.getName(), institutionStatistics);
                     }
@@ -1184,15 +1303,19 @@ public class EadXmlFileStatistics {
 
                 if (countryStatistics.totalFiles > 0) {
 //                    countryStatistics.writeCSV(dqstatsPath+"/" + countryDir.getName());
-                    JsonObject jsonObject = countryStatistics.writeJson(dqstatsPath+"/" + countryDir.getName());
-                    countryStatistics.writeExcel(dqstatsPath+"/" + countryDir.getName(), jsonObject, "country", countryDir.getName(), null);
+                    if (doOther) {
+                        JsonObject jsonObject = countryStatistics.writeJson(dqstatsPath + "/" + countryDir.getName());
+                        countryStatistics.writeExcel(dqstatsPath + "/" + countryDir.getName(), jsonObject, "country", countryDir.getName(), null);
+                    }
                 }
             }
         }
 
 //        totalStatistics.writeCSV(dqstatsPath+"/");
-        JsonObject jsonObject = totalStatistics.writeJson(dqstatsPath+"/");
-        totalStatistics.writeExcel(dqstatsPath+"/", jsonObject, "total", null, null);
+        if (doOther) {
+            JsonObject jsonObject = totalStatistics.writeJson(dqstatsPath + "/");
+            totalStatistics.writeExcel(dqstatsPath + "/", jsonObject, "total", null, null);
+        }
 
         System.out.println("totalFileCounter: " + totalStatistics.totalFiles);
         System.out.println("totalNotFoundFiles: " + totalStatistics.totalNotFoundFiles);
@@ -1283,6 +1406,23 @@ public class EadXmlFileStatistics {
         printWriter.close();
         printWriter2.close();
         printWriter4.close();
+
+
+        FileWriter fileWriterMaterialSpec = new FileWriter("materialSpecs.txt");
+        PrintWriter prinWritertMaterialSpec = new PrintWriter(fileWriterMaterialSpec);
+        for (String s : materialSpecMap.keySet()){
+            prinWritertMaterialSpec.println(s+"|"+materialSpecMap.get(s));
+        }
+        fileWriterMaterialSpec.close();
+        prinWritertMaterialSpec.close();
+
+        FileWriter fileWriterPhysLoc = new FileWriter("physLocs.txt");
+        PrintWriter printWriterPhysLoc = new PrintWriter(fileWriterPhysLoc);
+        for (String s : physLocMap.keySet()){
+            printWriterPhysLoc.println(s+"|"+physLocMap.get(s));
+        }
+        fileWriterPhysLoc.close();
+        printWriterPhysLoc.close();
 
         System.out.println("time standart: " + (new Date()));
     }
@@ -1508,6 +1648,8 @@ public class EadXmlFileStatistics {
     private class CInfo {
 
         public String id = null;
+        public boolean idIsPID = false;
+        public boolean isExtptrPID = false;
         public int depth;
         public int noOfUnitIdsWithCallNumber = 0;
         public int noOfUnitIdsWithNoType = 0;
@@ -1524,6 +1666,41 @@ public class EadXmlFileStatistics {
             Attribute attribute = startElement.getAttributeByName(new QName("id"));
             if (attribute!=null){
                 this.id = attribute.getValue();
+                if (this.id != null) {
+                    if (this.id.contains("ark:") || this.id.contains("purl") || this.id.contains("doi.") || this.id.contains("hdl.handle") || this.id.contains("urn")) {
+                        this.idIsPID = true;
+                    }
+                }
+            }
+        }
+
+        public void handleExtptrElement(StartElement element){
+            if (!isExtptrPID) {
+                Iterator<Attribute> iterator = element.getAttributes();
+                List<Attribute> actualList = new ArrayList<>();
+                while (iterator.hasNext()) {
+                    actualList.add(iterator.next());
+                }
+
+                for (Attribute attribute : actualList){
+                    if (attribute.getName().getLocalPart().equals("href")){
+                        String s = attribute.getValue();
+                        if (s.contains("ark:") || s.contains("purl") || s.contains("doi.") || s.contains("hdl.handle") || s.contains("urn")) {
+                            isExtptrPID = true;
+                            break;
+                        }
+                    }
+                }
+//                Attribute attribute = element.getAttributeByName(new QName("href"));
+//                if (attribute==null){
+//                    attribute = element.getAttributeByName(new QName("http://www.w3.org/1999/xlink","href","xlink"));
+//                }
+//                if (attribute != null) {
+//                    String s = attribute.getValue();
+//                    if (s.contains("ark:") || s.contains("purl") || s.contains("doi.") || s.contains("hdl.handle") || s.contains("urn")) {
+//                        isExtptrPID = true;
+//                    }
+//                }
             }
         }
 
