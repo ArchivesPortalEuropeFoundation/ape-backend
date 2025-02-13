@@ -103,6 +103,44 @@
     </div>
 </div>
 
+<script type="text/javascript">
+    $(document).ready(function(){
+        var period = 10;
+        manualCallAjax();
+        var myTimeout = setInterval(ajaxTimer, 1000);
+        var timerCount = period;
+        function ajaxTimer() {
+            if (timerCount == 0){
+                timerCount = period;
+                callAjax();
+            }
+            else {
+                timerCount--;
+            }
+
+            $("#timerCount").html(timerCount);
+        }
+
+        function manualCallAjax() {
+            timerCount = period;
+            $("#timerCount").html(timerCount);
+            callAjax();
+        }
+
+        function callAjax() {
+            $("#queueSize").load("contentmanagerstatus.action #queueStatusDiv", function() {
+                $("#timerCount").html(timerCount);
+
+                $("#manualRefresh").click(function () {
+                    manualCallAjax();
+                });
+            });
+        }
+
+
+    });
+</script>
+
 <c:if test="${errorLinkHgSg}">
     <jsp:include page="linktohgsgerror.jsp" />
 </c:if>

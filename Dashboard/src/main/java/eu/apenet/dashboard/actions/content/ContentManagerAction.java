@@ -12,11 +12,7 @@ import eu.apenet.dashboard.actions.content.ead3.Ead3ContentManagerResults;
 import eu.apenet.dashboard.listener.QueueDaemon;
 import eu.apenet.dashboard.queue.DisplayQueueItem;
 import eu.apenet.dashboard.services.ead.EadService;
-import eu.apenet.persistence.dao.ContentSearchOptions;
-import eu.apenet.persistence.dao.EacCpfDAO;
-import eu.apenet.persistence.dao.Ead3DAO;
-import eu.apenet.persistence.dao.EadDAO;
-import eu.apenet.persistence.dao.QueueItemDAO;
+import eu.apenet.persistence.dao.*;
 import eu.apenet.persistence.factory.DAOFactory;
 import eu.apenet.persistence.vo.*;
 
@@ -397,8 +393,10 @@ public class ContentManagerAction extends AbstractInstitutionAction {
         getServletRequest().setAttribute("results", results);
         getServletRequest().setAttribute("harvestingStarted", EadService.isHarvestingStarted());
         QueueItemDAO queueDAO = DAOFactory.instance().getQueueItemDAO();
+        UpFileDAO upFileDAO = DAOFactory.instance().getUpFileDAO();
         getServletRequest().setAttribute("totalItemsInQueue", queueDAO.countItems());
         getServletRequest().setAttribute("aiItemsInQueue", queueDAO.countItems(getAiId()));
+        getServletRequest().setAttribute("aiUpFiles", upFileDAO.countNewUpFiles(getAiId(), FileType.XML));
         getServletRequest().setAttribute("positionInQueue", queueDAO.getPositionOfFirstItem(getAiId()));
         getServletRequest().setAttribute("queueActive", QueueDaemon.isActive());
         getServletRequest().setAttribute("errorItems", convert(DAOFactory.instance().getQueueItemDAO().getErrorItemsOfInstitution(getAiId())));

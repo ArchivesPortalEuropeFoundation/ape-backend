@@ -1,296 +1,317 @@
 
 #contentmanager #resultPerPageContainer {
-	float: left;
-	padding-left: 100px;
+    float: left;
+    padding-left: 100px;
 }
-#contentmanager #eadRefreshInterval{
-	float:left;
-	padding-left:50px;
+
+#contentmanager #eadRefreshInterval {
+    float: left;
+    padding-left: 50px;
 }
-#contentmanager #resultPerPageContainer select , #contentmanager #eadRefreshInterval select{
-	font-size: 9px;
-	padding: 1px;
+
+#contentmanager #resultPerPageContainer select, #contentmanager #eadRefreshInterval select {
+    font-size: 9px;
+    padding: 1px;
 }
 
 #contentmanager select {
-	border-color: #BFBFBF #DEDEDE #DEDEDE #BFBFBF;
-	border-image: none;
-	border-style: solid;
-	border-width: 1px;
-	border-radius: 3px 3px 3px 3px;
+    border-color: #BFBFBF #DEDEDE #DEDEDE #BFBFBF;
+    border-image: none;
+    border-style: solid;
+    border-width: 1px;
+    border-radius: 3px 3px 3px 3px;
 }
+
 #contentmanager #newSearchForm label {
     padding-left: 4px;
     padding-right: 4px;
 }
+
 #contentmanager .searchOptionsContent {
-	background-color: #E8E8E8;
-	padding: 5px;
+    background-color: #E8E8E8;
+    padding: 5px;
 }
 
 #contentmanager .searchOptionsContent th {
-	padding-left: 5px;
-	padding-right: 5px;
-	padding-top: 5px;
-	padding-bottom: 5px;
+    padding-left: 5px;
+    padding-right: 5px;
+    padding-top: 5px;
+    padding-bottom: 5px;
 }
+
 #contentmanager .searchOptionsContent td {
-	padding-right: 10px;
+    padding-right: 10px;
 }
+
 #contentmanager .status_ok {
-	color: green;
-	font-weight: bold;
+    color: green;
+    font-weight: bold;
 }
 
 #contentmanager .status_warning {
-	color: #F87217;
-	font-weight: bold;
+    color: #F87217;
+    font-weight: bold;
 }
 
 #contentmanager .status_no {
-	font-weight: bold;
+    font-weight: bold;
 }
 
 #contentmanager .status_not_available {
-	font-weight: bold;
+    font-weight: bold;
     color: #DBDBDB;
 }
 
 #contentmanager .status_queue {
-	color: #B23062;
-	font-weight: bold;
+    color: #B23062;
+    font-weight: bold;
 }
+
 #contentmanager .status_queue_error {
-	background-color: yellow;
-	color: #B23062;
-	font-weight: bold;
+    background-color: yellow;
+    color: #B23062;
+    font-weight: bold;
 }
 
 #contentmanager .status_queue_processing {
-	background-color: #E9F3FA;
-	color: gray;
+    background-color: #E9F3FA;
+    color: gray;
 }
 
 #contentmanager .status_error {
-	color: red;
-	font-weight: bold;
-	text-transform: uppercase;
+    color: red;
+    font-weight: bold;
+    text-transform: uppercase;
 }
 
-#contentmanager #content_div_table  .title {
-	/* width: 100% */;
-	overflow: hidden;
-	text-overflow: ellipsis;
-	text-align: left;
-	word-wrap: break-word;
+#contentmanager #content_div_table .title {
+    /* width: 100% */;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: left;
+    word-wrap: break-word;
 }
 
 #contentmanager .units {
-	font-weight: bold;
+    font-weight: bold;
 }
 
 #contentmanager .left {
-	float: left;
+    float: left;
 }
 
 #contentmanager .right {
-	float: right;
+    float: right;
 }
 
 #contentmanager #content_div_table td.actions {
-	padding-bottom: 2px;
-	padding-top: 2px;
-	text-align: left;
+    padding-bottom: 2px;
+    padding-top: 2px;
+    text-align: left;
 }
 
 #contentmanager #content_div_table td.actions select {
-	font-size: 11px;
-	/* width: 100%; */
+    font-size: 11px;
+    /* width: 100%; */
 }
 
 #contentmanager #content_div_table td.actions input {
-	font-size: 11px;
+    font-size: 11px;
 }
+
 #contentmanager #content_div_table table {
-	width:100%;
+    width: 100%;
 }
 
 
-#contentmanager  #batchBlock {
-	clear: both;
-	display: block;
-	height: 20px;
-	padding-bottom: 5px;
-	padding-top: 5px;
-	width: 100%;
+#contentmanager #batchBlock {
+    clear: both;
+    display: block;
+    height: 20px;
+    padding-bottom: 5px;
+    padding-top: 5px;
+    width: 100%;
 }
 
-#contentmanager  #listFiles {
-	margin: 0;
-	position: fixed;
-	top: 15px;
-	left: auto;
-	width: 150px;
-	height: auto;
-	right: 15px;
-	background-color: #E9F3FA;
-	/* for IE */
-	filter: alpha(opacity =               70);
-	/* CSS3 standard */
-	opacity: 0.7;
-	border: 1px solid #00A0DF;
-	border-radius: 3px;
-	padding: 3px;
+#contentmanager #listFiles {
+    margin: 0;
+    position: fixed;
+    top: 15px;
+    left: auto;
+    width: 150px;
+    height: auto;
+    right: 15px;
+    background-color: #E9F3FA;
+    /* for IE */
+    filter: alpha(opacity=70);
+    /* CSS3 standard */
+    opacity: 0.7;
+    border: 1px solid #00A0DF;
+    border-radius: 3px;
+    padding: 3px;
 }
-#contentmanager  #listFiles span {
-	margin-right:3px;
+
+#contentmanager #listFiles span {
+    margin-right: 3px;
 }
-#contentmanager #listFilesActions{
-	display:block;
-	clear:both;
-	width:100%;
-	padding-bottom:5px;
+
+#contentmanager #listFilesActions {
+    display: block;
+    clear: both;
+    width: 100%;
+    padding-bottom: 5px;
 }
-#contentmanager #sizeFiles{
-	display:block;
-	clear:both;
-	width:100%;
+
+#contentmanager #sizeFiles {
+    display: block;
+    clear: both;
+    width: 100%;
 }
 
 #contentmanager .linkList {
-	font-weight: bold;
-	color: #C65400;
-	cursor: pointer;
+    font-weight: bold;
+    color: #C65400;
+    cursor: pointer;
 }
-#contentmanager .total{
-	background-color: #E8E8E8;
+
+#contentmanager .total {
+    background-color: #E8E8E8;
     color: #B23062;
 }
-#contentmanager .total td{
-	font-weight: bold;
+
+#contentmanager .total td {
+    font-weight: bold;
     color: #B23062;
     font-size: 9pt;
-	height:2em;
+    height: 2em;
 }
 
 #contentmanager #noresults {
-	text-align:center;
+    text-align: center;
     font-size: 11pt;
-    font-weight:bold;
-    padding-top:40px;
+    font-weight: bold;
+    padding-top: 40px;
 }
+
 #contentmanager #HGnoResults {
-	padding-top: 5px;
+    padding-top: 5px;
 }
+
 #contentmanager #queueStopped {
-	text-align:center;
+    text-align: center;
     font-size: 11pt;
-    font-weight:bold;
+    font-weight: bold;
     color: red;
-    padding-top:20px;
-    padding-bottom:20px;
+    padding-top: 20px;
+    padding-bottom: 20px;
 }
+
 #contentmanager #queueSize {
-	text-align:center;
-	font-size: 8pt;
-	padding-top:10px;
-	padding-bottom:10px;
+    text-align: center;
+    font-size: 8pt;
+    padding-top: 10px;
+    padding-bottom: 10px;
 }
-@media screen and (-webkit-min-device-pixel-ratio:0) {
-	div.searchOptionsContent td.nextContentThType input{
-		top: -1.5px;
-		position: relative;
-	}
+
+@media screen and (-webkit-min-device-pixel-ratio: 0) {
+    div.searchOptionsContent td.nextContentThType input {
+        top: -1.5px;
+        position: relative;
+    }
 }
-div.searchOptionsContent .typeRadio{
-	vertical-align: middle;
-	margin-bottom: 1px;
+
+div.searchOptionsContent .typeRadio {
+    vertical-align: middle;
+    margin-bottom: 1px;
 }
-.contentThType{
-	padding-top: 5px;
+
+.contentThType {
+    padding-top: 5px;
     vertical-align: text-top;
 }
-.nextContentThType{
-	padding-top: 5px;
+
+.nextContentThType {
+    padding-top: 5px;
     vertical-align: text-top;
-    margin-right:15px;
+    margin-right: 15px;
 }
-.tdNextConverted{
-	margin-right:15px;
+
+.tdNextConverted {
+    margin-right: 15px;
 }
 
 /* Styles for conversion options colorBox */
 #conversionOptsDiv {
-	text-align: left;
-	width: 100%;
+    text-align: left;
+    width: 100%;
 }
 
 #conversionOptsDiv form {
-	width: 100%;
+    width: 100%;
 }
 
 #conversionOptsDiv form table {
-	width: 100%;
+    width: 100%;
 }
 
 #conversionOptsDiv form table tr {
-	width: 100%;
+    width: 100%;
 }
 
 #conversionOptsDiv form table tr td input[type="text"] {
-	width: 98%
+    width: 98%
 }
 
 #conversionOptsDiv form table tr td input[type="checkbox"] {
-	margin-left: 20px;
-	margin-right: 5px;
-	vertical-align: middle;
+    margin-left: 20px;
+    margin-right: 5px;
+    vertical-align: middle;
 }
 
 #conversionOptsDiv form table tr td label {
-	vertical-align: middle;
+    vertical-align: middle;
 }
 
 #conversionOptsDiv form table tr td select {
-	vertical-align: middle;
+    vertical-align: middle;
 }
 
 #conversionOptsDiv form table tr td textarea {
-	height: 60px;
-	width: 98%
+    height: 60px;
+    width: 98%
 }
 
 #conversionOptsDiv #buttonsDiv {
-	padding-top: 10px;
+    padding-top: 10px;
 }
 
 .optionsWizardLabels {
-	font-weight: bold;
-	padding-bottom: 5px;
-	padding-left: 5px;
-	padding-top: 5px;
-	width: 30%;
+    font-weight: bold;
+    padding-bottom: 5px;
+    padding-left: 5px;
+    padding-top: 5px;
+    width: 30%;
 }
 
 .optionsWizardSubLabels {
-	font-weight: bold;
-	padding-bottom: 5px;
-	padding-left: 20px;
-	padding-top: 5px;
-	width: 30%;
+    font-weight: bold;
+    padding-bottom: 5px;
+    padding-left: 20px;
+    padding-top: 5px;
+    width: 30%;
 }
 
 .optionsWizardContents {
-	padding-bottom: 5px;
-	padding-top: 5px;
-	width: 70%;
+    padding-bottom: 5px;
+    padding-top: 5px;
+    width: 70%;
 }
 
 .blueButton {
-    font-family: "Arial",sans-serif;
+    font-family: "Arial", sans-serif;
     font-size: 12px;
 
-	background: url("../images/mainbutton.jpg") repeat-x scroll right top #FFFFFF;
+    background: url("../images/mainbutton.jpg") repeat-x scroll right top #FFFFFF;
     border: 1px solid #00A0DF;
     border-radius: 3px 3px 3px 3px;
     color: #00384D;
@@ -304,16 +325,16 @@ div.searchOptionsContent .typeRadio{
     vertical-align: baseline;
     width: auto;
 
-	display: inline;
-	letter-spacing: 0.8px;
-	text-align: center;
+    display: inline;
+    letter-spacing: 0.8px;
+    text-align: center;
 }
 
 .greyButton {
-    font-family: "Arial",sans-serif;
+    font-family: "Arial", sans-serif;
     font-size: 12px;
 
-	background: url("../images/otherbutton.gif") repeat-x scroll right top #ffffff;
+    background: url("../images/otherbutton.gif") repeat-x scroll right top #ffffff;
     border: 1px solid #00a0df;
     border-radius: 3px;
     color: #00384d;
@@ -330,10 +351,37 @@ div.searchOptionsContent .typeRadio{
 }
 
 p.fieldRequired {
-	color: red;
-	padding-bottom: 5px;
-	padding-top: 5px;
-	font-weight: bold;
+    color: red;
+    padding-bottom: 5px;
+    padding-top: 5px;
+    font-weight: bold;
 }
 
 /* End styles for conversion options colorBox */
+.aiItemsInQueue, .totalItemsInQueue, .positionInQueue {
+    border: 1px solid gray;
+    padding: 5px;
+    font-size: 14pt;
+    font-weight: 600;
+}
+
+.refreshDiv {
+    font-size: 8pt;
+}
+
+#timerCount {
+    font-size: 10pt;
+    font-weight: 600;
+}
+
+.queueStatusDiv {
+    font-size: 12pt;
+}
+
+.filesDiv {
+	margin: 10px;
+}
+
+.aiUpFiles{
+	font-weight: 600;
+}

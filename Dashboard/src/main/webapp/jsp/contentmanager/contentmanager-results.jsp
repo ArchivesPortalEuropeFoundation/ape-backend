@@ -14,6 +14,14 @@
 <div id="queueSize">
     <c:if test="${aiItemsInQueue > 0}"><s:text name="content.message.queue.size.youritems" /> ${aiItemsInQueue}, </c:if><s:text name="content.message.queue.size.allitems" /> ${totalItemsInQueue}<c:if test="${!empty positionInQueue}">, <s:text name="content.message.queue.size.itemsbeforeyou" /> ${positionInQueue}</c:if>
         <br />
+
+<c:if test="${aiUpFiles > 0}">
+    Files: ${aiUpFiles}... check their status <a href="checkfilesuploaded.action">here</a>
+</c:if>
+    <div id="addhere">
+
+    </div>
+    <br/>
     <c:if test="${not empty errorItems}">There are problems in the queue with your files, click <span class="link" id="seeErrors">here to see</span>.
         <div class="hidden" id="errorItems">
             <c:forEach var="errorItem" items="${errorItems}">

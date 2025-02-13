@@ -294,6 +294,10 @@
             <result name="empty" type="tiles">contentmanager</result>
         </action>
 
+        <action name="contentmanagerstatus" class="eu.apenet.dashboard.actions.content.ContentManagerStatusAction">
+            <result name="success">/jsp/contentmanager/contentmanager-status.jsp</result>
+        </action>
+
         <action name="updateContentmanager" class="eu.apenet.dashboard.actions.content.ContentManagerAction">
             <result name="ead3_success">/jsp/contentmanager/contentmanager-ead3-results.jsp</result>
             <result name="success">/jsp/contentmanager/contentmanager-results.jsp</result>
