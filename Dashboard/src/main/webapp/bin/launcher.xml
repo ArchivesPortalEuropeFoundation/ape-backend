@@ -14,4 +14,11 @@
             <class>eu.apenet.scripts.EadXmlFileStatistics</class>
         </step>
     </command>
+    <command>
+        <name>batch-ead-removal</name>
+        <description>Batch removal of EADs given their IDs</description>
+        <step passuserargs="true">
+            <class>eu.apenet.scripts.BatchEADRemoval</class>
+        </step>
+    </command>
 </commands>
