@@ -15,6 +15,20 @@
         </step>
     </command>
     <command>
+        <name>ead-xml-language-stats</name>
+        <description>Statistics about EAD files and their content</description>
+        <step>
+            <class>eu.apenet.scripts.EadXmlFileLanguageStatistics</class>
+        </step>
+    </command>
+    <command>
+        <name>batch-social-info-extractor</name>
+        <description>Batch extract social info</description>
+        <step>
+            <class>eu.apenet.scripts.BatchSocialInfoExtractor</class>
+        </step>
+    </command>
+    <command>
         <name>batch-ead-removal</name>
         <description>Batch removal of EADs given their IDs</description>
         <step passuserargs="true">

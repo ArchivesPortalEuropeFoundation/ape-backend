@@ -50,6 +50,21 @@ public class Statistics {
     public Map<String, Integer> schemaLocations = new HashMap<>();
 //    public Map<String, List<String>> schemaLocationsMap = new HashMap<>();
 
+    public Integer langusageInt = 0;
+    public Integer langusageCodeInt = 0;
+    public Integer langmaterialInt = 0;
+    public Integer langmaterialCodeInt = 0;
+    public Integer langusageMultipleInt = 0;
+    public Integer langmaterialMultipleInt = 0;
+
+    public Set<String> languages = new HashSet<>();
+    public Set<String> langcodes = new HashSet<>();
+    public Set<String> langAndLangCodes = new HashSet<>();
+
+    public Map<String, Integer> languagesMap = new TreeMap<>();
+    public Map<String, Integer> langcodesMap = new TreeMap<>();
+    public Map<String, Integer> langAndLangCodesMap = new TreeMap<>();
+
     public int cCounter = 0;
     public int cCounter2 = 0;
     public int cCounterLeaves = 0;
@@ -771,6 +786,126 @@ public class Statistics {
         fileWriter.close();
 
         return jsonObject;
+    }
+
+    public void writeLanguageExcel(String filePath, String type, String country, String institution) throws IOException {
+        File file = new File(filePath);
+        if (!file.exists()){
+            file.mkdirs();
+        }
+
+        Map<String, Statistics> mapToCheckInfo = null;
+        String lektiko = null;
+        if (type.equals("total")) {
+            mapToCheckInfo = perCountryInfoStatistics;
+            lektiko = "country";
+        }
+        else if (type.equals("country")) {
+            mapToCheckInfo = perInsitutionInfoStatistics;
+            lektiko = "institution";
+        }
+
+        try {
+            SpreadsheetDocument document = SpreadsheetDocument.newSpreadsheetDocument();
+            Table sheet1 = document.getSheetByIndex(0);
+            sheet1.setTableName("Language Generic Stats");
+            Table sheet2 = Table.newTable(document);
+            sheet2.setTableName("Language Specific Stats");
+
+            int row = 1;
+            fillCell(sheet1, 0, row++, "Total files");
+            fillCell(sheet1, 0, row++, "Total c");
+            fillCell(sheet1, 0, row++, "Overall number of langusage/language");
+            fillCell(sheet1, 0, row++, "Overall number of langusage/language/@langcode");
+            fillCell(sheet1, 0, row++, "Overall number of langmaterial/language");
+            fillCell(sheet1, 0, row++, "Overall number of langmaterial/language/@langcode");
+            fillCell(sheet1, 0, row++, "Number of cases with more than 1 language in langusage");
+            fillCell(sheet1, 0, row++, "Number of cases with more than 1 language in langmaterial");
+
+            fillCell(sheet1, 1, 0, "Total");
+
+            row = 1;
+            fillCell(sheet1, 1, row++, totalFiles);
+            fillCell(sheet1, 1, row++, cCounter);
+            fillCell(sheet1, 1, row++, langusageInt);
+            fillCell(sheet1, 1, row++, langusageCodeInt);
+            fillCell(sheet1, 1, row++, langmaterialInt);
+            fillCell(sheet1, 1, row++, langmaterialCodeInt);
+            fillCell(sheet1, 1, row++, langusageMultipleInt);
+            fillCell(sheet1, 1, row++, langmaterialMultipleInt);
+
+            if (mapToCheckInfo!=null) {
+                int col = 2;
+
+                for (String countryOrInstCode : mapToCheckInfo.keySet()) {
+                    row = 1;
+                    String countryToDisplay = "";
+                    if (countryMap.containsKey(countryOrInstCode)) {
+                        countryToDisplay = countryMap.get(countryOrInstCode) + " (" + countryOrInstCode + ")";
+                    } else {
+                        countryToDisplay = allAIs.get(countryOrInstCode) + " (" + countryOrInstCode + ")";
+                    }
+                    fillCell(sheet1, col, 0, countryToDisplay);
+
+
+                    Statistics localStats = mapToCheckInfo.get(countryOrInstCode);
+                    fillCell(sheet1, col, row++, localStats.totalFiles);
+                    fillCell(sheet1, col, row++, localStats.cCounter);
+                    fillCell(sheet1, col, row++, localStats.langusageInt);
+                    fillCell(sheet1, col, row++, localStats.langusageCodeInt);
+                    fillCell(sheet1, col, row++, localStats.langmaterialInt);
+                    fillCell(sheet1, col, row++, localStats.langmaterialCodeInt);
+                    fillCell(sheet1, col, row++, localStats.langusageMultipleInt);
+                    fillCell(sheet1, col, row++, localStats.langmaterialMultipleInt);
+
+                    col++;
+                }
+            }
+
+
+            int col = 0;
+            fillCell(sheet2, col, 0, "Unique langCodes");
+            fillCell(sheet2, col+3, 0, "Unique languages");
+            fillCell(sheet2, col+6, 0, "Unique langCodes/languages");
+            fillCell(sheet2, col+7, 0, "Unique langCodes/Languages");
+
+            row = 1;
+            for (String s : langcodes){
+                col=0;
+                fillCell(sheet2, col++, row, s);
+                fillCell(sheet2, col, row++, langcodesMap.get(s));
+            }
+
+            row = 1;
+            for (String s : languages){
+                col=3;
+                fillCell(sheet2, col++, row, s);
+                fillCell(sheet2, col, row++, languagesMap.get(s));
+            }
+
+            row = 1;
+            for (String s : langAndLangCodes){
+                col=6;
+                String[] parts = s.split("_");
+                fillCell(sheet2, col, row++, parts[0].equals("null")?"":parts[0]);
+            }
+            row = 1;
+            for (String s : langAndLangCodes){
+                col=7;
+                String[] parts = s.split("_");
+                fillCell(sheet2, col++, row, parts[1].equals("null")?"":parts[1]);
+                fillCell(sheet2, col, row++, langAndLangCodesMap.get(s));
+            }
+
+
+
+            OutputStream outputStream = new FileOutputStream(filePath+"/info.xls");
+            document.save(outputStream);
+            outputStream.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void writeExcel(String filePath, JsonObject jsonObject, String type, String country, String institution) throws IOException {
