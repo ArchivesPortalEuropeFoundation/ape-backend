@@ -20,7 +20,7 @@
         <additionalparam>-Xdoclint:none</additionalparam>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <spring.version>4.2.2.RELEASE</spring.version>
-        <postgresql.version>9.4-1205-jdbc41</postgresql.version>
+        <postgresql.version>42.3.7</postgresql.version>
         <archivesportaleurope.dptutil.version>2020-12-SNAPSHOT</archivesportaleurope.dptutil.version>
     </properties>
 
